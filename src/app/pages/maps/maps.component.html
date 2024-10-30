@@ -50,10 +50,10 @@
                             <i class="fas" [ngClass]="moto.isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
                           </button>
                           <span *ngIf="moto.isCollapsed" class="ml-2 row justify-content-md-left">
-                            TOTAL: {{ calcularSoma(moto) | currency:'BRL':'symbol':'1.2-2' }} <!-- Formato monetário -->
+                            <h3 style="color: white;">TOTAL: {{ calcularSoma(moto) | currency:'GBP':'symbol':'1.2-2' }}</h3> <!-- Formato monetário -->
                           </span>
                           <!-- [ngClass]="i % 2 === 0 ? 'bg-default' : 'bg-info'" -->
-                            <span> <!-- Nova Moto {{ moto.id }}--></span>
+                             <!-- <span>Nova Moto {{ moto.id }</span>}-->
                             
 
                             <button class="btn btn-danger" type="button" (click)="removerMoto(i)">
@@ -63,30 +63,38 @@
                         </div>
                         <div class="card-body" [ngClass]="{'collapse': moto.isCollapsed}">
                             <div class="form-row align-items-end">
-                                <div class="col">
+                                <div class="mt-2 col-1">
+                                    <button class="btn btn-success btn-round" type="button" (click)="incluirRegistro(i)">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="col col-2">
                                     <input type="text" class="form-control" [(ngModel)]="moto.placa" placeholder="Placa" [name]="'placa' + i">
                                 </div>
-                                <div class="col">
+                                <!--
+                                <div class="col col-1">
                                     <input type="number" class="form-control" [(ngModel)]="moto.qtd" placeholder="QTD" [name]="'qtd' + i">
+                                </div>-->   
+                                <div class="col col-3">
+                                    <input type="text" class="form-control" [(ngModel)]="moto.descricao" placeholder="Nome Motorista" [name]="'descricao' + i">
                                 </div>
-                                <div class="col">
-                                    <input type="text" class="form-control" [(ngModel)]="moto.descricao" placeholder="Descrição" [name]="'descricao' + i">
-                                </div>
-                                <div class="col">
+                                <!--
+                                <div class="col col-2">
                                     <input type="text" class="form-control" [(ngModel)]="moto.preco" placeholder="Preço" [name]="'preco' + i">
+                                </div>-->
+                                <div class="col col-3">
+                                    <input type="text" class="form-control" [(ngModel)]="moto.milhagem" placeholder="Observação" (keypress)="checkRegistroEnter($event, i, null)" [name]="'milhagem' + i">
                                 </div>
-                                <div class="col">
-                                    <input type="text" class="form-control" [(ngModel)]="moto.milhagem" placeholder="Milhagem" [name]="'milhagem' + i">
-                                </div>
-                                <div class="col">
-                                    <input type="date" class="form-control" [(ngModel)]="moto.data" placeholder="Data" [name]="'data' + i">
+                                <div class="col col-2 input-group">
+                                    <div _ngcontent-c8="" class="input-group-prepend">
+                                        <span _ngcontent-c8="" class="input-group-text">
+                                          <i class="ni ni-calendar-grid-58"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" class="form-control text-center" [name]="'data' + i" [value]="dataAtualBR" readonly style="background-color: #172b4d; color: #f4f5f7; font-style: bold;">
                                 </div>
                             </div>
-                            <div class="mt-2">
-                                <button class="btn btn-success btn-round" type="button" (click)="incluirRegistro(i)">
-                                    <i class="fas fa-plus"></i> Incluir Serviço
-                                </button>
-                            </div>
+                            
                             <div class="mt-2" *ngIf="!moto.isCollapsed">
                                 <div *ngFor="let registro of moto.registros; let j = index" class="form-row align-items-end mt-2">
                                     <div class="col col-1">
@@ -96,11 +104,15 @@
                                         <input type="text" #descricaoInput class="form-control" [(ngModel)]="registro.descricao" placeholder="Descrição" [name]="'descricao' + i + '-' + j">
                                     </div>
                                     <div class="col col-2">
-                                        <input type="text" class="form-control" [(ngModel)]="registro.preco" placeholder="Preço" (keypress)="checkRegistroEnter($event, i, j)" [name]="'preco' + i + '-' + j">
+                                        <input type="text" appCurrencyFormat class="form-control" [(ngModel)]="registro.preco" placeholder="Preço" (keypress)="checkRegistroEnter($event, i, j)" [name]="'preco' + i + '-' + j">
                                     </div>
                                     <div class="col col-2">
-                                        <input type="date" class="form-control" [(ngModel)]="registro.data" placeholder="Data" [name]="'data' + i + '-' + j">
+                                        <input type="text" class="form-control" [(ngModel)]="registro.milhagem" placeholder="Milhagem" [name]="'milhagem' + i + '-' + j">
                                     </div>
+                                    <!--
+                                    <div class="col col-2">
+                                        <input type="date" class="form-control" [(ngModel)]="registro.data" placeholder="Data" [name]="'data' + i + '-' + j">
+                                    </div>-->
                                     <div class="col">
                                         <button class="btn btn-danger btn-round" type="button" (click)="removerRegistro(i, j)">
                                           <i class="fas fa-trash"></i> 
@@ -108,7 +120,7 @@
                                     </div>
                                 </div>
                                 <span *ngIf="!moto.isCollapsed" class="ml-4">
-                                    <h3>TOTAL: {{ calcularSoma(moto) | currency:'BRL':'symbol':'1.2-2' }} </h3> <!-- Formato monetário -->
+                                    <h3 id="">TOTAL: {{ calcularSoma(moto) | currency:'GBP':'symbol':'1.2-2' }}</h3> <!-- Formato monetário -->
                                 </span>
                             </div>
                         </div>

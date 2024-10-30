@@ -25,10 +25,17 @@ export class MapsComponent implements OnInit {
   valorFinal: string = '';
   ultimoPagamento: string = '';
 
+  dataAtualBR: string = '';
+
   constructor() { }
 
   ngOnInit() {
-    // Qualquer lógica de inicialização necessária
+    const hoje = new Date();
+    const dia = String(hoje.getDate()).padStart(2, '0');
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0'); // Janeiro é 0
+    const ano = hoje.getFullYear();
+
+    this.dataAtualBR = `${dia}/${mes}/${ano}`;
   }
 
   incluirMoto() {
@@ -58,21 +65,40 @@ export class MapsComponent implements OnInit {
       qtd: null,
       descricao: '',
       preco: null,
-      data: ''
+      data: '',
+      milhagem: null
     });
   }
 
   calcularSoma(moto: any): number {
-    // Soma o preço da moto, convertendo para número
-    let soma = parseFloat(moto.preco) || 0; // Converte para número ou 0
-  
-    // Soma os preços dos registros, convertendo para número
+    // Inicializa a soma como zero
+    let soma = 0;
+
+    // Verifica e processa o preço da moto
+    if (moto.preco) {
+        const precoMoto = parseInt(moto.preco.replace(/[^\d]/g, ""), 10); // Mantém como inteiro (em centavos)
+        if (!isNaN(precoMoto)) {
+            soma += precoMoto; // Adiciona se for um número válido
+        }
+    }
+
+    // Verifica e processa os registros
     moto.registros.forEach((registro: any) => {
-      soma += parseFloat(registro.preco) || 0; // Converte para número ou 0
+        if (registro.preco) {
+            const precoRegistro = parseInt(registro.preco.replace(/[^\d]/g, ""), 10); // Mantém como inteiro (em centavos)
+            if (!isNaN(precoRegistro)) {
+                soma += precoRegistro; // Adiciona se for um número válido
+            }
+        }
     });
-  
-    return soma;
-  }
+
+    return soma / 100; // Retorna a soma total em formato de unidade
+}
+
+
+
+
+
   
 
   removerRegistro(motoIndex: number, registroIndex: number) {
@@ -89,11 +115,14 @@ export class MapsComponent implements OnInit {
       this.incluirRegistro(motoIndex);
 
       setTimeout(() => {
-        const nextRegistroIndex = registroIndex + 1;
-        if (nextRegistroIndex < this.descricaoInputs.length) {
-          this.descricaoInputs.toArray()[nextRegistroIndex].nativeElement.focus();
+        const descricaoInputElements = this.descricaoInputs.toArray();
+        const nextRegistroIndex = (registroIndex !== null ? registroIndex + 1 : this.motos[motoIndex].registros.length - 1);
+
+        // Direciona o foco para o campo de descrição do novo registro
+        if (nextRegistroIndex < descricaoInputElements.length) {
+            descricaoInputElements[nextRegistroIndex].nativeElement.focus();
         }
-      });
+       });
 
     }
   }

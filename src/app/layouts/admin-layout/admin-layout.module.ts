@@ -12,6 +12,8 @@ import { MapsComponent } from '../../pages/maps/maps.component';
 import { UserProfileComponent } from '../../pages/user-profile/user-profile.component';
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CurrencyFormatDirective } from '../../pages/maps/currency-input.directive';
+
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -28,7 +30,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     UserProfileComponent,
     TablesComponent,
     IconsComponent,
-    MapsComponent
+    MapsComponent,
+    CurrencyFormatDirective
   ],
   exports: [
     MapsComponent // Exportar para que possa ser usado em outros módulos
