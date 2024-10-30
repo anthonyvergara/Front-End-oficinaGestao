@@ -29,6 +29,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     TablesComponent,
     IconsComponent,
     MapsComponent
+  ],
+  exports: [
+    MapsComponent // Exportar para que possa ser usado em outros módulos
   ]
 })
 

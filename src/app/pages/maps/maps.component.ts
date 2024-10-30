@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, ElementRef } from '@angular/core';
 declare const google: any;
 
 @Component({
@@ -8,49 +8,85 @@ declare const google: any;
 })
 export class MapsComponent implements OnInit {
 
+  @ViewChildren('descricaoInput') descricaoInputs!: QueryList<ElementRef>;
+
+  motoCount: number = 0;
+  motos: any[] = []; // Array para armazenar as motos
+  nInvoice: string = '';
+  nomeCliente: string = '';
+  vat: string = '';
+  status: string = '';
+  observacao: string = '';
+  pagamentoTipo: string = 'Pagamento à Vista';
+  quantidadeParcelas: number | null = null;
+  dataPrimeiraParcela: string | null = null;
+  valorTotal: string = '';
+  valorEntrada: string = '';
+  valorFinal: string = '';
+  ultimoPagamento: string = '';
+
   constructor() { }
 
   ngOnInit() {
-    let map = document.getElementById('map-canvas');
-    let lat = map.getAttribute('data-lat');
-    let lng = map.getAttribute('data-lng');
+    // Qualquer lógica de inicialização necessária
+  }
 
-    var myLatlng = new google.maps.LatLng(lat, lng);
-    var mapOptions = {
-        zoom: 12,
-        scrollwheel: false,
-        center: myLatlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        styles: [
-          {"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#444444"}]},
-          {"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2f2f2"}]},
-          {"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},
-          {"featureType":"road","elementType":"all","stylers":[{"saturation":-100},{"lightness":45}]},
-          {"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},
-          {"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},
-          {"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},
-          {"featureType":"water","elementType":"all","stylers":[{"color":'#5e72e4'},{"visibility":"on"}]}]
+  incluirMoto() {
+
+    this.motos.forEach(moto => {
+      moto.isCollapsed = true; // Define todos os blocos como fechados
+    });
+    this.motoCount++;
+    const moto = {
+      id: this.motoCount,
+      placa: '',
+      qtd: null,
+      descricao: '',
+      preco: null,
+      milhagem: '',
+      data: '',
+      registros: [], // Inicializa um array para os registros
+      isCollapsed: false // Inicializa como colapsado
+    };
+
+    this.motos.push(moto); // Adiciona a nova moto ao array
+  }
+
+  incluirRegistro(motoIndex: number) {
+    // Adiciona um registro vazio à moto correspondente
+    this.motos[motoIndex].registros.push({
+      qtd: null,
+      descricao: '',
+      preco: null,
+      data: ''
+    });
+  }
+
+  removerRegistro(motoIndex: number, registroIndex: number) {
+    this.motos[motoIndex].registros.splice(registroIndex, 1); // Remove o registro pelo índice
+  }
+
+  removerMoto(motoIndex: number) {
+    this.motos.splice(motoIndex, 1); // Remove a moto pelo índice
+  }
+
+  checkRegistroEnter(event: KeyboardEvent, motoIndex: number, registroIndex: number) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.incluirRegistro(motoIndex);
+
+      setTimeout(() => {
+        const nextRegistroIndex = registroIndex + 1;
+        if (nextRegistroIndex < this.descricaoInputs.length) {
+          this.descricaoInputs.toArray()[nextRegistroIndex].nativeElement.focus();
+        }
+      });
+
     }
+  }
 
-    map = new google.maps.Map(map, mapOptions);
-
-    var marker = new google.maps.Marker({
-        position: myLatlng,
-        map: map,
-        animation: google.maps.Animation.DROP,
-        title: 'Hello World!'
-    });
-
-    var contentString = '<div class="info-window-content"><h2>Argon Dashboard</h2>' +
-        '<p>A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</p></div>';
-
-    var infowindow = new google.maps.InfoWindow({
-        content: contentString
-    });
-
-    google.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map, marker);
-    });
+  onPagamentoChange(event: any) {
+    this.quantidadeParcelas = null; // Limpa a quantidade de parcelas se mudar para "À Vista"
   }
 
 }

@@ -13,4 +13,5 @@ frontend:
     deploy:
       - npm install --legacy-peer-deps
       - npm run build
+  subdomain: emerald-delightful-ptarmigan
 yamlVersion: 2
