@@ -49,8 +49,13 @@
                           <button class="btn btn-secondary" type="button" (click)="moto.isCollapsed = !moto.isCollapsed">
                             <i class="fas" [ngClass]="moto.isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
                           </button>
+                          <span *ngIf="moto.isCollapsed" class="ml-2 row justify-content-md-left">
+                            TOTAL: {{ calcularSoma(moto) | currency:'BRL':'symbol':'1.2-2' }} <!-- Formato monetário -->
+                          </span>
                           <!-- [ngClass]="i % 2 === 0 ? 'bg-default' : 'bg-info'" -->
                             <span> <!-- Nova Moto {{ moto.id }}--></span>
+                            
+
                             <button class="btn btn-danger" type="button" (click)="removerMoto(i)">
                               <i class="fas fa-trash"></i>
                             </button>
@@ -102,6 +107,9 @@
                                           </button>
                                     </div>
                                 </div>
+                                <span *ngIf="!moto.isCollapsed" class="ml-4">
+                                    <h3>TOTAL: {{ calcularSoma(moto) | currency:'BRL':'symbol':'1.2-2' }} </h3> <!-- Formato monetário -->
+                                </span>
                             </div>
                         </div>
                     </div>

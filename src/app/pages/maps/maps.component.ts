@@ -62,6 +62,19 @@ export class MapsComponent implements OnInit {
     });
   }
 
+  calcularSoma(moto: any): number {
+    // Soma o preço da moto, convertendo para número
+    let soma = parseFloat(moto.preco) || 0; // Converte para número ou 0
+  
+    // Soma os preços dos registros, convertendo para número
+    moto.registros.forEach((registro: any) => {
+      soma += parseFloat(registro.preco) || 0; // Converte para número ou 0
+    });
+  
+    return soma;
+  }
+  
+
   removerRegistro(motoIndex: number, registroIndex: number) {
     this.motos[motoIndex].registros.splice(registroIndex, 1); // Remove o registro pelo índice
   }
