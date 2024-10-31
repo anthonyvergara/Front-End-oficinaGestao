@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren, ElementRef } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, ElementRef, ViewChild } from '@angular/core';
 declare const google: any;
 
 @Component({
@@ -9,6 +9,7 @@ declare const google: any;
 export class MapsComponent implements OnInit {
 
   @ViewChildren('descricaoInput') descricaoInputs!: QueryList<ElementRef>;
+  @ViewChild('pagamentoSelect') pagamentoSelect!: ElementRef;
 
   motoCount: number = 0;
   motos: any[] = []; // Array para armazenar as motos
@@ -17,7 +18,7 @@ export class MapsComponent implements OnInit {
   vat: string = '';
   status: string = '';
   observacao: string = '';
-  pagamentoTipo: string = 'Pagamento à Vista';
+  pagamentoTipo: string;
   quantidadeParcelas: number | null = null;
   dataPrimeiraParcela: string | null = null;
   valorTotal: string = '';
@@ -34,7 +35,13 @@ export class MapsComponent implements OnInit {
     const dia = String(hoje.getDate()).padStart(2, '0');
     const mes = String(hoje.getMonth() + 1).padStart(2, '0'); // Janeiro é 0
     const ano = hoje.getFullYear();
+    // Inicialize o pagamentoTipo
+    this.pagamentoTipo = 'Pagamento à Vista';
 
+    // Defina o valor do select programaticamente
+    if (this.pagamentoSelect) {
+        this.pagamentoSelect.nativeElement.value = this.pagamentoTipo;
+    }
     this.dataAtualBR = `${dia}/${mes}/${ano}`;
   }
 
@@ -127,7 +134,15 @@ export class MapsComponent implements OnInit {
     }
   }
 
-  onPagamentoChange(event: any) {
+  onPagamentoChange(valor: string) {
+    this.pagamentoTipo = valor;
+
+    // Lógica adicional se necessário
+    if (valor === 'Pagamento Parcelado') {
+        // Mostre a quantidade de parcelas, etc.
+    } else {
+        // Oculte a quantidade de parcelas
+    }
     this.quantidadeParcelas = null; // Limpa a quantidade de parcelas se mudar para "À Vista"
   }
 

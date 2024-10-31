@@ -130,21 +130,21 @@
     
             <div class="form-group mt-4">
                 <label for="observacao">Observação:</label>
-                <textarea class="form-control" id="observacao" rows="3" [(ngModel)]="observacao"></textarea>
+                <textarea class="form-control border-style" id="observacao" rows="3" [(ngModel)]="observacao"></textarea>
             </div>
     
             <div class="form-row align-items-end">
                 <div class="col">
-                    <select class="form-control" id="pagamentoSelect" [(ngModel)]="pagamentoTipo" (change)="onPagamentoChange($event)">
-                        <option>Pagamento à Vista</option>
-                        <option>Parcelado</option>
+                    <select class="form-control border-style" id="pagamentoSelect" (change)="onPagamentoChange($event.target.value)">
+                        <option value="Pagamento à Vista">Pagamento à Vista</option>
+                        <option value="Pagamento Parcelado">Pagamento Parcelado</option>
                     </select>
                 </div>
-                <div class="parcelas-container col" *ngIf="pagamentoTipo === 'Parcelado'">
-                    <input type="number" class="form-control" placeholder="Quantidade de Parcelas" [(ngModel)]="quantidadeParcelas">
+                <div class="parcelas-container col" *ngIf="pagamentoTipo === 'Pagamento Parcelado'">
+                    <input type="number" class="form-control border-style" placeholder="Quantidade de Parcelas" [(ngModel)]="quantidadeParcelas">
                 </div>
                 <div class="col">
-                    <input type="date" class="form-control" placeholder="Data da Primeira Parcela" [(ngModel)]="dataPrimeiraParcela">
+                    <input type="date" class="form-control border-style" placeholder="Data da Primeira Parcela" [(ngModel)]="dataPrimeiraParcela">
                 </div>
             </div>
     
