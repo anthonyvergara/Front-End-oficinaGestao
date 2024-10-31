@@ -44,7 +44,7 @@ export class MapsComponent implements OnInit {
   dataPrimeiraParcela: string | null = null;
   valorTotalGeral: number = 0;
   valorEntrada: number = null;
-  valorFinal: string = '';
+  valorFinal: number = null;
   ultimoPagamento: string = '';
 
   dataAtualBR: string = '';
@@ -70,6 +70,15 @@ export class MapsComponent implements OnInit {
 
   atualizarValorTotalGeral() {
     this.valorTotalGeral = this.motos.reduce((total, moto) => total + this.calcularSoma(moto), 0);
+    this.atualizarValorFinal();
+  }
+
+  atualizarValorFinal(): number {
+    return this.valorTotalGeral - (this.valorEntrada || 0);
+  }
+
+  onValorEntradaChange() {
+    this.atualizarValorTotalGeral(); // Recalcula o total ao editar o preço
   }
 
   incluirMoto() {
