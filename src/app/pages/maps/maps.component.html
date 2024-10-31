@@ -107,7 +107,7 @@
                                         <input type="text" appCurrencyFormat class="form-control" [(ngModel)]="registro.preco" (ngModelChange)="onPrecoChange()" placeholder="Preço" (keypress)="checkRegistroEnter($event, i, j)" [name]="'preco' + i + '-' + j">
                                     </div>
                                     <div class="col col-2">
-                                        <input type="text" class="form-control" [(ngModel)]="registro.milhagem" placeholder="Milhagem" [name]="'milhagem' + i + '-' + j">
+                                        <input type="text" class="form-control" [(ngModel)]="registro.milhagem" placeholder="Milhagem" (keypress)="checkRegistroEnter($event, i, j)" [name]="'milhagem' + i + '-' + j">
                                     </div>
                                     <!--
                                     <div class="col col-2">
@@ -162,8 +162,8 @@
                                 <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ valorTotalGeral | currency:'GBP':'symbol':'1.2-2' }}</span>
                             </div>
                             <div class="col-auto">
-                                <div class="icon icon-shape bg-secondary text-white rounded-circle shadow">
-                                <i class="fa-regular fa-calculator ">£</i>
+                                <div class="icon icon-shape bg-secondary rounded-circle shadow">
+                                <i class="fa fa-calculator "></i>
                                 </div>
                             </div>
                             </div>
@@ -172,7 +172,7 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <div *ngIf="valorEntrada > 0" @fadeIn class="col-auto">
+                    <div *ngIf="valorEntrada > 0 && valorTotalGeral > 0" @fadeIn class="col-auto">
                         <div style="width: 14rem;">
                             <div class="card card-stats bg-info mb-4 mb-lg-0" placement="bottom" ngbTooltip="(Valor Total) - (Valor Entrada)">
                             <div class="card-body">
@@ -182,8 +182,8 @@
                                     <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ atualizarValorFinal() | currency:'GBP':true }}</span>
                                 </div>
                                 <div class="col-auto">
-                                    <div class="icon icon-shape bg-secondary text-white rounded-circle shadow">
-                                    <i class="fa-regular fa-calculator ">£</i>
+                                    <div class="icon icon-shape bg-secondary rounded-circle shadow">
+                                    £
                                     </div>
                                 </div>
                                 </div>
@@ -198,10 +198,13 @@
                 </div>
                 -->
             </div>
-    
-            <div class="mt-4">
-                <button class="btn btn-info" type="button">Imprimir</button>
-                <button class="btn btn-warning" type="button">Pagar</button>
+            <div class="form-row mt-4 mb-3">
+                <div class="col">
+                    <button class="btn btn-default" type="button"><i class="ni ni-check-bold"></i>&nbsp;&nbsp;SALVAR</button>
+                </div>
+                <div class="col bt-imprimir">
+                    <button class="btn btn-danger" type="button"><i class="ni ni-folder-17" aria-hidden="true"></i>&nbsp;&nbsp;IMPRIMIR</button>
+                </div>
             </div>
         </form>
 

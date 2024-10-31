@@ -48,7 +48,7 @@ export class MapsComponent implements OnInit {
   ultimoPagamento: string = '';
 
   dataAtualBR: string = '';
-
+  
   constructor() { }
 
   ngOnInit() {
