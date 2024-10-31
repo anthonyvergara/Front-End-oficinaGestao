@@ -1,10 +1,22 @@
 import { Component, OnInit, QueryList, ViewChildren, ElementRef, ViewChild } from '@angular/core';
+import { trigger, style, transition, animate } from '@angular/animations';
 declare const google: any;
 
 @Component({
   selector: 'app-maps',
   templateUrl: './maps.component.html',
-  styleUrls: ['./maps.component.scss']
+  styleUrls: ['./maps.component.scss'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate('2000ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ]),
+      transition(':leave', [
+        animate('500ms ease-in', style({ opacity: 0, transform: 'translateY(-10px)' }))
+      ])
+    ])
+  ]
 })
 export class MapsComponent implements OnInit {
 
@@ -21,8 +33,8 @@ export class MapsComponent implements OnInit {
   pagamentoTipo: string;
   quantidadeParcelas: number | null = null;
   dataPrimeiraParcela: string | null = null;
-  valorTotal: string = '';
-  valorEntrada: string = '';
+  valorTotal: any = 0;
+  valorEntrada: number = null;
   valorFinal: string = '';
   ultimoPagamento: string = '';
 
@@ -98,7 +110,6 @@ export class MapsComponent implements OnInit {
             }
         }
     });
-
     return soma / 100; // Retorna a soma total em formato de unidade
 }
 
