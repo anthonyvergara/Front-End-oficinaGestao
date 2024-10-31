@@ -15,6 +15,15 @@ declare const google: any;
       transition(':leave', [
         animate('500ms ease-in', style({ opacity: 0, transform: 'translateY(-10px)' }))
       ])
+    ]),
+    trigger('fadeBox', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate('1000ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ]),
+      transition(':leave', [
+        animate('500ms ease-in', style({ opacity: 0, transform: 'translateY(-10px)' }))
+      ])
     ])
   ]
 })
@@ -33,7 +42,7 @@ export class MapsComponent implements OnInit {
   pagamentoTipo: string;
   quantidadeParcelas: number | null = null;
   dataPrimeiraParcela: string | null = null;
-  valorTotal: any = 0;
+  valorTotalGeral: number = 0;
   valorEntrada: number = null;
   valorFinal: string = '';
   ultimoPagamento: string = '';
@@ -55,6 +64,12 @@ export class MapsComponent implements OnInit {
         this.pagamentoSelect.nativeElement.value = this.pagamentoTipo;
     }
     this.dataAtualBR = `${dia}/${mes}/${ano}`;
+
+    this.atualizarValorTotalGeral();
+  }
+
+  atualizarValorTotalGeral() {
+    this.valorTotalGeral = this.motos.reduce((total, moto) => total + this.calcularSoma(moto), 0);
   }
 
   incluirMoto() {
@@ -74,7 +89,6 @@ export class MapsComponent implements OnInit {
       registros: [], // Inicializa um array para os registros
       isCollapsed: false // Inicializa como colapsado
     };
-
     this.motos.push(moto); // Adiciona a nova moto ao array
   }
 
@@ -87,6 +101,7 @@ export class MapsComponent implements OnInit {
       data: '',
       milhagem: null
     });
+    this.atualizarValorTotalGeral();
   }
 
   calcularSoma(moto: any): number {
@@ -112,15 +127,11 @@ export class MapsComponent implements OnInit {
     });
     return soma / 100; // Retorna a soma total em formato de unidade
 }
-
-
-
-
-
   
 
   removerRegistro(motoIndex: number, registroIndex: number) {
     this.motos[motoIndex].registros.splice(registroIndex, 1); // Remove o registro pelo índice
+    this.atualizarValorTotalGeral();
   }
 
   removerMoto(motoIndex: number) {
@@ -143,6 +154,10 @@ export class MapsComponent implements OnInit {
        });
 
     }
+  }
+
+  onPrecoChange() {
+    this.atualizarValorTotalGeral(); // Recalcula o total ao editar o preço
   }
 
   onPagamentoChange(valor: string) {
