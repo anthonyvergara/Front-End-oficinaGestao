@@ -71,14 +71,14 @@
                                       </button>
                                   </div>
                                   <div class="col col-2">
-                                      <input type="text" class="form-control" [(ngModel)]="moto.placa" placeholder="Placa" [name]="'placa' + i">
+                                      <input type="text" class="form-control" [(ngModel)]="moto.placa" placeholder="Placa" (keypress)="checkRegistroEnter($event, i, null)" [name]="'placa' + i">
                                   </div>
                                   <!--
                                   <div class="col col-1">
                                       <input type="number" class="form-control" [(ngModel)]="moto.qtd" placeholder="QTD" [name]="'qtd' + i">
                                   </div>-->   
                                   <div class="col col-3">
-                                      <input type="text" class="form-control" [(ngModel)]="moto.descricao" placeholder="Nome Motorista" [name]="'descricao' + i">
+                                      <input type="text" class="form-control" [(ngModel)]="moto.descricao" placeholder="Nome Motorista" (keypress)="checkRegistroEnter($event, i, null)" [name]="'descricao' + i">
                                   </div>
                                   <!--
                                   <div class="col col-2">
@@ -183,7 +183,7 @@
                   <div class="col-auto">
                       <div *ngIf="valorEntrada > 0 && valorTotalGeral > 0" @fadeIn class="col-auto">
                           <div style="width: 14rem;">
-                              <div class="card card-stats bg-info mb-4 mb-lg-0" placement="bottom" ngbTooltip="(Valor Total) - (Valor Entrada)">
+                              <div class="card card-stats bg-info mb-4 mb-lg-0" placement="bottom" ngbTooltip="(Valor Total) subtraído pelo (Valor de Entrada)">
                               <div class="card-body">
                                   <div class="row">
                                   <div class="col">

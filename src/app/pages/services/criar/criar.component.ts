@@ -143,6 +143,9 @@ export class CriarComponent implements OnInit{
   }
 
   removerMoto(motoIndex: number) {
+    const totalMoto = this.calcularSoma(this.motos[motoIndex]);
+    this.valorTotalGeral -= totalMoto; // Subtrai o total da moto do valor total geral
+    
     this.motos.splice(motoIndex, 1); // Remove a moto pelo índice
   }
 
