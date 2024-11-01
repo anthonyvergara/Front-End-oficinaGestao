@@ -11,9 +11,13 @@ export class ModalComponent {
   @Input() totalValue: string | undefined;
   @Input() creationDate: string | undefined;
 
-  @Output() close = new EventEmitter<void>(); // Emitir evento de fechamento
+  @Output() close = new EventEmitter<void>();
 
   closeModal() {
-    this.close.emit(); // Emitir evento para o componente pai
+    this.close.emit(); // Emite o evento para o componente pai
+  }
+
+  onBackgroundClick(event: MouseEvent) {
+    this.closeModal();
   }
 }
