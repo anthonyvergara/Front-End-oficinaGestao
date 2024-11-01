@@ -14,7 +14,7 @@
         <h2>ORDEM DE SERVIÇO</h2>
         <form>
             <div class="form-row align-items-end">
-                <div class="col input-group">
+                <div class="col col-2 input-group">
                   <div _ngcontent-c8="" class="input-group-prepend">
                     <span _ngcontent-c8="" class="input-group-text">
                       <i class="fas fa-file-alt"></i>
@@ -23,15 +23,17 @@
                     
                     <input type="text" class="form-control" placeholder="N.Invoice" [(ngModel)]="nInvoice">
                 </div>
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="Nome Cliente" [(ngModel)]="nomeCliente">
+                <div class="col col-6">
+                    <input type="text" class="form-control border-style" placeholder="Nome Cliente" [(ngModel)]="nomeCliente">
                 </div>
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="VAT" [(ngModel)]="vat">
+                <div class="col col-2">
+                    <input type="text" class="form-control border-style" placeholder="VAT" [(ngModel)]="vat">
                 </div>
+                <!--
                 <div class="col">
                     <input type="text" class="form-control" placeholder="Status" [(ngModel)]="status">
                 </div>
+                -->
             </div>
     
             <div class="form-row align-items-end mt-3">
@@ -134,20 +136,27 @@
             </div>
     
             <div class="form-row align-items-end">
-                <div class="col">
+                <div class="col col-3">
+                    <label for="observacao">Forma de Pagamento</label>
                     <select class="form-control border-style" id="pagamentoSelect" (change)="onPagamentoChange($event.target.value)">
                         <option value="Pagamento à Vista">Pagamento à Vista</option>
                         <option value="Pagamento Parcelado">Pagamento Parcelado</option>
                     </select>
                 </div>
-                <div class="parcelas-container col" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
+                <div class="parcelas-container col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
+                    <label for="observacao">Quantidade de Parcelas</label>
                     <input type="number" class="form-control border-style" placeholder="Quantidade de Parcelas" [(ngModel)]="quantidadeParcelas">
                 </div>
-                <div class="col">
-                    <input type="date" class="form-control border-style" placeholder="Data da Primeira Parcela" [(ngModel)]="dataPrimeiraParcela">
+                <div class="col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
+                    <label for="observacao">Perido entre Pagamentos</label>
+                    <select class="form-control border-style" id="pagamentoPeriodoSelect">
+                        <option value="Pagamento à Vista">Pagamento Semanal</option>
+                        <option value="Pagamento Parcelado">Pagamento Mensal</option>
+                    </select>
                 </div>
-                <div class="col">
-                    <input type="number" class="form-control" placeholder="Valor Entrada" [(ngModel)]="valorEntrada" (input)="onValorEntradaChange()">
+                <div class="col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
+                    <label for="observacao">Valor de Entrada</label>
+                    <input type="number" class="form-control border-style" placeholder="Valor Entrada" [(ngModel)]="valorEntrada" (input)="onValorEntradaChange()">
                 </div>
             </div>
     
