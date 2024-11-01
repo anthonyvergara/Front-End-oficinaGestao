@@ -130,7 +130,7 @@
                   </td>
                   <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
                     <span class="badge badge-dot mr-4">
-                      <i class="bg-warning"></i> {{ order.totalValue }}
+                      <i [ngClass]="order.status == 'ATRASADO' ? 'bg-danger' : order.status == 'PAGO' ? 'bg-success' : 'badge-agendado'"></i> {{ order.totalValue }}
                     </span>
                   </td>
                   <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
@@ -144,14 +144,14 @@
                       <div>
                         <div class="progress">
                           <div class="progress-bar"
-                          [ngClass]="order.status == 'ATRASADO' ? 'bg-danger' : order.status == 'PAGO' ? 'bg-success' : 'bg-info'"
+                          [ngClass]="order.status == 'ATRASADO' ? 'bg-danger' : order.status == 'PAGO' ? 'bg-success' : 'badge-agendado'"
                           role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" [style.width]="order.completion"></div>
                         </div>
                       </div>
                     </div>
                   </td>
                   <td class="text-right" [ngClass]="i % 2 === 0 ? '' : 'table-dark'" (click)="handleButtonClick($event)">
-                    <div ngbDropdown placement="bottom-right">
+                    <div ngbDropdown placement="bottom-right" class="position-static">
                       <a [ngClass]="i % 2 === 0 ? 'btn btn-icon-only text-dark' : 'btn btn-icon-only text-white'"  ngbDropdownToggle
                       >
                         <i _ngcontent-c10="" class="ni ni-settings"></i>

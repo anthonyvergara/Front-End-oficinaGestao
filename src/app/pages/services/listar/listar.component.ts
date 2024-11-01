@@ -15,7 +15,7 @@ export class ListarComponent implements OnInit {
   orders = [
     { status: 'ATRASADO', clientName: 'ANTHONY DE OLIVEIRA VERGARA', totalValue: '£200.00', creationDate: '14/09/2024', completion: '20%' },
     { status: 'AGENDADO', clientName: 'RICHARD DE OLIVEIRA VERGARA', totalValue: '£150.00', creationDate: '31/10/2024', completion: '50%' },
-    { status: 'ATRASADO', clientName: 'MICHAEL DE OLIVEIRA VERGARA', totalValue: '£200.00', creationDate: '14/09/2024', completion: '65%' },
+    { status: 'PAGO', clientName: 'MICHAEL DE OLIVEIRA VERGARA', totalValue: '£200.00', creationDate: '14/09/2024', completion: '100%' },
     { status: 'AGENDADO', clientName: 'BRYAN BASTOS VERGARA', totalValue: '£150.00', creationDate: '31/10/2024', completion: '70%' },
     { status: 'PAGO', clientName: 'RICHARD DE OLIVEIRA VERGARA', totalValue: '£150.00', creationDate: '31/10/2024', completion: '100%' },
     // Adicione mais ordens conforme necessário
