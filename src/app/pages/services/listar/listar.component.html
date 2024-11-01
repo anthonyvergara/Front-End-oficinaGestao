@@ -101,6 +101,7 @@
             <h1 class="mb-0">ORDENS DE SERVIÇO</h1>
           </div>
           <div class="table-responsive">
+              
             <table class="table align-items-center table-flush">
               <thead class="thead-light">
                 <tr>
@@ -113,234 +114,46 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">
+                <tr *ngFor="let order of orders; let i = index" (click)="openModal(order.status, order.clientName, order.totalValue, order.creationDate)">
+                  <th scope="row" [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
                     <div class="media align-items-center">
                       <a href="javascript:void(0)" class="avatar rounded-circle mr-3">
                         <img alt="Image placeholder" src="../assets/img/theme/bootstrap.jpg">
                       </a>
                       <div class="media-body">
-                        <span class="mb-0 text-sm badge badge-danger">ATRASADO</span>
+                        <span class="mb-0 text-sm badge" [ngClass]="order.status == 'ATRASADO' ? 'badge-danger' : order.status == 'PAGO' ? 'badge-success' : 'badge-agendado'">{{ order.status }}</span>
                       </div>
                     </div>
                   </th>
-                  <td>
-                    ANTHONY DE OLIVEIRA VERGARA
+                  <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                    {{ order.clientName }}
                   </td>
-                  <td>
+                  <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
                     <span class="badge badge-dot mr-4">
-                      <i class="bg-warning"></i> £200.00
+                      <i class="bg-warning"></i> {{ order.totalValue }}
                     </span>
                   </td>
-                  <td>
+                  <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
                     <div class="avatar-group">
-                      14/09/2024
+                        {{ order.creationDate }}
                     </div>
                   </td>
-                  <td>
+                  <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
                     <div class="d-flex align-items-center">
-                      <span class="mr-2">60%</span>
+                      <span class="mr-2">{{ order.completion }}</span>
                       <div>
                         <div class="progress">
-                          <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
+                          <div class="progress-bar"
+                          [ngClass]="order.status == 'ATRASADO' ? 'bg-danger' : order.status == 'PAGO' ? 'bg-success' : 'bg-info'"
+                          role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" [style.width]="order.completion"></div>
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td class="text-right">
+                  <td class="text-right" [ngClass]="i % 2 === 0 ? '' : 'table-dark'" (click)="handleButtonClick($event)">
                     <div ngbDropdown placement="bottom-right">
-                      <a class="btn btn-icon-only text-dark"  ngbDropdownToggle>
-                        <i _ngcontent-c10="" class="ni ni-settings"></i>
-                      </a>
-                      <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-                        <a class="dropdown-item" href="javascript:void(0)">Imprimir</a>
-                        <a class="dropdown-item" href="javascript:void(0)">Enviar cobrança</a>
-                        <a class="dropdown-item" href="javascript:void(0)">Excluir</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row" class="table-dark">
-                    <div class="media align-items-center">
-                      <a href="javascript:void(0)" class="avatar rounded-circle mr-3">
-                        <img alt="Image placeholder" src="../assets/img/theme/angular.jpg">
-                      </a>
-                      <div class="media-body">
-                        <span class="mb-0 text-sm badge badge-success">PAGO</span>
-                      </div>
-                    </div>
-                  </th>
-                  <td class="table-dark">
-                    RICHARD DE OLIVEIRA VERGARA
-                  </td>
-                  <td class="table-dark">
-                    <span class="badge badge-dot">
-                      <i class="bg-success"></i> £150.00
-                    </span>
-                  </td>
-                  <td class="table-dark">
-                    <div class="avatar-group">
-                      31/10/2024
-                    </div>
-                  </td>
-                  <td class="table-dark">
-                    <div class="d-flex align-items-center">
-                      <span class="mr-2">100%</span>
-                      <div>
-                        <div class="progress">
-                          <div class="progress-bar bg-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="text-right" class="table-dark">
-                    <div ngbDropdown  placement="bottom-right">
-                      <a class="btn btn-icon-only text-white"  ngbDropdownToggle>
-                        <i _ngcontent-c10="" class="ni ni-settings"></i>
-                      </a>
-                      <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-                        <a class="dropdown-item" href="javascript:void(0)">Imprimir</a>
-                        <a class="dropdown-item" href="javascript:void(0)">Enviar cobrança</a>
-                        <a class="dropdown-item" href="javascript:void(0)">Excluir</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <a href="javascript:void(0)" class="avatar rounded-circle mr-3">
-                        <img alt="Image placeholder" src="../assets/img/theme/sketch.jpg">
-                      </a>
-                      <div class="media-body">
-                        <span class="mb-0 text-sm badge badge-secondary" style="background-color: #ffc107!important; color: white;">AGENDADO</span>
-                      </div>
-                    </div>
-                  </th>
-                  <td>
-                    MICHAEL DE OLIVEIRA VERGARA
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
-                      <i class="bg-danger"></i> £475.00
-                    </span>
-                  </td>
-                  <td>
-                    <div class="avatar-group">
-                      30/10/2024
-                    </div>
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <span class="mr-2">72%</span>
-                      <div>
-                        <div class="progress">
-                          <div class="progress-bar bg-info" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" 
-                          style="width: 72%;"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="text-right">
-                    <div ngbDropdown  placement="top-right">
-                      <a class="btn btn-icon-only text-dark"  ngbDropdownToggle>
-                        <i _ngcontent-c10="" class="ni ni-settings"></i>
-                      </a>
-                      <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-                        <a class="dropdown-item" href="javascript:void(0)">Imprimir</a>
-                        <a class="dropdown-item" href="javascript:void(0)">Enviar cobrança</a>
-                        <a class="dropdown-item" href="javascript:void(0)">Excluir</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row" class="table-dark">
-                    <div class="media align-items-center">
-                      <a href="javascript:void(0)" class="avatar rounded-circle mr-3">
-                        <img alt="Image placeholder" src="../assets/img/theme/react.jpg">
-                      </a>
-                      <div class="media-body">
-                        <span class="mb-0 text-sm badge badge-secondary" style="background-color: #ffc107!important; color: white;">AGENDADO</span>
-                      </div>
-                    </div>
-                  </th>
-                  <td class="table-dark">
-                    MICHAEL DE OLIVEIRA VERGARA
-                  </td>
-                  <td class="table-dark">
-                    <span class="badge badge-dot mr-4">
-                      <i class="bg-danger"></i> £475.00
-                    </span>
-                  </td>
-                  <td class="table-dark">
-                    <div class="avatar-group">
-                      10/08/2024
-                    </div>
-                  </td>
-                  <td class="table-dark">
-                    <div class="d-flex align-items-center">
-                      <span class="mr-2">72%</span>
-                      <div>
-                        <div class="progress">
-                          <div class="progress-bar bg-info" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" 
-                          style="width: 72%;"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="text-right" class="table-dark">
-                    <div ngbDropdown  placement="top-white">
-                      <a class="btn btn-icon-only text-white" ngbDropdownToggle>
-                        <i _ngcontent-c10="" class="ni ni-settings"></i>
-                      </a>
-                      <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-                        <a class="dropdown-item" href="javascript:void(0)">Imprimir</a>
-                        <a class="dropdown-item" href="javascript:void(0)">Enviar cobrança</a>
-                        <a class="dropdown-item" href="javascript:void(0)">Excluir</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <a href="javascript:void(0)" class="avatar rounded-circle mr-3">
-                        <img alt="Image placeholder" src="../assets/img/theme/vue.jpg">
-                      </a>
-                      <div class="media-body">
-                        <span class="mb-0 text-sm badge badge-secondary" style="background-color: #ffc107!important; color: white;">AGENDADO</span>
-                      </div>
-                    </div>
-                  </th>
-                  <td>
-                    MICHAEL DE OLIVEIRA VERGARA
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
-                      <i class="bg-danger"></i> £475.00
-                    </span>
-                  </td>
-                  <td>
-                    <div class="avatar-group">
-                      08/09/2024
-                    </div>
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <span class="mr-2">72%</span>
-                      <div>
-                        <div class="progress">
-                          <div class="progress-bar bg-info" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" 
-                          style="width: 72%;"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="text-right">
-                    <div ngbDropdown  placement="top-right">
-                      <a class="btn btn-icon-only text-dark"  ngbDropdownToggle>
+                      <a [ngClass]="i % 2 === 0 ? 'btn btn-icon-only text-dark' : 'btn btn-icon-only text-white'"  ngbDropdownToggle
+                      >
                         <i _ngcontent-c10="" class="ni ni-settings"></i>
                       </a>
                       <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
@@ -353,6 +166,14 @@
                 </tr>
               </tbody>
             </table>
+            <app-modal 
+                *ngIf="isModalOpen" 
+                [status]="modalData.status" 
+                [clientName]="modalData.clientName" 
+                [totalValue]="modalData.totalValue" 
+                [creationDate]="modalData.creationDate" 
+                (close)="closeModal()">
+            </app-modal>
           </div>
           <div class="card-footer py-4">
             <nav aria-label="...">

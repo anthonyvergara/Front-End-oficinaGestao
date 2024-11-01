@@ -1,0 +1,21 @@
+<div class="modal fade show" tabindex="-1" role="dialog" style="display: block;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalhes da Ordem de Serviço</h5>
+        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Status:</strong> {{ status }}</p>
+        <p><strong>Nome do Cliente:</strong> {{ clientName }}</p>
+        <p><strong>Valor Total:</strong> {{ totalValue }}</p>
+        <p><strong>Data de Criação:</strong> {{ creationDate }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
