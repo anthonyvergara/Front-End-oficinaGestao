@@ -89,13 +89,44 @@
       </form>
       <!-- Navigation -->
       <ul class="navbar-nav">
-          <li *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
-              <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
-                  <i class="ni {{menuItem.icon}}"></i>
-                  {{menuItem.title}}
-              </a>
-          </li>
+        <!-- Renderize os itens do menu principal -->
+        
+        <!-- Primeiro item do menu -->
+        <li *ngFor="let menuItem of menuItems.slice(0, 1)" class="{{menuItem.class}} nav-item">
+          <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
+            <i class="ni {{menuItem.icon}}"></i>
+            {{menuItem.title}}
+          </a>
+        </li>
+        
+        <!-- Menu dropdown como segundo item -->
+        <li class="nav-item">
+          <a class="nav-link" (click)="isCollapsed = !isCollapsed" style="cursor: pointer !important">
+            <i class="ni ni-pin-3 text-orange"></i>
+            Serviços
+          </a>
+          <div *ngIf="!isCollapsed" class="submenu">
+            <ul>
+              <li *ngFor="let submenuItem of submenuItems" class="nav-item">
+                <a routerLinkActive="active" [routerLink]="[submenuItem.path]" class="nav-link">
+                  <i class="ni {{submenuItem.icon}}" (click)="$event.stopPropagation()"></i>
+                  {{submenuItem.title}}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      
+        <!-- Os demais itens do menu, exceto o primeiro que já foi renderizado -->
+        <li *ngFor="let menuItem of menuItems.slice(1)" class="{{menuItem.class}} nav-item">
+          <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
+            <i class="ni {{menuItem.icon}}"></i>
+            {{menuItem.title}}
+          </a>
+        </li>
       </ul>
+      
+      
       <!-- Divider -->
       <hr class="my-3">
       <!-- Heading -->

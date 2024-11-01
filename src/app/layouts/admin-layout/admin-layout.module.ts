@@ -10,6 +10,10 @@ import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
 import { IconsComponent } from '../../pages/icons/icons.component';
 import { MapsComponent } from '../../pages/maps/maps.component';
 import { UserProfileComponent } from '../../pages/user-profile/user-profile.component';
+
+import { ListarComponent } from '../../pages/services/listar/listar.component';
+import { CriarComponent } from '../../pages/services/criar/criar.component';
+
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CurrencyFormatDirective } from '../../pages/maps/currency-input.directive';
@@ -31,7 +35,9 @@ import { CurrencyFormatDirective } from '../../pages/maps/currency-input.directi
     TablesComponent,
     IconsComponent,
     MapsComponent,
-    CurrencyFormatDirective
+    CurrencyFormatDirective,
+    ListarComponent,
+    CriarComponent
   ],
   exports: [
     MapsComponent // Exportar para que possa ser usado em outros módulos
