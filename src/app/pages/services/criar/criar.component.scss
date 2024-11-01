@@ -1,1 +1,40 @@
 /* Estilo do componente criar */
+.incluir-moto-btn {
+    position: fixed; /* Fixa o botão na tela */
+    right: 20px; /* Distância da borda direita */
+    bottom: 20px; /* Distância da borda inferior */
+    z-index: 1000; /* Garante que o botão fique acima de outros elementos */
+    border-radius: 50%; /* Botão redondo */
+    width: 60px; /* Largura do botão */
+    height: 60px; /* Altura do botão */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-header {
+    transition: background-color 0.3s; /* Transição suave para a mudança de cor */
+}
+
+.header-default {
+    background-color: #f8f9fa; /* Cor padrão (claro) */
+}
+
+.header-highlight {
+    background-color: #007bff; /* Cor de destaque (azul) */
+    color: white; /* Cor do texto para contraste */
+}
+
+#totalSoma {
+    border: 1px solid #cad1d7;
+    border-radius: 0.375rem;
+    box-shadow: none;
+    
+}
+.border-style {
+    border: 1px solid #172b4d;
+}
+
+.bt-imprimir {
+    text-align: right; /* Isso alinha o conteúdo à direita */
+  }

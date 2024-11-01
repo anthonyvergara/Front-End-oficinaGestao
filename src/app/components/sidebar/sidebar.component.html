@@ -105,11 +105,11 @@
             <i class="ni ni-pin-3 text-orange"></i>
             Serviços
           </a>
-          <div *ngIf="!isCollapsed" class="submenu">
+          <div *ngIf="!isCollapsed" class="submenu" @fadeIn>
             <ul>
               <li *ngFor="let submenuItem of submenuItems" class="nav-item">
                 <a routerLinkActive="active" [routerLink]="[submenuItem.path]" class="nav-link">
-                  <i class="ni {{submenuItem.icon}}" (click)="$event.stopPropagation()"></i>
+                  <i class="ni {{submenuItem.icon}}"></i>
                   {{submenuItem.title}}
                 </a>
               </li>

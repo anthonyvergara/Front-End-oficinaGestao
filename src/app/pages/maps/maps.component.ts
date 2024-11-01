@@ -1,6 +1,5 @@
 import { Component, OnInit, QueryList, ViewChildren, ElementRef, ViewChild } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
-declare const google: any;
 
 @Component({
   selector: 'app-maps',
