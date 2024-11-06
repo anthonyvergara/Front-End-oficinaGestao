@@ -31,7 +31,7 @@ Estou animado para continuar expandindo as funcionalidades e melhorando a experi
 
 ![:=D](https://markdownlivepreview.com/image/sample.webp ":D")
 
-## 🔖 REFERêNCIAS
+## 🔖 Referências
 A base do layout foi fornecido por: [CREATIVE TIM](https://github.com/creativetimofficial).
 
 
