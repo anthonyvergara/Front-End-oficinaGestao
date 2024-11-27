@@ -51,7 +51,10 @@
                             <button class="btn btn-secondary" type="button" (click)="moto.isCollapsed = !moto.isCollapsed">
                               <i class="fas" [ngClass]="moto.isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
                             </button>
-                            <span *ngIf="moto.isCollapsed" class="ml-2 row justify-content-md-left">
+                            <span *ngIf="moto.isCollapsed" class="ml-0">
+                                <h3 style="color: white;">PLACA: {{ moto.placa }}</h3> <!-- Formato monetário -->
+                            </span>
+                            <span *ngIf="moto.isCollapsed" class="ml-auto" style="margin-right: 30px;">
                               <h3 style="color: white;">TOTAL: {{ calcularSoma(moto) | currency:'GBP':'symbol':'1.2-2' }}</h3> <!-- Formato monetário -->
                             </span>
                             <!-- [ngClass]="i % 2 === 0 ? 'bg-default' : 'bg-info'" -->
@@ -156,7 +159,7 @@
                   </div>
                   <div class="col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
                       <label for="observacao">Valor de Entrada</label>
-                      <input type="number" class="form-control border-style" placeholder="Valor Entrada" [(ngModel)]="valorEntrada" (input)="onValorEntradaChange()">
+                      <input type="text" class="form-control border-style" appCurrencyFormat placeholder="Valor Entrada" [(ngModel)]="valorEntrada" (input)="onValorEntradaChange()">
                   </div>
               </div>
       
@@ -187,7 +190,7 @@
                               <div class="card-body">
                                   <div class="row">
                                   <div class="col">
-                                      <h5 class="card-title text-uppercase mb-0" style="color: white; font-style: bold;">VALOR FINAL</h5>
+                                      <h5 class="card-title text-uppercase mb-0" style="color: white; font-style: bold;">VALOR DEVIDO</h5>
                                       <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ atualizarValorFinal() | currency:'GBP':true }}</span>
                                   </div>
                                   <div class="col-auto">
@@ -209,7 +212,7 @@
               </div>
               <div class="form-row mt-4 mb-3">
                   <div class="col">
-                      <button class="btn btn-default" type="button"><i class="ni ni-check-bold"></i>&nbsp;&nbsp;SALVAR</button>
+                      <button class="btn btn-default" type="button"><i class="ni ni-check-bold"></i>&nbsp;&nbsp;CRIAR ORDEM</button>
                   </div>
                   <div class="col bt-imprimir">
                       <button class="btn btn-danger" type="button"><i class="ni ni-folder-17" aria-hidden="true"></i>&nbsp;&nbsp;IMPRIMIR</button>

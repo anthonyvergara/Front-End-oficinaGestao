@@ -4,6 +4,8 @@ import { Directive, HostListener, ElementRef } from '@angular/core';
   selector: '[appCurrencyFormat]'
 })
 export class CurrencyFormatDirective {
+  private previousValue: string | null = null; // Valor armazenado para detectar mudanças
+
   constructor(private el: ElementRef) {}
 
   @HostListener('input', ['$event'])
@@ -11,54 +13,68 @@ export class CurrencyFormatDirective {
     const inputElement = this.el.nativeElement;
     let value = inputElement.value;
 
-    // Remove caracteres não numéricos, exceto ponto e vírgula
+    // Remove caracteres não numéricos
     value = value.replace(/[^\d]/g, '');
 
-    // Se o valor estiver vazio, apenas retorne
+    // Se o valor estiver vazio, limpa e retorna
     if (value === '') {
       inputElement.value = '';
+      this.previousValue = null;
       return;
     }
 
-    // Converte para número e divide por 100 para ajustar
-    const numValue = parseInt(value, 10); // Mantém o valor como inteiro (em centavos)
-
-    // Formata como moeda
+    // Converte para número inteiro (em centavos) e formata
+    const numValue = parseInt(value, 10);
     const formattedValue = this.formatCurrency(numValue);
-    
-    // Atualiza o valor do input
-    inputElement.value = formattedValue;
-  }
 
-  private formatCurrency(value: number): string {
-    const finalValue = value / 100; // Converte para valor monetário
-    return '£ ' + finalValue.toLocaleString('en-GB', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
+    // Atualiza o valor formatado no input
+    inputElement.value = formattedValue;
+
+    // Armazena o valor formatado
+    this.previousValue = formattedValue;
   }
 
   @HostListener('focus', ['$event'])
   onFocus(event: Event): void {
     const inputElement = this.el.nativeElement;
 
-    // Remove o prefixo "£" ao focar para permitir digitação
-    inputElement.value = inputElement.value.replace('£ ', '').replace(/\./g, '').replace(',', '.');
+    // Remove o prefixo "£" ao focar para permitir edição
+    const currentValue = inputElement.value;
+    inputElement.value = this.removeFormatting(currentValue);
   }
 
   @HostListener('blur', ['$event'])
   onBlur(event: Event): void {
     const inputElement = this.el.nativeElement;
+    const rawValue = inputElement.value;
 
-    // Adiciona o prefixo "£" ao perder o foco
-    let value = inputElement.value;
-    value = value.replace(/[^\d.,]/g, '');
+    // Formata o valor apenas se tiver sido alterado
+    if (rawValue !== this.previousValue) {
+      const numValue = this.parseToNumber(rawValue);
+      const formattedValue = this.formatCurrency(numValue);
+      inputElement.value = formattedValue;
 
-    if (value) {
-      let numValue = parseFloat(value.replace(',', '.')) * 100; // Mantém como inteiro (em centavos)
-      inputElement.value = this.formatCurrency(numValue);
-    } else {
-      inputElement.value = '';
+      // Atualiza o valor anterior com o novo valor formatado
+      this.previousValue = formattedValue;
     }
+  }
+
+  private formatCurrency(value: number): string {
+    const finalValue = value / 100; // Converte para valor monetário
+    return '£ ' + finalValue.toLocaleString('en-GB', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  private removeFormatting(value: string): string {
+    // Remove prefixo e outros caracteres de formatação
+    return value.replace(/[^\d.,]/g, '');
+  }
+
+  private parseToNumber(value: string): number {
+    // Converte a string em um número inteiro (em centavos)
+    const numericValue = parseFloat(value.replace(',', '.')) || 0;
+    return Math.round(numericValue * 100);
   }
 }
