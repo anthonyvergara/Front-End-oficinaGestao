@@ -18,6 +18,11 @@ export class ListarComponent implements OnInit {
     { status: 'PAGO', clientName: 'MICHAEL DE OLIVEIRA VERGARA', totalValue: '£200.00', creationDate: '14/09/2024', completion: '100%' },
     { status: 'AGENDADO', clientName: 'BRYAN BASTOS VERGARA', totalValue: '£150.00', creationDate: '31/10/2024', completion: '70%' },
     { status: 'PAGO', clientName: 'RICHARD DE OLIVEIRA VERGARA', totalValue: '£150.00', creationDate: '31/10/2024', completion: '100%' },
+    { status: 'PAGO', clientName: 'RICHARD DE OLIVEIRA VERGARA', totalValue: '£150.00', creationDate: '31/10/2024', completion: '100%' },
+    { status: 'PAGO', clientName: 'RICHARD DE OLIVEIRA VERGARA', totalValue: '£150.00', creationDate: '31/10/2024', completion: '100%' },
+    { status: 'PAGO', clientName: 'RICHARD DE OLIVEIRA VERGARA', totalValue: '£150.00', creationDate: '31/10/2024', completion: '100%' },
+    { status: 'PAGO', clientName: 'RICHARD DE OLIVEIRA VERGARA', totalValue: '£150.00', creationDate: '31/10/2024', completion: '100%' },
+    { status: 'PAGO', clientName: 'JENNIFER DE OLIVEIRA VERGARA', totalValue: '£150.00', creationDate: '31/10/2024', completion: '100%' },
     // Adicione mais ordens conforme necessário
   ];
 
@@ -43,5 +48,18 @@ export class ListarComponent implements OnInit {
   handleButtonClick(event: MouseEvent) {
     event.stopPropagation(); // Impede a propagação do evento de clique
     // Adicione a lógica que você deseja executar ao clicar no botão
+  }
+
+  recordsToShow = 5;  // Número de registros a serem exibidos
+  searchQuery = '';   // Para buscar pelo nome do cliente
+
+  get filteredOrders() {
+    return this.orders.filter(order =>
+      order.clientName.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
+  }
+
+  setRecords(records: number) {
+    this.recordsToShow = records;
   }
 }
