@@ -128,24 +128,29 @@
                     <label for="observacao">Forma de Pagamento</label>
                     <select class="form-control border-style" id="pagamentoSelect" (change)="onPagamentoChange($event.target.value)">
                       <option value="Pagamento à Vista">Pagamento à Vista</option>
-                      <option value="Pagamento Parcelado">Pagamento Parcelado</option>
+                      <option value="Pagamento Parcelado">Pagamento Parcelado - 10 vezes</option>
                     </select>
                   </div>
-                  <div class="parcelas-container col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
+                  <!--<div class="parcelas-container col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
                     <label for="observacao">Quantidade de Parcelas</label>
                     <input type="number" class="form-control border-style" placeholder="Quantidade de Parcelas" [(ngModel)]="quantidadeParcelas">
-                  </div>
+                  </div>-->
                   <div class="col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
                     <label for="observacao">Perido entre Pagamentos</label>
-                    <select class="form-control border-style" id="pagamentoPeriodoSelect">
+                    <select class="form-control border-style" id="pagamentoPeriodoSelect" disabled>
                       <option value="Pagamento à Vista">Pagamento Semanal</option>
-                      <option value="Pagamento Parcelado">Pagamento Mensal</option>
                     </select>
                   </div>
                   <div class="col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
-                    <label for="observacao">Valor de Entrada</label>
-                    <input type="text" class="form-control border-style" placeholder="Valor Entrada" [(ngModel)]="valorEntrada" (input)="onValorEntradaChange()">
+                    <label for="observacao">Valor das Parcelas</label>
+                    <select class="form-control border-style" id="valorParcelasSelect">
+                      <option value="Pagamento à Vista">£200.00 - 21/11/2024 - [PAGO]</option>
+                      <option value="Pagamento Parcelado">£200.00 - 04/12/2024 - [AGENDADO]</option>
+                      <option value="Pagamento Parcelado">£200.00 - 04/12/2024 - [AGENDADO]</option>
+                    </select>  
                   </div>
+        
+                  
                 </div>
 
                 
@@ -155,7 +160,6 @@
           </div>
         </div>
       </div>
-
       <!-- Footer do modal -->
       <div class="modal-footer">
         <div class="form-row align-items-end mt-0 d-flex justify-content-start">
@@ -166,6 +170,25 @@
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase mb-0" style="color: white; font-style: bold;">VALOR TOTAL</h5>
+                      <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ totalValue }}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-secondary rounded-circle shadow">
+                        <i class="fa fa-calculator "></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div style="width: 14rem;">
+              <div class="card card-stats bg-primary mb-0 mb-lg-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase mb-0" style="color: white; font-style: bold;">ENTRADA</h5>
                       <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ totalValue }}</span>
                     </div>
                     <div class="col-auto">
@@ -200,12 +223,22 @@
             </div>
           </div>
         </div>
-
         <!-- Alinha os botões no canto direito -->
-        <div class="ml-auto d-flex">
-          <button type="button" class="btn btn-success">Salvar</button>
-          <button type="button" class="btn btn-danger">Excluir</button>
-          <button type="button" class="btn btn-secondary ml-2" (click)="closeModal()">Fechar</button>
+        <div class="ml-auto d-flex flex-column align-items-end">
+          <!-- Linha com a label e o botão de copiar ao lado -->
+          <div class="d-flex align-items-center mb-2">
+            <label class="text-sm mb-0" for="observacao">Último pagamento feito 10/11/2024</label>
+            <button class="btn btn-icon btn-danger btn-sm ml-2" type="button">
+              <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
+            </button>
+          </div>
+      
+          <!-- Botões -->
+          <div class="d-flex">
+            <button type="button" class="btn btn-success">Salvar</button>
+            <button type="button" class="btn btn-danger">Excluir</button>
+            <button type="button" class="btn btn-secondary ml-2" (click)="closeModal()">Fechar</button>
+          </div>
         </div>
       </div>
     </div>
