@@ -22,4 +22,10 @@ table tbody tr:hover {
     background-color: #f7f7f7; /* Cor de fundo quando o mouse passa */
     cursor: pointer; /* Cursor em forma de ponteiro */
   }
+
+  table tbody tr:hover td.table-dark, 
+  table tbody tr:hover th.table-dark {
+    background-color: #1c335b;
+    cursor: pointer;
+}
   
