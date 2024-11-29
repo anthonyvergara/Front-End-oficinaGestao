@@ -2,3 +2,24 @@
 .badge-agendado{
     background-color: #ffc107;
 }
+
+th {
+    position: relative;
+  }
+  
+th i {
+position: absolute;
+right: 10px;
+top: 50%;
+transform: translateY(-50%);
+cursor: pointer;
+font-size: 0.8rem;
+color: #888;
+}
+
+  /* Estilo para a linha da tabela quando o mouse passar por cima */
+table tbody tr:hover {
+    background-color: #f7f7f7; /* Cor de fundo quando o mouse passa */
+    cursor: pointer; /* Cursor em forma de ponteiro */
+  }
+  

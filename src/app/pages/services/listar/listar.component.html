@@ -120,7 +120,7 @@
                 </span>
               </div>
             </div>
-           </div>
+          </div>
         </div>
 
         <!-- Tabela de registros -->
@@ -128,17 +128,32 @@
           <table class="table align-items-center table-flush">
             <thead class="thead-light">
               <tr>
-                <th scope="col"><h4>STATUS</h4></th>
-                <th scope="col"><h4>NOME DO CLIENTE</h4></th>
-                <th scope="col"><h4>VALOR TOTAL</h4></th>
-                <th scope="col"><h4>DATA DE CRIAÇÃO</h4></th>
-                <th scope="col"><h4>CONCLUSÃO</h4></th>
+                <th scope="col">
+                  <h4>Status</h4>
+                  <i class="fas fa-sort" (click)="sortTable('status')"></i>
+                </th>
+                <th scope="col">
+                  <h4>Nome do Cliente</h4>
+                  <i class="fas fa-sort" (click)="sortTable('clientName')"></i>
+                </th>
+                <th scope="col">
+                  <h4>Valor Total</h4>
+                  <i class="fas fa-sort" (click)="sortTable('totalValue')"></i>
+                </th>
+                <th scope="col">
+                  <h4>Data de Criação</h4>
+                  <i class="fas fa-sort" (click)="sortTable('creationDate')"></i>
+                </th>
+                <th scope="col">
+                  <h4>Conclusão</h4>
+                  <i class="fas fa-sort" (click)="sortTable('completion')"></i>
+                </th>
                 <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
               <!-- Exibição dos registros filtrados e controlados pelo número de itens -->
-              <tr *ngFor="let order of filteredOrders | slice: 0:recordsToShow; let i = index" (click)="openModal(order.status, order.clientName, order.totalValue, order.creationDate)">
+              <tr @fadeIn *ngFor="let order of filteredOrders | slice: 0:recordsToShow; let i = index" (click)="openModal(order.status, order.clientName, order.totalValue, order.creationDate)">
                 <th scope="row" [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
                   <div class="media align-items-center">
                     <a href="javascript:void(0)" class="avatar rounded-circle mr-3">
@@ -191,6 +206,7 @@
           </table>
 
           <app-modal 
+          
               *ngIf="isModalOpen" 
               [status]="modalData.status" 
               [clientName]="modalData.clientName" 

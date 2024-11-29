@@ -1,9 +1,21 @@
 import { Component, OnInit } from '@angular/core';
+import { trigger, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-listar',
   templateUrl: './listar.component.html',
-  styleUrls: ['./listar.component.scss']
+  styleUrls: ['./listar.component.scss'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate('2000ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ]),
+      transition(':leave', [
+        animate('500ms ease-in', style({ opacity: 0, transform: 'translateY(-10px)' }))
+      ])
+    ])
+  ]
 })
 export class ListarComponent implements OnInit {
 
@@ -62,4 +74,25 @@ export class ListarComponent implements OnInit {
   setRecords(records: number) {
     this.recordsToShow = records;
   }
+
+  sortDirection: { [key: string]: 'asc' | 'desc' } = {};  // Para controlar a direção da ordenação
+  sortColumn: string = '';  // Para armazenar a coluna que está sendo ordenada
+
+  // Função para alternar a direção da ordenação e ordenar os dados
+  sortTable(column: string) {
+    const direction = this.sortDirection[column] === 'asc' ? 'desc' : 'asc';
+    this.sortDirection[column] = direction;
+    this.sortColumn = column;
+
+    this.orders = this.orders.sort((a, b) => {
+      if (a[column] < b[column]) {
+        return direction === 'asc' ? -1 : 1;
+      }
+      if (a[column] > b[column]) {
+        return direction === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+  }
+
 }
