@@ -65,6 +65,8 @@ export class CriarComponent implements OnInit{
     this.dataAtualBR = `${dia}/${mes}/${ano}`;
 
     this.atualizarValorTotalGeral();
+    this.incluirMoto();
+    this.incluirRegistro(0);
   }
 
   atualizarValorTotalGeral() {
