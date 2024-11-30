@@ -45,6 +45,8 @@ export class ListarComponent implements OnInit {
     //console.log('Modal aberto com:', { status, clientName, totalValue, creationDate });
     this.isModalOpen = true;
 
+    document.getElementById('modal-overlay')?.classList.add('show');
+
     this.modalData = {
       status,
       clientName,
@@ -55,6 +57,7 @@ export class ListarComponent implements OnInit {
 
   closeModal() {
     this.isModalOpen = false;
+    document.getElementById('modal-overlay')?.classList.remove('show');
   }
 
   handleButtonClick(event: MouseEvent) {

@@ -27,6 +27,7 @@ export class ModalComponent {
 
   closeModal() {
     this.close.emit(); // Emite o evento para o componente pai
+    //document.getElementById('modal-overlay')?.classList.remove('show');
   }
 
   onBackgroundClick(event: MouseEvent) {
