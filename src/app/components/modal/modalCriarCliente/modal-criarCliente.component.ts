@@ -2,9 +2,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 
 @Component({
-  selector: 'modal-listarOrdemServico',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss'],
+  selector: 'modal-criarCliente',
+  templateUrl: './modal-criarCliente.component.html',
+  styleUrls: ['./modal-criarCliente.component.scss'],
   animations: [
     trigger('fadeIn', [
       transition(':enter', [
@@ -17,7 +17,7 @@ import { trigger, style, transition, animate } from '@angular/animations';
     ])
   ]
 })
-export class ModalComponent {
+export class ModalCriarClienteComponent {
   @Input() status: string | undefined;
   @Input() clientName: string | undefined;
   @Input() totalValue: string | undefined;
@@ -43,8 +43,8 @@ export class ModalComponent {
   dataAtualBR: string = new Date().toLocaleDateString('pt-BR'); // Data atual no formato BR
   observacao: string = '';
   totalValue2: number = 0;
-  nInvoice: number = 123123;
-  vat : number = 333;
+  nInvoice: number = 4444;
+  vat : number = null;
   valorTotalGeral : number = 0;
   dataUltimoPagamento: any = "14/09/2024";
 

@@ -14,6 +14,7 @@ import { UserProfileComponent } from '../../pages/user-profile/user-profile.comp
 import { ListarComponent } from '../../pages/services/listar/listar.component';
 import { CriarComponent } from '../../pages/services/criar/criar.component';
 import { ModalComponent } from 'src/app/components/modal/modalListarOS/modal.component';
+import { ModalCriarClienteComponent } from 'src/app/components/modal/modalCriarCliente/modal-criarCliente.component';
 
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -39,7 +40,8 @@ import { CurrencyFormatDirective } from '../../pages/maps/currency-input.directi
     CurrencyFormatDirective,
     ListarComponent,
     CriarComponent,
-    ModalComponent
+    ModalComponent,
+    ModalCriarClienteComponent
   ],
   exports: [
     MapsComponent // Exportar para que possa ser usado em outros módulos

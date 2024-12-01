@@ -205,15 +205,14 @@
             </tbody>
           </table>
           <div id="modal-overlay" class="modal-overlay"></div>
-          <app-modal 
-          
+          <modal-listarOrdemServico
               *ngIf="isModalOpen" 
               [status]="modalData.status" 
               [clientName]="modalData.clientName" 
               [totalValue]="modalData.totalValue" 
               [creationDate]="modalData.creationDate" 
               (close)="closeModal()">
-          </app-modal>
+          </modal-listarOrdemServico>
 
         </div>
 

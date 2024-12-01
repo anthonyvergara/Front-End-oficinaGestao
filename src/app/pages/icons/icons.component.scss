@@ -1,0 +1,53 @@
+/* Estilo do componente listar */
+.badge-agendado{
+    background-color: #ffc107;
+}
+
+th {
+    position: relative;
+  }
+  
+th i {
+position: absolute;
+right: 10px;
+top: 50%;
+transform: translateY(-50%);
+cursor: pointer;
+font-size: 0.8rem;
+color: #888;
+}
+
+  /* Estilo para a linha da tabela quando o mouse passar por cima */
+table tbody tr:hover {
+    background-color: #f7f7f7; /* Cor de fundo quando o mouse passa */
+    cursor: pointer; /* Cursor em forma de ponteiro */
+  }
+
+  table tbody tr:hover td.table-blue, 
+  table tbody tr:hover th.table-blue {
+    background-color: #3fb3e4;
+    cursor: pointer;
+}
+
+/* Estilo para o fundo desfocado */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+  backdrop-filter: blur(5px); /* Aplica o desfoque */
+  z-index: 1040; /* Garante que o overlay fique atrás do modal */
+  display: none; /* Inicialmente escondido */
+}
+
+/* Quando o modal estiver aberto, a classe "show" será adicionada ao overlay */
+.modal-overlay.show {
+  display: block;
+}
+
+.table-blue{
+    background-color: #1da0d7;
+    color: white;
+}
