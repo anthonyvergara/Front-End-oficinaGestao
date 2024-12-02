@@ -4,6 +4,7 @@
   <!-- Top navbar -->
   <app-navbar></app-navbar>
   <!-- Pages -->
+  <app-headerbar *ngIf="shouldShowHeaderbar"></app-headerbar>
   <router-outlet></router-outlet>
   <div class="container-fluid">
     <app-footer></app-footer>
