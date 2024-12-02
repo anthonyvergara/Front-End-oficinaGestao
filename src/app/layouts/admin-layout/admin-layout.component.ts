@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -11,6 +11,9 @@ export class AdminLayoutComponent implements OnInit {
 
   shouldShowHeaderbar = true;
 
+  c// Lista de rotas onde o header não será mostrado
+  private routesToHideHeaderbar = ['/user-profile', '/criar'];
+
   constructor(private router: Router) {
     // Observando as mudanças de rota
     this.router.events.pipe(
@@ -18,7 +21,8 @@ export class AdminLayoutComponent implements OnInit {
     ).subscribe(() => {
       // Verifica a URL da rota atual
       const currentRoute = this.router.url;
-      this.shouldShowHeaderbar = !currentRoute.includes('/user-profile'); // Esconde o headerbar na página de clientes
+      // Verifica se a URL atual está em alguma das rotas onde o header deve ser ocultado
+      this.shouldShowHeaderbar = !this.routesToHideHeaderbar.some(route => currentRoute.includes(route));
     });
   }
 
