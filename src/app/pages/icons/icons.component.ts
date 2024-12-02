@@ -57,17 +57,12 @@ export class IconsComponent implements OnInit {
     // Adicione a lógica que você deseja executar ao clicar no botão
   }
 
-  recordsToShow = 5;  // Número de registros a serem exibidos
   searchQuery = '';   // Para buscar pelo nome do cliente
 
   get filteredOrders() {
     return this.orders.filter(order =>
       order.clientName.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
-  }
-
-  setRecords(records: number) {
-    this.recordsToShow = records;
   }
 
   sortDirection: { [key: string]: 'asc' | 'desc' } = {};  // Para controlar a direção da ordenação

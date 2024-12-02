@@ -58,7 +58,7 @@
           </thead>
           <tbody>
             <!-- Exibição dos registros filtrados e controlados pelo número de itens -->
-            <tr @fadeIn *ngFor="let order of filteredOrders | slice: 0:recordsToShow; let i = index">
+            <tr @fadeIn *ngFor="let order of filteredOrders; let i = index">
               <th scope="row" [ngClass]="i % 2 === 0 ? '' : 'table-blue'">
                 <div class="media align-items-center">
                   <div class="media-body">
