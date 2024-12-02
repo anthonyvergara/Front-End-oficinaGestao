@@ -14,9 +14,7 @@ export class OrdemservicoService {
 
   // Método para obter a lista de clientes
   getOrdemServicoByIdCliente(clienteId : string): Observable<OrdemServico[]> {
-    clienteId = "1502";
     const url = `${this.apiUrl}${clienteId}`;
-    console.log(url);
     return this.http.get<OrdemServico[]>(url);
   }
 }

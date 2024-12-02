@@ -29,7 +29,7 @@ export class IconsComponent implements OnInit {
   searchQuery = '';   // Para buscar pelo nome do cliente
   sortDirection: { [key: string]: 'asc' | 'desc' } = {};  // Para controlar a direção da ordenação
   sortColumn: string = '';  // Para armazenar a coluna que está sendo ordenada
-  saldoDevedor: number = 0;
+  saldosDevedores: { [key: string]: number } = {};
 
   constructor(private clientesService: ClientesService, private ordemServicoService : OrdemservicoService) { }
 
@@ -49,14 +49,11 @@ export class IconsComponent implements OnInit {
     document.getElementById('modal-overlay')?.classList.remove('show');
   }
 
-  loadOrdemServico(): void {
-    if (this.orders.length > 0) {
-      let clienteId: string = this.orders[0].id.toString();  // Pegando o primeiro cliente apenas como exemplo
-      console.log(clienteId);
+  loadOrdemServico(clienteId: string): void {
+    if (clienteId) {
       this.ordemServicoService.getOrdemServicoByIdCliente(clienteId).subscribe(
         (ordens) => {
-          this.ordemServicos = ordens;
-          this.calculateTotalSaldoDevedor();
+          this.calculateSaldoDevedorPorCliente(clienteId, ordens);
         },
         (error) => {
           console.error('Erro ao carregar ordens de serviço:', error);
@@ -65,17 +62,16 @@ export class IconsComponent implements OnInit {
     }
   }
   
-  // Método para calcular o saldo devedor total do cliente
-  calculateTotalSaldoDevedor(): void {
+  // Método para calcular o saldo devedor de um cliente específico
+  calculateSaldoDevedorPorCliente(clienteId: string, ordens: OrdemServico[]): void {
     let totalSaldoDevedor = 0;
-    this.ordemServicos.forEach(ordem => {
+    ordens.forEach(ordem => {
       if (ordem.statusOrdemServico && ordem.statusOrdemServico.saldoDevedor) {
         totalSaldoDevedor += ordem.statusOrdemServico.saldoDevedor;
       }
     });
-    console.log('Saldo Devedor Total:', totalSaldoDevedor);
-    this.saldoDevedor = totalSaldoDevedor;
-    // Agora você pode utilizar o totalSaldoDevedor como necessário no seu template
+
+    this.saldosDevedores[clienteId] = totalSaldoDevedor;
   }
   
 
@@ -83,12 +79,20 @@ export class IconsComponent implements OnInit {
     this.clientesService.getClientes().subscribe(
       (clientes) => {
         this.orders = clientes;
-        this.loadOrdemServico();
+        // Para cada cliente, carrega as ordens de serviço e calcula o saldo devedor
+        this.orders.forEach(cliente => {
+          this.loadOrdemServico(cliente.id.toString()); // Passa o clienteId como string
+        });
       },
       (error) => {
         console.error('Erro ao carregar clientes:', error);
       }
     );
+  }
+
+  // Função para exibir o saldo devedor de cada cliente
+  getSaldoDevedor(clienteId: string): number {
+    return this.saldosDevedores[clienteId] || 0;
   }
 
   handleButtonClick(event: MouseEvent) {
