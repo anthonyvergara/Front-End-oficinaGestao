@@ -73,7 +73,7 @@
               </td>
               <td [ngClass]="i % 2 === 0 ? '' : 'table-blue'">
                 <span class="badge badge-dot mr-4">
-                  <i [ngClass]="order.status == 'ATRASADO' ? 'bg-danger' : order.status == 'PAGO' ? 'bg-success' : 'badge-agendado'"></i> {{ order.totalValue }}
+                  <i [ngClass]="order.status == 'ATRASADO' ? 'bg-danger' : order.status == 'PAGO' ? 'bg-success' : 'badge-agendado'"></i> {{ saldoDevedor || 0 }}
                 </span>
               </td>
               <td [ngClass]="i % 2 === 0 ? '' : 'table-blue'">

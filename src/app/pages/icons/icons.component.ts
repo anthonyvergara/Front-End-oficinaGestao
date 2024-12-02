@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { ClientesService } from '../../service/clientes/clientes.service';
 import { Cliente } from '../../service/models/cliente.model';  // Importando a interface Cliente
+import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
+import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 
 @Component({
   selector: 'app-icons',
@@ -22,12 +24,14 @@ import { Cliente } from '../../service/models/cliente.model';  // Importando a i
 export class IconsComponent implements OnInit {
 
   isModalOpen = false;
+  ordemServicos: OrdemServico[] = [];
   orders: Cliente[] = [];  // Usando a interface Cliente
   searchQuery = '';   // Para buscar pelo nome do cliente
   sortDirection: { [key: string]: 'asc' | 'desc' } = {};  // Para controlar a direção da ordenação
   sortColumn: string = '';  // Para armazenar a coluna que está sendo ordenada
+  saldoDevedor: number = 0;
 
-  constructor(private clientesService: ClientesService) { }
+  constructor(private clientesService: ClientesService, private ordemServicoService : OrdemservicoService) { }
 
   ngOnInit() {
     this.loadClientes();  // Carregar os dados da API
@@ -45,10 +49,41 @@ export class IconsComponent implements OnInit {
     document.getElementById('modal-overlay')?.classList.remove('show');
   }
 
+  loadOrdemServico(): void {
+    if (this.orders.length > 0) {
+      let clienteId: string = this.orders[0].id.toString();  // Pegando o primeiro cliente apenas como exemplo
+      console.log(clienteId);
+      this.ordemServicoService.getOrdemServicoByIdCliente(clienteId).subscribe(
+        (ordens) => {
+          this.ordemServicos = ordens;
+          this.calculateTotalSaldoDevedor();
+        },
+        (error) => {
+          console.error('Erro ao carregar ordens de serviço:', error);
+        }
+      );
+    }
+  }
+  
+  // Método para calcular o saldo devedor total do cliente
+  calculateTotalSaldoDevedor(): void {
+    let totalSaldoDevedor = 0;
+    this.ordemServicos.forEach(ordem => {
+      if (ordem.statusOrdemServico && ordem.statusOrdemServico.saldoDevedor) {
+        totalSaldoDevedor += ordem.statusOrdemServico.saldoDevedor;
+      }
+    });
+    console.log('Saldo Devedor Total:', totalSaldoDevedor);
+    this.saldoDevedor = totalSaldoDevedor;
+    // Agora você pode utilizar o totalSaldoDevedor como necessário no seu template
+  }
+  
+
   loadClientes(): void {
     this.clientesService.getClientes().subscribe(
       (clientes) => {
         this.orders = clientes;
+        this.loadOrdemServico();
       },
       (error) => {
         console.error('Erro ao carregar clientes:', error);
