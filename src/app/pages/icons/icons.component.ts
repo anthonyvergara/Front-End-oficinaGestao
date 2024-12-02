@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
+import { ClientesService } from '../../service/clientes/clientes.service';
+import { Cliente } from '../../service/models/cliente.model';  // Importando a interface Cliente
 
 @Component({
   selector: 'app-icons',
@@ -20,24 +22,15 @@ import { trigger, style, transition, animate } from '@angular/animations';
 export class IconsComponent implements OnInit {
 
   isModalOpen = false;
+  orders: Cliente[] = [];  // Usando a interface Cliente
+  searchQuery = '';   // Para buscar pelo nome do cliente
+  sortDirection: { [key: string]: 'asc' | 'desc' } = {};  // Para controlar a direção da ordenação
+  sortColumn: string = '';  // Para armazenar a coluna que está sendo ordenada
 
-  constructor() { }
-
-  orders = [
-    { status: 'ATRASADO', clientName: 'ANTHONY DE OLIVEIRA VERGARA', totalValue: '£200.00', creationDate: 'teste@gmail.com', completion: '07858312007' },
-    { status: 'AGENDADO', clientName: 'RICHARD DE OLIVEIRA VERGARA', totalValue: '£150.00', creationDate: 'anthonyvergara@gmail.com', completion: '07858312007' },
-    { status: 'PAGO', clientName: 'MICHAEL DE OLIVEIRA VERGARA', totalValue: '£0.00', creationDate: 'michael@gmail.com', completion: '07858312007' },
-    { status: 'AGENDADO', clientName: 'BRYAN BASTOS VERGARA', totalValue: '£150.00', creationDate: 'emailbonitoegrande@gmail.com', completion: '07858312007' },
-    { status: 'PAGO', clientName: 'RICHARD DE OLIVEIRA VERGARA', totalValue: '£0.00', creationDate: 'teste@gmail.com', completion: '07858312007' },
-    { status: 'PAGO', clientName: 'RICHARD DE OLIVEIRA VERGARA', totalValue: '£0.00', creationDate: 'teste@gmail.com', completion: '07858312007' },
-    { status: 'PAGO', clientName: 'RICHARD DE OLIVEIRA VERGARA', totalValue: '£0.00', creationDate: 'teste@gmail.com', completion: '07858312007' },
-    { status: 'PAGO', clientName: 'RICHARD DE OLIVEIRA VERGARA', totalValue: '£0.00', creationDate: 'teste@gmail.com', completion: '07858312007' },
-    { status: 'PAGO', clientName: 'RICHARD DE OLIVEIRA VERGARA', totalValue: '£0.00', creationDate: 'teste@gmail.com', completion: '07858312007' },
-    { status: 'PAGO', clientName: 'JENNIFER DE OLIVEIRA VERGARA', totalValue: '£0.00', creationDate: 'teste@gmail.com', completion: '07858312007' },
-    // Adicione mais ordens conforme necessário
-  ];
+  constructor(private clientesService: ClientesService) { }
 
   ngOnInit() {
+    this.loadClientes();  // Carregar os dados da API
   }
 
   openModal() {
@@ -52,36 +45,58 @@ export class IconsComponent implements OnInit {
     document.getElementById('modal-overlay')?.classList.remove('show');
   }
 
+  loadClientes(): void {
+    this.clientesService.getClientes().subscribe(
+      (clientes) => {
+        this.orders = clientes;
+      },
+      (error) => {
+        console.error('Erro ao carregar clientes:', error);
+      }
+    );
+  }
+
   handleButtonClick(event: MouseEvent) {
     event.stopPropagation(); // Impede a propagação do evento de clique
     // Adicione a lógica que você deseja executar ao clicar no botão
   }
 
-  searchQuery = '';   // Para buscar pelo nome do cliente
-
   get filteredOrders() {
     return this.orders.filter(order =>
-      order.clientName.toLowerCase().includes(this.searchQuery.toLowerCase())
+      order.nome.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
   }
 
-  sortDirection: { [key: string]: 'asc' | 'desc' } = {};  // Para controlar a direção da ordenação
-  sortColumn: string = '';  // Para armazenar a coluna que está sendo ordenada
-
   // Função para alternar a direção da ordenação e ordenar os dados
   sortTable(column: string) {
+    // Alterna a direção da ordenação (asc/desc)
     const direction = this.sortDirection[column] === 'asc' ? 'desc' : 'asc';
     this.sortDirection[column] = direction;
     this.sortColumn = column;
-
+  
+    // Ordenação personalizada
     this.orders = this.orders.sort((a, b) => {
-      if (a[column] < b[column]) {
-        return direction === 'asc' ? -1 : 1;
+      let aValue = a[column];
+      let bValue = b[column];
+  
+      // Se a propriedade for 'telefone', pegamos o primeiro número do array
+      if (column === 'telefone' && aValue && bValue) {
+        aValue = aValue[0].numero;  // Acessa o primeiro telefone
+        bValue = bValue[0].numero;
       }
-      if (a[column] > b[column]) {
-        return direction === 'asc' ? 1 : -1;
+  
+      // Comparação de strings e números
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        // Convertendo os valores para minúsculas para ignorar maiúsculas/minúsculas
+        return direction === 'asc' ? aValue.toLowerCase().localeCompare(bValue.toLowerCase()) : bValue.toLowerCase().localeCompare(aValue.toLowerCase());
+      } else if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return direction === 'asc' ? aValue - bValue : bValue - aValue;
       }
+  
+      // Caso o valor seja de outro tipo ou a comparação não tenha sido feita, mantemos 0 (sem mudança de posição)
       return 0;
     });
   }
+  
+  
 }

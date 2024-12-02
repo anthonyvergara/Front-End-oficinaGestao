@@ -39,7 +39,7 @@
               </th>
               <th scope="col">
                 <h4>Nome do Cliente</h4>
-                <i class="fas fa-sort" (click)="sortTable('clientName')"></i>
+                <i class="fas fa-sort" (click)="sortTable('nome')"></i>
               </th>
               <th scope="col">
                 <h4>Saldo Devedor</h4>
@@ -47,11 +47,11 @@
               </th>
               <th scope="col">
                 <h4>E-mail</h4>
-                <i class="fas fa-sort" (click)="sortTable('creationDate')"></i>
+                <i class="fas fa-sort" (click)="sortTable('email')"></i>
               </th>
               <th scope="col">
                 <h4>Telefone</h4>
-                <i class="fas fa-sort" (click)="sortTable('completion')"></i>
+                <i class="fas fa-sort" (click)="sortTable('telefone')"></i>
               </th>
               <th scope="col"></th>
             </tr>
@@ -69,7 +69,7 @@
                 </div>
               </th>
               <td [ngClass]="i % 2 === 0 ? '' : 'table-blue'">
-                {{ order.clientName }}
+                {{order.nome | uppercase}} {{order.sobrenome | uppercase}}
               </td>
               <td [ngClass]="i % 2 === 0 ? '' : 'table-blue'">
                 <span class="badge badge-dot mr-4">
@@ -78,12 +78,12 @@
               </td>
               <td [ngClass]="i % 2 === 0 ? '' : 'table-blue'">
                 <div class="avatar-group">
-                  {{ order.creationDate }}
+                  {{ order.email }}
                 </div>
               </td>
               <td [ngClass]="i % 2 === 0 ? '' : 'table-blue'">
                 <div class="d-flex align-items-center">
-                  <span class="mr-2">{{ order.completion }}</span>
+                  <span class="mr-2">{{ order.telefone[0]?.ddd }}{{ order.telefone[0]?.numero }}</span>
                 </div>
               </td>
               <td class="text-right" [ngClass]="i % 2 === 0 ? '' : 'table-blue'" (click)="handleButtonClick($event)">
@@ -103,10 +103,6 @@
         <div id="modal-overlay" class="modal-overlay"></div>
         <modal-criarCliente
             *ngIf="isModalOpen" 
-            [status]="modalData.status" 
-            [clientName]="modalData.clientName" 
-            [totalValue]="modalData.totalValue" 
-            [creationDate]="modalData.creationDate" 
             (close)="closeModal()">
         </modal-criarCliente>
 
