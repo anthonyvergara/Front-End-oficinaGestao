@@ -16,6 +16,8 @@ import { CriarComponent } from '../../pages/services/criar/criar.component';
 import { ModalComponent } from 'src/app/components/modal/modalListarOS/modal.component';
 import { ModalCriarClienteComponent } from 'src/app/components/modal/modalCriarCliente/modal-criarCliente.component';
 
+import { CriarOrdemComponent } from 'src/app/components/criar-ordem/criar-ordem.component';
+
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CurrencyFormatDirective } from '../../pages/maps/currency-input.directive';
@@ -41,7 +43,8 @@ import { CurrencyFormatDirective } from '../../pages/maps/currency-input.directi
     ListarComponent,
     CriarComponent,
     ModalComponent,
-    ModalCriarClienteComponent
+    ModalCriarClienteComponent,
+    CriarOrdemComponent
   ],
   exports: [
     MapsComponent // Exportar para que possa ser usado em outros módulos
