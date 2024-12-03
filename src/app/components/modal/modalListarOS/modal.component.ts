@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 
 @Component({
-  selector: 'modal-listarOrdemServico',
+  selector: 'modal-listar-ordemServico',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
   animations: [

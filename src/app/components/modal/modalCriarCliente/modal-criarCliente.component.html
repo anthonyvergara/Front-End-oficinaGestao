@@ -1,6 +1,14 @@
 <!-- Modal - Cadastro Cliente -->
 <div class="modal fade show" tabindex="-1" role="dialog" style="display: block;" (click)="onBackgroundClick($event)" @fadeIn>
   <div class="modal-dialog modal-xl" role="document">
+    <div *ngIf="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert" @fadeIn>
+      <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
+      <span class="alert-inner--text"><strong> Sucesso!</strong> Cliente cadastrado com sucesso!</span>
+    </div>
+    <div *ngIf="showDangerAlert" class="alert alert-danger alert-dismissible fade show" role="alert" @fadeIn>
+      <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
+      <span class="alert-inner--text"><strong> Ops!</strong> Não foi possivel cadastrar o cliente!</span>
+    </div>
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h1>CADASTRO DE CLIENTE</h1>
@@ -28,7 +36,7 @@
 
           <!-- Coluna dos campos de formulário -->
           <div class="col-md-8">
-            <form #form="ngForm" (ngSubmit)="onSubmit()">
+            <form #form="ngForm" (ngSubmit)="onSubmit(form)">
               <div class="form-row">
                 <div class="col-md-8 mb-2">
                   <label>Nome do Cliente</label>

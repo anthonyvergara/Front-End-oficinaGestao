@@ -58,7 +58,7 @@
           </thead>
           <tbody>
             <!-- Exibição dos registros filtrados e controlados pelo número de itens -->
-            <tr @fadeIn *ngFor="let order of filteredOrders; let i = index">
+            <tr @fadeIn *ngFor="let order of filteredOrders; let i = index" (click)="openModalViewCliente(order.id, order.nome, order.email, order.telefone[0]?.numero)">
               <th scope="row" [ngClass]="i % 2 === 0 ? '' : 'table-blue'">
                 <div class="media align-items-center">
                   <div class="media-body">
@@ -101,10 +101,20 @@
           </tbody>
         </table>
         <div id="modal-overlay" class="modal-overlay"></div>
-        <modal-criarCliente
+        <modal-criar-cliente
             *ngIf="isModalOpen" 
             (close)="closeModal()">
-        </modal-criarCliente>
+        </modal-criar-cliente>
+
+        <modal-view-cliente 
+        *ngIf="isModalViewClienteOpen"
+        [id]="modalData.id"
+        [nome]="modalData.nome"
+        [email]="modalData.email"
+        [dataNascimento]="modalData.dataNascimento"
+        [telefone]="modalData.telefone"
+        (close)="closeModal()">
+        </modal-view-cliente>
 
       </div>
 

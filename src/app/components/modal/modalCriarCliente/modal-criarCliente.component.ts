@@ -5,7 +5,7 @@ import { Cliente } from '../../../service/models/cliente.model';
 import { NgForm } from '@angular/forms';
 
 @Component({
-  selector: 'modal-criarCliente',
+  selector: 'modal-criar-cliente',
   templateUrl: './modal-criarCliente.component.html',
   styleUrls: ['./modal-criarCliente.component.scss'],
   animations: [
@@ -23,6 +23,9 @@ import { NgForm } from '@angular/forms';
 export class ModalCriarClienteComponent {
 
   @Output() close = new EventEmitter<void>();
+
+  showSuccessAlert: boolean = false;
+  showDangerAlert: boolean = false;
 
   newCliente: Cliente = {
     id: 0,  // Este ID será gerado automaticamente pelo backend
@@ -54,25 +57,37 @@ export class ModalCriarClienteComponent {
 
   submitForm(form: NgForm) {
     if (form.valid) {
-      this.onSubmit(); // Chama o método onSubmit() para processar os dados
+      this.onSubmit(form); // Chama o método onSubmit() para processar os dados
     } else {
       console.log('Formulário inválido');
     }
   }
 
-  onSubmit() {
+  onSubmit(form: NgForm) {
     // Enviar os dados para o backend
     console.log('Enviando dados para o backend:', this.newCliente); // Verifique os dados
 
     this.clientesService.criarCliente(this.newCliente).subscribe(
       (response) => {
         console.log('Cliente criado com sucesso!', response);
-        this.closeModal(); // Fechar o modal após o envio
+        this.showSuccessAlert = true;
+        this.autoCloseAlert();
+        form.reset();
       },
       (error) => {
         console.error('Erro ao criar cliente:', error);
+        this.showDangerAlert = true;
+        this.autoCloseAlert();
       }
     );
+  }
+
+  // Função para fechar o alerta automaticamente após 5 segundos
+  autoCloseAlert() {
+    setTimeout(() => {
+      this.showSuccessAlert = false; // Fecha o alerta de sucesso
+      this.showDangerAlert = false; // Fecha o alerta de erro
+    }, 5000); // 5000 milissegundos = 5 segundos
   }
 
 }

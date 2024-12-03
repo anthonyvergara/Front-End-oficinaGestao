@@ -24,6 +24,7 @@ import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 export class IconsComponent implements OnInit {
 
   isModalOpen = false;
+  isModalViewClienteOpen = false;
   ordemServicos: OrdemServico[] = [];
   orders: Cliente[] = [];  // Usando a interface Cliente
   searchQuery = '';   // Para buscar pelo nome do cliente
@@ -31,10 +32,31 @@ export class IconsComponent implements OnInit {
   sortColumn: string = '';  // Para armazenar a coluna que está sendo ordenada
   saldosDevedores: { [key: string]: number } = {};
 
+  modalData: any;
+
   constructor(private clientesService: ClientesService, private ordemServicoService : OrdemservicoService) { }
 
   ngOnInit() {
     this.loadClientes();  // Carregar os dados da API
+  }
+
+  openModalViewCliente(id: number, nome: string, email: string, telefone: number){
+    this.isModalViewClienteOpen = true;
+
+    this.orders.forEach(clientes => {
+      if(email.toUpperCase == clientes.email.toUpperCase){
+        var dataNascimento: string = clientes.dataNascimento;
+        this.modalData = {
+          id,
+          nome,
+          dataNascimento,
+          email,
+          telefone
+        }
+      }
+    })
+    
+    document.getElementById('modal-overlay')?.classList.add('show');
   }
 
   openModal() {
@@ -46,6 +68,7 @@ export class IconsComponent implements OnInit {
 
   closeModal() {
     this.isModalOpen = false;
+    this.isModalViewClienteOpen = false;
     document.getElementById('modal-overlay')?.classList.remove('show');
   }
 

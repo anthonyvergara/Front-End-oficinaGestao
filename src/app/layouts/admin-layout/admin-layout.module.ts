@@ -15,6 +15,7 @@ import { ListarComponent } from '../../pages/services/listar/listar.component';
 import { CriarComponent } from '../../pages/services/criar/criar.component';
 import { ModalComponent } from 'src/app/components/modal/modalListarOS/modal.component';
 import { ModalCriarClienteComponent } from 'src/app/components/modal/modalCriarCliente/modal-criarCliente.component';
+import { ModalViewClienteComponent } from 'src/app/components/modal/modalViewCliente/modal-view-cliente/modal-view-cliente.component';
 
 import { CriarOrdemComponent } from 'src/app/components/criar-ordem/criar-ordem.component';
 
@@ -44,7 +45,8 @@ import { CurrencyFormatDirective } from '../../pages/maps/currency-input.directi
     CriarComponent,
     ModalComponent,
     ModalCriarClienteComponent,
-    CriarOrdemComponent
+    CriarOrdemComponent,
+    ModalViewClienteComponent
   ],
   exports: [
     MapsComponent // Exportar para que possa ser usado em outros módulos
