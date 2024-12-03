@@ -78,7 +78,7 @@
               </td>
               <td [ngClass]="i % 2 === 0 ? '' : 'table-blue'">
                 <div class="avatar-group">
-                  {{ order.email }}
+                  {{ order.email | uppercase}}
                 </div>
               </td>
               <td [ngClass]="i % 2 === 0 ? '' : 'table-blue'">

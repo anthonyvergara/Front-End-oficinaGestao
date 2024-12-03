@@ -34,10 +34,10 @@ export class ModalCriarClienteComponent {
     numeroPassaporte: 0,
     numeroRg: 0,
     telefone: [
-      { id_telefone: 0, tipo: 'CELULAR', country: 'BR', ddd: 44, numero: 0 }
+      { id_telefone: 0, tipo: 'CELULAR', country: 'BR', ddd: 44, numero: null }
     ],
     endereco: [
-      { id_endereco: 0, rua: '', numero: 0, postcode: '', cidade: '' }
+      { id_endereco: 0, rua: '', numero: null, postcode: '', cidade: '' }
     ],
   };
 
