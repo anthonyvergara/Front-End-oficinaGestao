@@ -73,7 +73,7 @@
               </td>
               <td [ngClass]="i % 2 === 0 ? '' : 'table-blue'">
                 <span class="badge badge-dot mr-4">
-                  <i [ngClass]="order.status == 'ATRASADO' ? 'bg-danger' : order.status == 'PAGO' ? 'bg-success' : 'badge-agendado'"></i> {{ getSaldoDevedor(order.id.toString()) | currency:'GBP':'symbol':'1.2-2' }}
+                  <i [ngClass]="getSaldoDevedor(order.id.toString()) > 0 ? 'bg-danger' : 'bg-success'"></i> {{ getSaldoDevedor(order.id.toString()) | currency:'GBP':'symbol':'1.2-2' }}
                 </span>
               </td>
               <td [ngClass]="i % 2 === 0 ? '' : 'table-blue'">
@@ -113,6 +113,12 @@
         [email]="modalData.email"
         [dataNascimento]="modalData.dataNascimento"
         [telefone]="modalData.telefone"
+        [ddd]="modalData.ddd"
+        [rua]="modalData.rua"
+        [numero]="modalData.numero"
+        [cidade]="modalData.cidade"
+        [postcode]="modalData.postcode"
+        [saldoDevedor]="modalData.saldoDevedor"
         (close)="closeModal()">
         </modal-view-cliente>
 

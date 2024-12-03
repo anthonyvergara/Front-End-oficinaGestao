@@ -44,14 +44,32 @@ export class IconsComponent implements OnInit {
     this.isModalViewClienteOpen = true;
 
     this.orders.forEach(clientes => {
-      if(email.toUpperCase == clientes.email.toUpperCase){
-        var dataNascimento: string = clientes.dataNascimento;
+      if(email.toUpperCase() == clientes.email.toUpperCase()){
+        const telefone = clientes.telefone.length > 0 ? clientes.telefone[0].numero : null;
+        const ddd = clientes.telefone.length > 0 ? clientes.telefone[0].ddd : null;
+        const rua = clientes.endereco.length > 0 ? clientes.endereco[0].rua : null;
+        const numero = clientes.endereco.length > 0 ? clientes.endereco[0].numero : null;
+        const cidade = clientes.endereco.length > 0 ? clientes.endereco[0].cidade : null;
+        const postcode = clientes.endereco.length > 0 ? clientes.endereco[0].postcode : null;
+        var saldoDevedor: number = null;
+        Object.keys(this.saldosDevedores).forEach(clienteId => {
+          if(clienteId = clientes.id.toString()){
+            saldoDevedor = this.saldosDevedores[clienteId];
+          }
+        })
+
         this.modalData = {
           id,
           nome,
-          dataNascimento,
+          dataNascimento: clientes.dataNascimento,
           email,
-          telefone
+          telefone,
+          ddd,
+          rua,
+          numero,
+          cidade,
+          postcode,
+          saldoDevedor
         }
       }
     })
