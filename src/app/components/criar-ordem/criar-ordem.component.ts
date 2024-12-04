@@ -2,6 +2,7 @@ import { Component, OnInit, QueryList, ViewChildren, ElementRef, ViewChild } fro
 import { trigger, style, transition, animate } from '@angular/animations';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-criar-ordem',
@@ -52,6 +53,9 @@ export class CriarOrdemComponent implements OnInit {
   parcelas: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // Opções de parcelamento de 1 a 10
 
   dataAtualBR: string = '';
+
+  showSuccessAlert: boolean = false;
+  showDangerAlert: boolean = false;
   
   constructor(private ordemServicoService: OrdemservicoService) { }
 
@@ -73,13 +77,14 @@ export class CriarOrdemComponent implements OnInit {
     this.dataAtualBR = `${dia}/${mes}/${ano}`;
 
     console.log(this.periodoPagamento);
+    this.autoCloseAlert();
 
     this.atualizarValorTotalGeral();
     this.incluirMoto();
     this.incluirRegistro(0);
   }
 
-  criarOrdemServico() {
+  criarOrdemServico() : OrdemServico {
     console.log(this.pagamentoTipo);
 
     const ordemServico: OrdemServico = {
@@ -114,20 +119,39 @@ export class CriarOrdemComponent implements OnInit {
     };
   
     console.log(ordemServico);
+
+    return ordemServico;
     
-    this.ordemServicoService.postOrdemServico(ordemServico).subscribe(
+  }
+
+  submitForm(form: NgForm) {
+    if (form.valid) {
+      this.onSubmit(form); // Chama o método onSubmit() para processar os dados
+    } else {
+      console.log('Formulário inválido');
+      this.showDangerAlert = true;
+      this.autoCloseAlert();
+    }
+  }
+
+  onSubmit(form: NgForm) {
+    // Enviar os dados para o backend
+    console.log('Enviando dados para o backend:'); // Verifique os dados
+
+    this.ordemServicoService.postOrdemServico(this.criarOrdemServico()).subscribe(
       response => {
         console.log('Ordem de serviço cadastrada com sucesso!', response);
-        // Faça o que for necessário após o sucesso (e.g., navegue para outra página)
+        this.showSuccessAlert = true;
+        this.autoCloseAlert();
+        form.reset();
       },
       error => {
         console.error('Erro ao cadastrar a ordem de serviço', error);
-        // Trate o erro conforme necessário
+        this.showDangerAlert = true;
+        this.autoCloseAlert();
       }
     );
   }
-  
-  
 
   atualizarValorTotalGeral() {
     this.valorTotalGeral = this.motos.reduce((total, moto) => total + this.calcularSoma(moto), 0);
@@ -260,4 +284,11 @@ export class CriarOrdemComponent implements OnInit {
     this.quantidadeParcelas = null; // Limpa a quantidade de parcelas se mudar para "À Vista"
   }
 
+  // Função para fechar o alerta automaticamente após 5 segundos
+  autoCloseAlert() {
+    setTimeout(() => {
+      this.showSuccessAlert = false; // Fecha o alerta de sucesso
+      this.showDangerAlert = false; // Fecha o alerta de erro
+    }, 5000); // 5000 milissegundos = 5 segundos
+  }
 }
