@@ -1,5 +1,7 @@
 import { Component, OnInit, QueryList, ViewChildren, ElementRef, ViewChild } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
+import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
+import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 
 @Component({
   selector: 'app-criar-ordem',
@@ -33,9 +35,9 @@ export class CriarOrdemComponent implements OnInit {
 
   motoCount: number = 0;
   motos: any[] = []; // Array para armazenar as motos
-  nInvoice: string = '';
+  nInvoice: number = null;
   nomeCliente: string = '';
-  vat: string = '';
+  vat: number = null;
   status: string = '';
   observacao: string = '';
   pagamentoTipo: string;
@@ -43,12 +45,15 @@ export class CriarOrdemComponent implements OnInit {
   dataPrimeiraParcela: string | null = null;
   valorTotalGeral: number = 0;
   valorEntrada: number = null;
-  valorFinal: number = null;
   ultimoPagamento: string = '';
+
+  periodoPagamento: string;
+
+  parcelas: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // Opções de parcelamento de 1 a 10
 
   dataAtualBR: string = '';
   
-  constructor() { }
+  constructor(private ordemServicoService: OrdemservicoService) { }
 
   ngOnInit() {
     const hoje = new Date();
@@ -58,16 +63,71 @@ export class CriarOrdemComponent implements OnInit {
     // Inicialize o pagamentoTipo
     this.pagamentoTipo = 'Pagamento à Vista';
 
+    this.periodoPagamento = 'SEMANAL';
+
     // Defina o valor do select programaticamente
     if (this.pagamentoSelect) {
         this.pagamentoSelect.nativeElement.value = this.pagamentoTipo;
     }
+
     this.dataAtualBR = `${dia}/${mes}/${ano}`;
+
+    console.log(this.periodoPagamento);
 
     this.atualizarValorTotalGeral();
     this.incluirMoto();
     this.incluirRegistro(0);
   }
+
+  criarOrdemServico() {
+    console.log(this.pagamentoTipo);
+
+    const ordemServico: OrdemServico = {
+      id: 0,
+      invoiceNumber: this.nInvoice,
+      vat: this.vat || 0,
+      dataInicio: null, //this.dataAtualBR,
+      valorTotal: this.valorTotalGeral,
+      tipoPagamento: this.periodoPagamento,
+      observacao: this.observacao,
+      quantidadeParcelas: this.quantidadeParcelas || 0, // Garantir que sempre tenha um valor
+      detalheServico: this.motos.flatMap(moto => {
+        return moto.registros.map(registro => ({
+          id: moto.id,               // Usando o ID da moto
+          placa: moto.placa,         // Placa da moto
+          descricao: registro.descricao || null, // Descrição do registro (pode ser null)
+          quantidade: registro.qtd || 1, // Quantidade (zero caso não esteja preenchido)
+          milhagem: registro.milhagem || null, // Milhagem do registro
+          data: null,    // Usando a data atual
+          valor: parseFloat(registro.preco.replace(/[^\d]/g, "")) / 100 || 0  // Preço do registro em formato monetário (dividido por 100)
+        }));
+      }),
+      pagamento: [
+        {
+          id: null,  // Id do pagamento (deve ser ajustado conforme sua lógica)
+          valorPago: this.pagamentoTipo == "Pagamento Parcelado" ? this.valorEntrada : this.valorTotalGeral,
+          dataPagamento: null //new Date().toISOString()
+        }
+      ],
+      statusOrdemServico: {},
+      parcela: [] // Crie as parcelas conforme a quantidade
+    };
+  
+    console.log(ordemServico);
+    
+    this.ordemServicoService.postOrdemServico(ordemServico).subscribe(
+      response => {
+        console.log('Ordem de serviço cadastrada com sucesso!', response);
+        // Faça o que for necessário após o sucesso (e.g., navegue para outra página)
+      },
+      error => {
+        console.error('Erro ao cadastrar a ordem de serviço', error);
+        // Trate o erro conforme necessário
+      }
+    );
+  }
+  
+  
 
   atualizarValorTotalGeral() {
     this.valorTotalGeral = this.motos.reduce((total, moto) => total + this.calcularSoma(moto), 0);
@@ -80,6 +140,14 @@ export class CriarOrdemComponent implements OnInit {
 
   onValorEntradaChange() {
     this.atualizarValorTotalGeral(); // Recalcula o total ao editar o preço
+  }
+
+  onQuantidadeParcelasChange() {
+    // Calcular o valor de cada parcela ao mudar a quantidade de parcelas
+    if (this.quantidadeParcelas) {
+      const valorParcela = (this.valorTotalGeral - this.valorEntrada) / this.quantidadeParcelas;
+      console.log(`Valor de cada parcela: £${valorParcela}`);
+    }
   }
 
   incluirMoto() {
@@ -173,8 +241,15 @@ export class CriarOrdemComponent implements OnInit {
     this.atualizarValorTotalGeral(); // Recalcula o total ao editar o preço
   }
 
+  onPeriodoPagamentoChange(value: string) {
+    this.periodoPagamento = value;
+    console.log('Periodo de Pagamento selecionado:', this.periodoPagamento);
+}
+
   onPagamentoChange(valor: string) {
     this.pagamentoTipo = valor;
+    this.periodoPagamento = 'SEMANAL';
+    console.log(this.periodoPagamento);
 
     // Lógica adicional se necessário
     if (valor === 'Pagamento Parcelado') {

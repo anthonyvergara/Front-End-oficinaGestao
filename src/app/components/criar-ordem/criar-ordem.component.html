@@ -13,13 +13,13 @@
                     </span>
                   </div>
                     
-                    <input type="text" class="form-control" placeholder="N.Invoice" [(ngModel)]="nInvoice">
+                    <input type="text" class="form-control" placeholder="N.Invoice" [(ngModel)]="nInvoice" name="nInvoice">
                 </div>
                 <div class="col col-6">
-                    <input type="text" class="form-control border-style" placeholder="Nome Cliente" [(ngModel)]="nomeCliente">
+                    <input type="text" class="form-control border-style" placeholder="Nome Cliente" [(ngModel)]="nomeCliente" name="nomeCliente">
                 </div>
                 <div class="col col-2">
-                    <input type="text" class="form-control border-style" placeholder="VAT" [(ngModel)]="vat">
+                    <input type="text" class="form-control border-style" placeholder="VAT" [(ngModel)]="vat" name="vat">
                 </div>
                 <!--
                 <div class="col">
@@ -139,14 +139,25 @@
                     </select>
                 </div>
                 <div class="parcelas-container col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
-                    <label for="observacao">Quantidade de Parcelas</label>
-                    <input type="number" class="form-control border-style" placeholder="Quantidade de Parcelas" [(ngModel)]="quantidadeParcelas">
+                  <label for="quantidadeParcelas">Quantidade de Parcelas</label>
+                  <select 
+                    class="form-control border-style" 
+                    id="quantidadeParcelas" 
+                    [(ngModel)]="quantidadeParcelas"
+                    *ngIf="pagamentoTipo === 'Pagamento Parcelado'" 
+                    (change)="onQuantidadeParcelasChange()">
+                    <option *ngFor="let parcela of parcelas; let i = index" [value]="i + 1">
+                      {{i + 1}} Parcelas - {{(this.valorTotalGeral - this.valorEntrada) / (i + 1) | currency:'GBP':'symbol':'1.2-2'}}
+                    </option>
+                  </select>
                 </div>
                 <div class="col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
                     <label for="observacao">Perido entre Pagamentos</label>
-                    <select class="form-control border-style" id="pagamentoPeriodoSelect">
-                        <option value="Pagamento à Vista">Pagamento Semanal</option>
-                        <option value="Pagamento Parcelado">Pagamento Mensal</option>
+                    <select class="form-control border-style" id="pagamentoPeriodoSelect" 
+                      [(ngModel)]="periodoPagamento" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" 
+                      (change)="onPeriodoPagamentoChange($event.target.value)">
+                      <option value="SEMANAL">Pagamento Semanal</option>
+                      <option value="MENSAL">Pagamento Mensal</option>
                     </select>
                 </div>
                 <div class="col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
@@ -204,7 +215,7 @@
             
               <!-- Botões Criar Ordem e Imprimir alinhados à direita -->
               <div class="col-auto ml-auto d-flex align-items-center">
-                <button class="btn btn-default" type="button">
+                <button class="btn btn-default" type="button" (click)="criarOrdemServico()">
                   <i class="ni ni-check-bold"></i>&nbsp;&nbsp;CRIAR ORDEM
                 </button>
                 <button class="btn btn-danger ml-2" type="button">
