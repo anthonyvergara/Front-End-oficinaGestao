@@ -60,7 +60,7 @@
             </thead>
             <tbody>
               <!-- Exibição dos registros filtrados e controlados pelo número de itens -->
-              <tr @fadeIn *ngFor="let order of filteredOrders | slice: 0:recordsToShow; let i = index" (click)="openModal(order.statusOrdemServico.tipoStatus, order.clientName, order.totalValue, order.creationDate)">
+              <tr @fadeIn *ngFor="let order of filteredOrders | slice: 0:recordsToShow; let i = index" (click)="openModal(order.id, order.statusOrdemServico.tipoStatus, order.valorTotal)">
                 <th scope="row" [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
                   <div class="media align-items-center">
                     <!--<a href="javascript:void(0)" class="avatar rounded-circle mr-3">
@@ -86,12 +86,12 @@
                 </td>
                 <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
                   <div class="d-flex align-items-center">
-                    <span class="mr-2">{{ order.completion }}</span>
+                    <span class="mr-2">{{order.statusOrdemServico.tipoStatus == 'PAGO' ? '100%' : '30%'}}</span>
                     <div>
                       <div class="progress">
                         <div class="progress-bar"
                           [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'bg-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'bg-success' : 'badge-agendado'"
-                          role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" [style.width]="order.completion"></div>
+                          role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" [style.width]="order.statusOrdemServico.tipoStatus == 'PAGO' ? '100%' : '30%'"></div>
                       </div>
                     </div>
                   </div>
@@ -114,10 +114,10 @@
           <div id="modal-overlay" class="modal-overlay"></div>
           <modal-listar-ordemServico
               *ngIf="isModalOpen" 
-              [status]="modalData.status" 
-              [clientName]="modalData.clientName" 
-              [totalValue]="modalData.totalValue" 
-              [creationDate]="modalData.creationDate" 
+              [id]="modalData.id"
+              [status]="modalData.status"
+              [valorTotal]="modalData.valorTotal"
+              [valorDaEntrada]="modalData.valorEntrada"
               (close)="closeModal()">
           </modal-listar-ordemServico>
 

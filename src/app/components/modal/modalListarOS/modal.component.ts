@@ -19,9 +19,18 @@ import { trigger, style, transition, animate } from '@angular/animations';
 })
 export class ModalComponent {
   @Input() status: string | undefined;
+  @Input() id: number | undefined;
   @Input() clientName: string | undefined;
-  @Input() totalValue: string | undefined;
+  @Input() valorTotal: number | undefined;
+  @Input() valorDaEntrada: number | undefined;
   @Input() creationDate: string | undefined;
+
+  constructor() { }
+
+  ngOnInit(): void {
+    console.log("id cliente? "+this.id);
+    console.log(this.status);
+  }
 
   @Output() close = new EventEmitter<void>();
 
@@ -96,7 +105,7 @@ export class ModalComponent {
     console.log('Formulário enviado com os seguintes dados:');
     console.log('Cliente:', this.clientName);
     console.log('Status:', this.status);
-    console.log('Valor Total:', this.totalValue);
+    console.log('Valor Total:', this.valorTotal);
     console.log('Data de Criação:', this.creationDate);
     console.log('Motos:', this.motos);
     // Aqui você pode chamar um serviço para enviar esses dados a uma API, por exemplo

@@ -77,17 +77,32 @@ export class ListarComponent implements OnInit {
     );
   }
 
-  openModal(status: string, clientName: string, totalValue: string, creationDate: string) {
+  openModal(id: number, status: string, valorTotal: number) {
     //console.log('Modal aberto com:', { status, clientName, totalValue, creationDate });
     this.isModalOpen = true;
 
     document.getElementById('modal-overlay')?.classList.add('show');
 
+    const ordemEncontrada = this.orders.find(ordem => ordem.id == id);
+
+    let valorEntrada = null; // Inicializa com null ou qualquer valor padrão
+    if (ordemEncontrada) {
+      console.log("ids: " + ordemEncontrada.id + ' - ' + id);
+      if (ordemEncontrada.pagamento.length > 0) {
+        console.log("length: " + ordemEncontrada.pagamento.length);
+        if (ordemEncontrada.pagamento[0].dataPagamento == ordemEncontrada.dataInicio) {
+          console.log("datas: " + ordemEncontrada.pagamento[0].dataPagamento + ' - ' + ordemEncontrada.dataInicio);
+          valorEntrada = ordemEncontrada.pagamento[0].valorPago; // Atribui o valor
+        }
+      }
+    }
+    console.log("valorEntrada: ", valorEntrada); // Exibe o valor encontrado
+
     this.modalData = {
+      id,
       status,
-      clientName,
-      totalValue,
-      creationDate
+      valorTotal,
+      valorEntrada
     };
   }
 
