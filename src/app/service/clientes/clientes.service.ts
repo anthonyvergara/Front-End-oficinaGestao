@@ -10,6 +10,7 @@ export class ClientesService {
 
   private apiUrlListClient = 'http://localhost:8080/oficina/cliente';  // URL da sua API
   private apiUrlSaveClient = 'http://localhost:8080/oficina/cliente/52' // 2 representa o id da oficina
+  private apiUrlGetClienteByIdOrdemServico = "http://localhost:8080/oficina/cliente/ordemServico/";
 
 
   constructor(private http: HttpClient) { }
@@ -17,6 +18,11 @@ export class ClientesService {
   // Método para obter a lista de clientes
   getClientes(): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(this.apiUrlListClient);
+  }
+
+  getClienteByIdOrdemServico(idOrdemServico: number){
+    const url = `${this.apiUrlGetClienteByIdOrdemServico}${idOrdemServico}`;
+    return this.http.get<Cliente>(url);
   }
 
   criarCliente(cliente: Cliente): Observable<Cliente> {

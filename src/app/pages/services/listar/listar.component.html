@@ -15,7 +15,7 @@
             <div class="btn-group" role="group" aria-label="Controlar registros">
               <button type="button" class="btn btn-primary" (click)="setRecords(5)">ÚLTIMOS SERVIÇOS</button>
               <button type="button" class="btn btn-secondary" (click)="setRecords(7)">AGENDADOS</button>
-              <button type="button" class="btn btn-danger" (click)="setRecords(10)">ATRASADOS</button>
+              <button type="button" class="btn btn-danger" (click)="setRecords(80)">ATRASADOS</button>
             </div>
 
             <!-- Campo de filtro de pesquisa (alinhado à direita) -->
@@ -41,15 +41,15 @@
                 </th>
                 <th scope="col">
                   <h4>Nome do Cliente</h4>
-                  <i class="fas fa-sort" (click)="sortTable('clientName')"></i>
+                  <i class="fas fa-sort" (click)="sortTable('cliente.nome')"></i>
                 </th>
                 <th scope="col">
                   <h4>Valor Total</h4>
-                  <i class="fas fa-sort" (click)="sortTable('totalValue')"></i>
+                  <i class="fas fa-sort" (click)="sortTable('valorTotal')"></i>
                 </th>
                 <th scope="col">
                   <h4>Data de Criação</h4>
-                  <i class="fas fa-sort" (click)="sortTable('creationDate')"></i>
+                  <i class="fas fa-sort" (click)="sortTable('dataInicio')"></i>
                 </th>
                 <th scope="col">
                   <h4>Conclusão</h4>
@@ -60,28 +60,28 @@
             </thead>
             <tbody>
               <!-- Exibição dos registros filtrados e controlados pelo número de itens -->
-              <tr @fadeIn *ngFor="let order of filteredOrders | slice: 0:recordsToShow; let i = index" (click)="openModal(order.status, order.clientName, order.totalValue, order.creationDate)">
+              <tr @fadeIn *ngFor="let order of filteredOrders | slice: 0:recordsToShow; let i = index" (click)="openModal(order.statusOrdemServico.tipoStatus, order.clientName, order.totalValue, order.creationDate)">
                 <th scope="row" [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
                   <div class="media align-items-center">
-                    <a href="javascript:void(0)" class="avatar rounded-circle mr-3">
+                    <!--<a href="javascript:void(0)" class="avatar rounded-circle mr-3">
                       <img alt="Image placeholder" src="../assets/img/theme/bootstrap.jpg">
-                    </a>
+                    </a> -->
                     <div class="media-body">
-                      <span class="mb-0 text-sm badge" [ngClass]="order.status == 'ATRASADO' ? 'badge-danger' : order.status == 'PAGO' ? 'badge-success' : 'badge-agendado'">{{ order.status }}</span>
+                      <span class="mb-0 text-sm badge" [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'badge-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'badge-success' : 'badge-agendado'">{{ order.statusOrdemServico.tipoStatus }}</span>
                     </div>
                   </div>
                 </th>
                 <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
-                  {{ order.clientName }}
+                  {{ getNomeCliente(order.id) | uppercase }}
                 </td>
                 <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
                   <span class="badge badge-dot mr-4">
-                    <i [ngClass]="order.status == 'ATRASADO' ? 'bg-danger' : order.status == 'PAGO' ? 'bg-success' : 'badge-agendado'"></i> {{ order.totalValue }}
+                    <i [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'bg-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'bg-success' : 'badge-agendado'"></i> {{ order.valorTotal.toString() | currency:'GBP':'symbol':'1.2-2' }}
                   </span>
                 </td>
                 <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
                   <div class="avatar-group">
-                    {{ order.creationDate }}
+                    {{ order.dataInicio }}
                   </div>
                 </td>
                 <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
@@ -90,7 +90,7 @@
                     <div>
                       <div class="progress">
                         <div class="progress-bar"
-                          [ngClass]="order.status == 'ATRASADO' ? 'bg-danger' : order.status == 'PAGO' ? 'bg-success' : 'badge-agendado'"
+                          [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'bg-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'bg-success' : 'badge-agendado'"
                           role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" [style.width]="order.completion"></div>
                       </div>
                     </div>
