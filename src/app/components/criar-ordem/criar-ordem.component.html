@@ -22,7 +22,7 @@
                     </span>
                   </div>
                     
-                    <input type="text" class="form-control" placeholder="N.Invoice" [(ngModel)]="nInvoice" name="nInvoice">
+                    <input disabled type="text" class="form-control text-center" placeholder="N.Invoice" [(ngModel)]="nInvoice" name="nInvoice">
                 </div>
                 <div class="col col-6" [ngClass]="nomeCliente.length == 0 ? 'has-danger' : 'has-success' ">
                     <input type="text" class="form-control border-style" [ngClass]="nomeCliente.length == 0 ? 'is-invalid' : 'is-valid' " placeholder="Nome do Cliente" [(ngModel)]="nomeCliente" name="nomeCliente">

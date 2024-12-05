@@ -77,7 +77,6 @@ export class CriarOrdemComponent implements OnInit {
     this.dataAtualBR = `${dia}/${mes}/${ano}`;
 
     console.log(this.periodoPagamento);
-    this.autoCloseAlert();
 
     this.atualizarValorTotalGeral();
     this.incluirMoto();
