@@ -16,8 +16,17 @@ import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.s
       transition(':leave', [
         animate('500ms ease-in', style({ opacity: 0, transform: 'translateY(-10px)' }))
       ])
+    ]),
+    trigger('fadeBox', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate('500ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ]),
+      transition(':leave', [
+        animate('500ms ease-in', style({ opacity: 0, transform: 'translateY(-10px)' }))
+      ])
     ])
-  ]
+  ],
 })
 export class ModalComponent {
   @Input() status: string | undefined;
@@ -29,6 +38,9 @@ export class ModalComponent {
   @Input() creationDate: string | undefined;
 
   orders : OrdemServico = {} as OrdemServico;
+
+   // Objeto de controle para o estado de colapso
+   detalheServicoCollapse: { [key: number]: boolean } = {};
 
   constructor(private ordemServico : OrdemservicoService) { }
 
@@ -59,7 +71,6 @@ export class ModalComponent {
   observacao: string = '';
   totalValue2: number = 0;
   nInvoice: number = 0;
-  vat : number = 333;
   valorTotalGeral : number = 0;
   dataUltimoPagamento: any = "14/09/2024";
 
@@ -68,10 +79,23 @@ export class ModalComponent {
     this.motos.push({ placa: '', descricao: '', milhagem: '', preco: '', registros: [], isCollapsed: true });
   }
 
+  get vat():string{
+    return this.orders.vat === 0 ? null : this.orders.vat.toString();
+  }
+  set vat(value: string) {
+    this.orders.vat = value === '' ? 0 : parseFloat(value);  // Converte para número ou 0 se vazio
+  }
+
   getOrdemServicoById(idOrdemServico : number): void{
     this.ordemServico.getOrdemServicoById(idOrdemServico).subscribe(
       (ordemServico) => {
         this.orders = ordemServico;
+        this.orders.detalheServico.forEach(detalhe => {
+          // Inicializa a chave para cada id
+          if (this.detalheServicoCollapse[detalhe.id] === undefined) {
+            this.detalheServicoCollapse[detalhe.id] = true;  // Inicia como colapsado
+          }
+        });
         console.log("Invoice number: "+this.orders.invoiceNumber);
       },
       (error) => {
