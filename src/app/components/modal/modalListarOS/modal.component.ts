@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
+import { OrdemServico } from 'src/app/service/models/ordemServico.model';
+import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
 
 @Component({
   selector: 'modal-listar-ordemServico',
@@ -20,16 +22,20 @@ import { trigger, style, transition, animate } from '@angular/animations';
 export class ModalComponent {
   @Input() status: string | undefined;
   @Input() id: number | undefined;
+  @Input() nome: string | undefined;
   @Input() clientName: string | undefined;
   @Input() valorTotal: number | undefined;
   @Input() valorDaEntrada: number | undefined;
   @Input() creationDate: string | undefined;
 
-  constructor() { }
+  orders : OrdemServico = {} as OrdemServico;
+
+  constructor(private ordemServico : OrdemservicoService) { }
 
   ngOnInit(): void {
     console.log("id cliente? "+this.id);
     console.log(this.status);
+    this.getOrdemServicoById(this.id);
   }
 
   @Output() close = new EventEmitter<void>();
@@ -52,7 +58,7 @@ export class ModalComponent {
   dataAtualBR: string = new Date().toLocaleDateString('pt-BR'); // Data atual no formato BR
   observacao: string = '';
   totalValue2: number = 0;
-  nInvoice: number = 123123;
+  nInvoice: number = 0;
   vat : number = 333;
   valorTotalGeral : number = 0;
   dataUltimoPagamento: any = "14/09/2024";
@@ -60,6 +66,18 @@ export class ModalComponent {
   // Método para incluir uma nova moto
   incluirMoto() {
     this.motos.push({ placa: '', descricao: '', milhagem: '', preco: '', registros: [], isCollapsed: true });
+  }
+
+  getOrdemServicoById(idOrdemServico : number): void{
+    this.ordemServico.getOrdemServicoById(idOrdemServico).subscribe(
+      (ordemServico) => {
+        this.orders = ordemServico;
+        console.log("Invoice number: "+this.orders.invoiceNumber);
+      },
+      (error) => {
+        console.error("Erro ao encontrar ordem de serviço" + error);
+      }
+    )
   }
 
   // Método para remover uma moto

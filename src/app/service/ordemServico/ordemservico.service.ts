@@ -10,6 +10,7 @@ export class OrdemservicoService {
   private apiGetOrdemServicoByIdCliente = 'http://localhost:8080/oficina/ordemServico/cliente/';// 2 representa o id da oficina
   private apiUrlPostOrdemServico = 'http://localhost:8080/oficina/ordemServico/cliente/1607/oficina/52';
   private apiUrlGetAllOrdemServico = "http://localhost:8080/oficina/ordemServico";
+  private apiUrlGetOrdemServicoById = "http://localhost:8080/oficina/ordemServico/";
 
   constructor(private http: HttpClient) { }
 
@@ -17,6 +18,11 @@ export class OrdemservicoService {
   getOrdemServicoByIdCliente(clienteId : string): Observable<OrdemServico[]> {
     const url = `${this.apiGetOrdemServicoByIdCliente}${clienteId}`;
     return this.http.get<OrdemServico[]>(url);
+  }
+
+  getOrdemServicoById(id: number){
+    const url = `${this.apiUrlGetOrdemServicoById}${id}`;
+    return this.http.get<OrdemServico>(url);
   }
 
   getAllOrdemServico(){
