@@ -60,7 +60,7 @@
             </thead>
             <tbody>
               <!-- Exibição dos registros filtrados e controlados pelo número de itens -->
-              <tr @fadeIn *ngFor="let order of filteredOrders | slice: 0:recordsToShow; let i = index" (click)="openModal(order.id, order.statusOrdemServico.tipoStatus, order.valorTotal)">
+              <tr @fadeIn *ngFor="let order of filteredOrders | slice: 0:recordsToShow; let i = index" (click)="openModal(order.id, order.statusOrdemServico.tipoStatus, order.valorTotal, order.cliente.nome)">
                 <th scope="row" [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
                   <div class="media align-items-center">
                     <!--<a href="javascript:void(0)" class="avatar rounded-circle mr-3">
@@ -72,7 +72,7 @@
                   </div>
                 </th>
                 <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
-                  {{ getNomeCliente(order.id) | uppercase }}
+                  {{ order.cliente.nome | uppercase }}
                 </td>
                 <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
                   <span class="badge badge-dot mr-4">
@@ -115,6 +115,7 @@
           <modal-listar-ordemServico
               *ngIf="isModalOpen" 
               [id]="modalData.id"
+              [nome]="modalData.nome"
               [status]="modalData.status"
               [valorTotal]="modalData.valorTotal"
               [valorDaEntrada]="modalData.valorEntrada"

@@ -97,24 +97,26 @@ export class CriarOrdemComponent implements OnInit {
       quantidadeParcelas: this.quantidadeParcelas || 0, // Garantir que sempre tenha um valor
       detalheServico: this.motos.flatMap(moto => {
         return moto.registros.map(registro => ({
-          id: moto.id,               // Usando o ID da moto
-          placa: moto.placa,         // Placa da moto
+          id: moto.id, // Usando o ID da moto
+          placa: moto.placa, // Placa da moto
           descricao: registro.descricao || null, // Descrição do registro (pode ser null)
           quantidade: registro.qtd || 1, // Quantidade (zero caso não esteja preenchido)
           milhagem: registro.milhagem || null, // Milhagem do registro
-          data: null,    // Usando a data atual
-          valor: parseFloat(registro.preco.replace(/[^\d]/g, "")) / 100 || 0  // Preço do registro em formato monetário (dividido por 100)
+          data: null, // Usando a data atual
+          valor: parseFloat(registro.preco.replace(/[^\d]/g, "")) / 100 || 0 // Preço do registro em formato monetário (dividido por 100)
         }));
       }),
       pagamento: [
         {
-          id: null,  // Id do pagamento (deve ser ajustado conforme sua lógica)
+          id: null, // Id do pagamento (deve ser ajustado conforme sua lógica)
           valorPago: this.pagamentoTipo == "Pagamento Parcelado" ? this.valorEntrada : this.valorTotalGeral,
           dataPagamento: null //new Date().toISOString()
         }
       ],
       statusOrdemServico: {},
       parcela: [] // Crie as parcelas conforme a quantidade
+      ,
+      cliente: undefined
     };
   
     console.log(ordemServico);

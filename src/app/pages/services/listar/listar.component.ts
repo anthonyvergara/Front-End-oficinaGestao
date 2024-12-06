@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
-import { Cliente } from 'src/app/service/models/cliente.model';
 import { ClientesService } from 'src/app/service/clientes/clientes.service';
 
 @Component({
@@ -30,46 +29,19 @@ export class ListarComponent implements OnInit {
 
   orders : OrdemServico[] = [];
 
-  cliente: {[key: number] : string} = {};
-
   ngOnInit() {
     this.loadOrdemServico();
-  }
-
-  getNomeCliente(idOrdemServico: number){
-    return this.cliente[idOrdemServico];
-  }
-
-  loadCliente(idOrdemServico: number): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.clienteService.getClienteByIdOrdemServico(idOrdemServico).subscribe(
-        (cliente) => {
-          this.cliente[idOrdemServico] = cliente.nome;
-          resolve();
-        },
-        (error) => {
-          console.error("Erro ao resgatar cliente", error);
-          this.cliente[idOrdemServico] = '';  // Garantir que a chave exista mesmo que o nome não seja encontrado
-          reject(error);
-        }
-      );
-    });
   }
 
   loadOrdemServico(): void {
     this.ordemServico.getAllOrdemServico().subscribe(
       (ordemServico) => {
+        console.log(ordemServico);
         this.orders = ordemServico;
-        // Usando Promise.all para aguardar todos os clientes serem carregados
-        const clientesPromises = this.orders.map(ordem => this.loadCliente(ordem.id));
-        
-        // Quando todas as promessas forem resolvidas
-        Promise.all(clientesPromises).then(() => {
-          // Agora, todos os clientes foram carregados, e podemos proceder
-          console.log('Clientes carregados com sucesso');
-        }).catch(error => {
-          console.error('Erro ao carregar os clientes:', error);
-        });
+    
+        const clienteRequests = ordemServico.map(ordem => 
+          this.clienteService.getClienteByIdOrdemServico(ordem.id.toString())
+        );
       },
       (error) => {
         console.error('Erro ao carregar ordens de serviço', error);
@@ -77,7 +49,7 @@ export class ListarComponent implements OnInit {
     );
   }
 
-  openModal(id: number, status: string, valorTotal: number) {
+  openModal(id: number, status: string, valorTotal: number, nome: string) {
     //console.log('Modal aberto com:', { status, clientName, totalValue, creationDate });
     this.isModalOpen = true;
 
@@ -85,21 +57,19 @@ export class ListarComponent implements OnInit {
 
     const ordemEncontrada = this.orders.find(ordem => ordem.id == id);
 
-    let valorEntrada = null; // Inicializa com null ou qualquer valor padrão
+    let valorEntrada = 0; // Inicializa com null ou qualquer valor padrão
     if (ordemEncontrada) {
-      console.log("ids: " + ordemEncontrada.id + ' - ' + id);
-      if (ordemEncontrada.pagamento.length > 0) {
-        console.log("length: " + ordemEncontrada.pagamento.length);
-        if (ordemEncontrada.pagamento[0].dataPagamento == ordemEncontrada.dataInicio) {
-          console.log("datas: " + ordemEncontrada.pagamento[0].dataPagamento + ' - ' + ordemEncontrada.dataInicio);
-          valorEntrada = ordemEncontrada.pagamento[0].valorPago; // Atribui o valor
-        }
+      if(ordemEncontrada.pagamento != null){
+        ordemEncontrada.pagamento.forEach(pagamento => {
+          valorEntrada += pagamento.valorPago;
+        })
       }
     }
     console.log("valorEntrada: ", valorEntrada); // Exibe o valor encontrado
 
     this.modalData = {
       id,
+      nome,
       status,
       valorTotal,
       valorEntrada
@@ -121,7 +91,7 @@ export class ListarComponent implements OnInit {
 
   get filteredOrders() {
     return this.orders.filter(order =>
-      (this.cliente[order.id] && this.cliente[order.id].toLowerCase().includes(this.searchQuery.toLowerCase()))
+      (order.cliente.nome.toLowerCase().includes(this.searchQuery.toLowerCase()))
     );
   }
   
@@ -143,7 +113,11 @@ export class ListarComponent implements OnInit {
     // Função para acessar as propriedades aninhadas dinamicamente
     const getValue = (obj: any, path: string) => {
       if (path === 'cliente.nome') {
-        return this.cliente[obj.id];  // Acesse o nome do cliente diretamente
+        return obj.cliente?.nome;  // Acesse o nome do cliente diretamente
+      }
+
+      if (path === 'status') {
+        return obj.statusOrdemServico?.tipoStatus;  // Acesse o nome do cliente diretamente
       }
       
       // Acessa a propriedade de forma dinâmica (por exemplo, "order.statusOrdemServico.status")

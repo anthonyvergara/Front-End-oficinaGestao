@@ -20,7 +20,7 @@ export class ClientesService {
     return this.http.get<Cliente[]>(this.apiUrlListClient);
   }
 
-  getClienteByIdOrdemServico(idOrdemServico: number){
+  getClienteByIdOrdemServico(idOrdemServico: string){
     const url = `${this.apiUrlGetClienteByIdOrdemServico}${idOrdemServico}`;
     return this.http.get<Cliente>(url);
   }
