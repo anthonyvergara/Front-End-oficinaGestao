@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
+import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'modal-listar-ordemServico',
@@ -37,31 +38,18 @@ export class ModalComponent {
   @Input() valorDaEntrada: number | undefined;
   @Input() creationDate: string | undefined;
 
+  @Output() close = new EventEmitter<void>();
+
+   // Formulário reativo
+   detalheServicoForm: FormGroup;
+
   orders : OrdemServico = {} as OrdemServico;
 
    // Objeto de controle para o estado de colapso
    detalheServicoCollapse: { [key: number]: boolean } = {};
 
-  constructor(private ordemServico : OrdemservicoService) { }
 
-  ngOnInit(): void {
-    console.log("id cliente? "+this.id);
-    console.log(this.status);
-    this.getOrdemServicoById(this.id);
-  }
-
-  @Output() close = new EventEmitter<void>();
-
-  closeModal() {
-    this.close.emit(); // Emite o evento para o componente pai
-    //document.getElementById('modal-overlay')?.classList.remove('show');
-  }
-
-  onBackgroundClick(event: MouseEvent) {
-    this.closeModal();
-  }
-
-  // Dados iniciais do formulário
+   // Dados iniciais do formulário
   motos: any[] = [];  // Lista de motos
   motoCount: number = 0;
   valorEntrada: number = 0;
@@ -77,6 +65,56 @@ export class ModalComponent {
   contadorRegistros: number = 0;
 
   groupedDetalheServico: any[] = [];
+
+
+  constructor(private ordemServico : OrdemservicoService, private fb: FormBuilder) {
+
+    // Inicialize o FormGroup
+    this.detalheServicoForm = this.fb.group({
+      detalhes: this.fb.array([]),
+    });
+  }
+
+  ngOnInit(): void {
+    console.log("id cliente? "+this.id);
+    console.log(this.status);
+    this.getOrdemServicoById(this.id);
+  }
+
+
+  closeModal() {
+    this.close.emit(); // Emite o evento para o componente pai
+    //document.getElementById('modal-overlay')?.classList.remove('show');
+  }
+
+  onBackgroundClick(event: MouseEvent) {
+    this.closeModal();
+  }
+
+   // Criação do FormArray para os detalhes
+   get detalhes(): FormArray {
+    return this.detalheServicoForm.get('detalhes') as FormArray;
+  }
+
+
+  loadForm() {
+    // Simulação dos dados vindo do backend (ou array que você já tem)
+    const dadosDetalhes = [
+      { placa: 'LR21USP', quantidade: 1, descricao: 'troca de suspensão', valor: 200, milhagem: 1200 },
+      { placa: 'BMXL210', quantidade: 2, descricao: 'troca de pastilha', valor: 40, milhagem: null }
+    ];
+
+    // Adiciona os dados ao FormArray
+    dadosDetalhes.forEach((registro) => {
+      this.detalhes.push(this.fb.group({
+        placa: [registro.placa],
+        quantidade: [registro.quantidade],
+        descricao: [registro.descricao],
+        valor: [registro.valor],
+        milhagem: [registro.milhagem],
+      }));
+    });
+  }
   
 
   calcularRegistrosUnicos(): number{
@@ -95,6 +133,10 @@ export class ModalComponent {
   }
   set vat(value: string) {
     this.orders.vat = value === '' ? 0 : parseFloat(value);  // Converte para número ou 0 se vazio
+  }
+
+  trackById(index: number, registro: any): number {
+    return registro.id;  // ou qualquer chave única que identifique cada item
   }
 
   // Função para agrupar ordens de serviço por placa
@@ -142,6 +184,42 @@ export class ModalComponent {
         console.error("Erro ao encontrar ordem de serviço" + error);
       }
     )
+  }
+
+   // Método para atualizar o motorista
+   updateMotorista(index: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.groupedDetalheServico[index].motorista = input.value;
+  }
+
+  // Método para atualizar a observação
+  updateObservacao(index: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.groupedDetalheServico[index].observacao = input.value;
+  }
+
+  // Método para atualizar a quantidade de um registro específico
+  updateQuantidade(grupo: any, index: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    grupo.detalhes[index].quantidade = input.value;
+  }
+
+  // Método para atualizar a descrição de um registro específico
+  updateDescricao(grupo: any, index: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    grupo.detalhes[index].descricao = input.value;
+  }
+
+  // Método para atualizar o valor de um registro específico
+  updateValor(grupo: any, index: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    grupo.detalhes[index].valor = input.value;
+  }
+
+  // Método para atualizar a milhagem de um registro específico
+  updateMilhagem(grupo: any, index: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    grupo.detalhes[index].milhagem = input.value;
   }
 
   // Método para remover uma moto

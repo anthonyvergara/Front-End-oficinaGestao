@@ -86,7 +86,7 @@ export class ListarComponent implements OnInit {
     // Adicione a lógica que você deseja executar ao clicar no botão
   }
 
-  recordsToShow = 5;  // Número de registros a serem exibidos
+  recordsToShow = 10;  // Número de registros a serem exibidos
   searchQuery = '';   // Para buscar pelo nome do cliente
 
   get filteredOrders() {
