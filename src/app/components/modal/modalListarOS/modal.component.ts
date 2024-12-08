@@ -74,6 +74,15 @@ export class ModalComponent {
   valorTotalGeral : number = 0;
   dataUltimoPagamento: any = "14/09/2024";
 
+  contadorRegistros: number = 0;
+  
+
+  calcularRegistrosUnicos(): number{
+    const placasUnicas = new Set(this.orders.detalheServico.map(item => item.placa));
+    this.contadorRegistros = placasUnicas.size
+    return this.contadorRegistros;
+  }
+
   // Método para incluir uma nova moto
   incluirMoto() {
     this.motos.push({ placa: '', descricao: '', milhagem: '', preco: '', registros: [], isCollapsed: true });
@@ -90,6 +99,10 @@ export class ModalComponent {
     this.ordemServico.getOrdemServicoById(idOrdemServico).subscribe(
       (ordemServico) => {
         this.orders = ordemServico;
+
+        this.calcularRegistrosUnicos();
+        console.log("registros: "+this.calcularRegistrosUnicos());
+
         this.orders.detalheServico.forEach(detalhe => {
           // Inicializa a chave para cada id
           if (this.detalheServicoCollapse[detalhe.id] === undefined) {
