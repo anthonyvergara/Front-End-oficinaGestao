@@ -48,20 +48,19 @@
                 </div>
 
                 <div id="collapseMenu" class="mt-3">
-                  <!-- Itera sobre cada 'detalheServico' -->
-                  <div *ngFor="let detalhe of orders.detalheServico | slice:0:contadorRegistros; let i = index;" @fadeBox>
-                    contador: {{i}};
-                    <div class="card mt-2" [attr.id]="'detalhe' + detalhe.id" style="background-color: #f4f5f7;">
+                  <!-- Itera sobre cada 'grupo' de ordens agrupados por placa -->
+                  <div *ngFor="let grupo of groupedDetalheServico; let i = index" @fadeBox>
+                    <div class="card mt-2" [attr.id]="'detalhe' + i" style="background-color: #f4f5f7;">
                       <div class="card-header d-flex justify-content-between align-items-center bg-default" style="height: 60px;">
                         <!-- Parte superior: Aqui está o botão de colapso -->
-                        <button class="btn btn-secondary" type="button" (click)="toggleCollapse(detalhe.id)">
-                          <i class="fas" [ngClass]="detalheServicoCollapse[detalhe.id] ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
+                        <button class="btn btn-secondary" type="button" (click)="toggleCollapse(grupo.placa)">
+                          <i class="fas" [ngClass]="detalheServicoCollapse[grupo.placa] ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
                         </button>
-                        <span *ngIf="!detalheServicoCollapse[detalhe.id]" class="ml-0">
-                          <h3 style="color: white;">PLACA: {{ detalhe.placa | uppercase }}</h3>
+                        <span *ngIf="!detalheServicoCollapse[grupo.placa]" class="ml-0">
+                          <h3 style="color: white;">PLACA: {{ grupo.placa | uppercase }}</h3>
                         </span>
-                        <span *ngIf="!detalheServicoCollapse[detalhe.id]" class="ml-auto" style="margin-right: 30px;">
-                          <h3 style="color: white;">TOTAL: {{ calcularSoma(detalhe) | currency:'GBP':'symbol':'1.2-2' }}</h3>
+                        <span *ngIf="!detalheServicoCollapse[grupo.placa]" class="ml-auto" style="margin-right: 30px;">
+                          <h3 style="color: white;">TOTAL: </h3>
                         </span>
                         <button class="btn btn-outline btn-lg" type="button" (click)="removerMoto(i)">
                           <i class="fas fa-trash" style="font-size: 18px;"></i>
@@ -72,13 +71,14 @@
                         <!-- Primeira linha com dados de placa, motorista, observação e data -->
                         <div class="form-row align-items-end">
                           <div class="col col-2">
-                            <input type="text" class="form-control" [(ngModel)]="detalhe.placa" placeholder="Placa" [name]="'placa' + i" readonly>
+                            <!-- Exibindo a placa da moto dentro do grupo -->
+                            <input type="text" class="form-control" [(ngModel)]="grupo.placa" placeholder="Placa" readonly>
                           </div>
                           <div class="col col-3">
-                            <input type="text" class="form-control" placeholder="Nome Motorista" [name]="'descricao' + i">
+                            <input type="text" class="form-control" placeholder="Nome Motorista">
                           </div>
                           <div class="col col-3">
-                            <input type="text" class="form-control" placeholder="Observação" [name]="'obser' + i">
+                            <input type="text" class="form-control" placeholder="Observação">
                           </div>
                           <div class="col col-2 input-group">
                             <div class="input-group-prepend">
@@ -86,14 +86,16 @@
                                 <i class="ni ni-calendar-grid-58"></i>
                               </span>
                             </div>
-                            <input type="text" class="form-control text-center" [value]="detalhe.data" readonly style="background-color: #172b4d; color: #f4f5f7; font-style: bold;">
+                            <!-- Exibindo a data do primeiro registro da placa -->
+                            <input type="text" class="form-control text-center" [value]="grupo.detalhes[0]?.data" readonly style="background-color: #172b4d; color: #f4f5f7; font-style: bold;">
                           </div>
                         </div>
                 
-                        <!-- Segunda linha que é sempre visível -->
-                        <div class="mt-2" *ngFor="let registro of orders.detalheServico; let j = index">
-                          <div *ngIf="registro.placa == detalhe.placa" class="form-row align-items-end mt-2">
-                            contador J: {{j}}
+                        <!-- Segunda linha que é sempre visível (iteração sobre os registros de cada placa) -->
+                        <div class="mt-2" *ngFor="let registro of grupo.detalhes; let j = index">
+                          <pre>{{ registro | json }}</pre>
+                          <div class="form-row align-items-end mt-2">
+                            <!-- Campos para quantidade, descrição, valor e milhagem -->
                             <div class="col col-1">
                               <input type="number" class="form-control" [(ngModel)]="registro.quantidade" placeholder="QTD" [name]="'qtd' + j">
                             </div>
@@ -107,20 +109,22 @@
                               <input type="text" class="form-control" [(ngModel)]="registro.milhagem" placeholder="Milhagem" [name]="'milhagem' + j">
                             </div>
                             <div class="col">
-                              <button class="btn btn-outline-danger btn-round" type="button" (click)="removerRegistro(i)">
+                              <button class="btn btn-outline-danger btn-round" type="button" (click)="removerRegistro(i, j)">
                                 <i class="fas fa-trash"></i>
                               </button>
                             </div>
                           </div>
                 
                           <span *ngIf="!detalheServicoCollapse[registro.id]" class="ml-4">
-                            <h3 id="">TOTAL: {{ calcularSoma(registro) | currency:'GBP':'symbol':'1.2-2' }}</h3>
+                            <h3 id="">TOTAL:</h3>
                           </span>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                
+                
                 
                 
 

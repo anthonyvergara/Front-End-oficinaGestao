@@ -75,6 +75,8 @@ export class ModalComponent {
   dataUltimoPagamento: any = "14/09/2024";
 
   contadorRegistros: number = 0;
+
+  groupedDetalheServico: any[] = [];
   
 
   calcularRegistrosUnicos(): number{
@@ -95,6 +97,24 @@ export class ModalComponent {
     this.orders.vat = value === '' ? 0 : parseFloat(value);  // Converte para número ou 0 se vazio
   }
 
+  // Função para agrupar ordens de serviço por placa
+  groupByPlaca(detalhes: any[]) {
+    const grouped = detalhes.reduce((groups, detalhe) => {
+      const placa = detalhe.placa;
+      if (!groups[placa]) {
+        groups[placa] = [];
+      }
+      groups[placa].push(detalhe);
+      return groups;
+    }, {});
+
+    // Converte o objeto de grupos em um array
+    return Object.keys(grouped).map(placa => ({
+      placa: placa,
+      detalhes: grouped[placa]
+    }));
+  }
+
   getOrdemServicoById(idOrdemServico : number): void{
     this.ordemServico.getOrdemServicoById(idOrdemServico).subscribe(
       (ordemServico) => {
@@ -109,6 +129,13 @@ export class ModalComponent {
             this.detalheServicoCollapse[detalhe.id] = true;  // Inicia como colapsado
           }
         });
+
+        // Agrupar ordens de serviço por placa
+        this.groupedDetalheServico = this.groupByPlaca(this.orders.detalheServico);
+
+        console.log("Dados agrupados por placa: ", this.groupedDetalheServico);
+
+
         console.log("Invoice number: "+this.orders.invoiceNumber);
       },
       (error) => {
@@ -133,9 +160,9 @@ export class ModalComponent {
   }
 
   // Calcular a soma total de uma moto (exemplo)
-  calcularSoma(moto: any): number {
+  /*calcularSoma(moto: any): number {
     return moto.registros.reduce((acc: number, registro: any) => acc + (registro.qtd * registro.preco), 0);
-  }
+  } */
 
   // Método para atualizar o valor final (considerando entrada)
   atualizarValorFinal(): number {
