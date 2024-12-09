@@ -2,7 +2,6 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
-import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'modal-listar-ordemServico',
@@ -40,9 +39,6 @@ export class ModalComponent {
 
   @Output() close = new EventEmitter<void>();
 
-   // Formulário reativo
-   detalheServicoForm: FormGroup;
-
   orders : OrdemServico = {} as OrdemServico;
 
    // Objeto de controle para o estado de colapso
@@ -67,12 +63,7 @@ export class ModalComponent {
   groupedDetalheServico: any[] = [];
 
 
-  constructor(private ordemServico : OrdemservicoService, private fb: FormBuilder) {
-
-    // Inicialize o FormGroup
-    this.detalheServicoForm = this.fb.group({
-      detalhes: this.fb.array([]),
-    });
+  constructor(private ordemServico : OrdemservicoService) {
   }
 
   ngOnInit(): void {
@@ -90,33 +81,7 @@ export class ModalComponent {
   onBackgroundClick(event: MouseEvent) {
     this.closeModal();
   }
-
-   // Criação do FormArray para os detalhes
-   get detalhes(): FormArray {
-    return this.detalheServicoForm.get('detalhes') as FormArray;
-  }
-
-
-  loadForm() {
-    // Simulação dos dados vindo do backend (ou array que você já tem)
-    const dadosDetalhes = [
-      { placa: 'LR21USP', quantidade: 1, descricao: 'troca de suspensão', valor: 200, milhagem: 1200 },
-      { placa: 'BMXL210', quantidade: 2, descricao: 'troca de pastilha', valor: 40, milhagem: null }
-    ];
-
-    // Adiciona os dados ao FormArray
-    dadosDetalhes.forEach((registro) => {
-      this.detalhes.push(this.fb.group({
-        placa: [registro.placa],
-        quantidade: [registro.quantidade],
-        descricao: [registro.descricao],
-        valor: [registro.valor],
-        milhagem: [registro.milhagem],
-      }));
-    });
-  }
   
-
   calcularRegistrosUnicos(): number{
     const placasUnicas = new Set(this.orders.detalheServico.map(item => item.placa));
     this.contadorRegistros = placasUnicas.size
@@ -175,6 +140,7 @@ export class ModalComponent {
         // Agrupar ordens de serviço por placa
         this.groupedDetalheServico = this.groupByPlaca(this.orders.detalheServico);
 
+        this.orders.dataInicio = this.formatDate(this.orders.dataInicio);
         console.log("Dados agrupados por placa: ", this.groupedDetalheServico);
 
 
@@ -184,6 +150,11 @@ export class ModalComponent {
         console.error("Erro ao encontrar ordem de serviço" + error);
       }
     )
+  }
+
+  formatDate(dateString: string): string {
+    const [day, month, year] = dateString.split(' ')[0].split('/');
+    return `${day}/${month}/${year}`;
   }
 
    // Método para atualizar o motorista

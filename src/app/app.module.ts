@@ -13,9 +13,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 
-import { ReactiveFormsModule } from '@angular/forms';
-
-
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -24,8 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ComponentsModule,
     NgbModule,
     RouterModule,
-    AppRoutingModule,
-    ReactiveFormsModule
+    AppRoutingModule
   ],
   declarations: [
     AppComponent,

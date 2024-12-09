@@ -82,7 +82,7 @@
                                 <i class="ni ni-calendar-grid-58"></i>
                               </span>
                             </div>
-                            <input type="text" class="form-control text-center" [value]="grupo.detalhes[0]?.data" readonly style="background-color: #172b4d; color: #f4f5f7; font-style: bold;">
+                            <input type="text" class="form-control text-center" [value]="orders.dataInicio" readonly style="background-color: #172b4d; color: #f4f5f7; font-style: bold;">
                           </div>
                         </div>
                 
@@ -96,10 +96,10 @@
                               <input type="text" class="form-control" [value]="registro.descricao" (input)="updateDescricao(grupo, j, $event)">
                             </div>
                             <div class="col col-2">
-                              <input type="text" appCurrencyFormat class="form-control" [value]="registro.valor" (input)="updateValor(grupo, j, $event)">
+                              <input type="text" appCurrencyFormat class="form-control" [value]="registro.valor | currency:'GBP':'symbol':'1.2-2'" (input)="updateValor(grupo, j, $event)">
                             </div>
                             <div class="col col-2">
-                              <input type="text" class="form-control" [value]="registro.milhagem" (input)="updateMilhagem(grupo, j, $event)">
+                              <input type="text" class="form-control" [value]="registro.milhagem | number:'1.0-0'" (input)="updateMilhagem(grupo, j, $event)">
                             </div>
                             <div class="col">
                               <button class="btn btn-outline-danger btn-round" type="button" (click)="removerRegistro(i, j)">
@@ -136,18 +136,18 @@
                     <label for="observacao">Quantidade de Parcelas</label>
                     <input type="number" class="form-control border-style" placeholder="Quantidade de Parcelas" [(ngModel)]="quantidadeParcelas">
                   </div>-->
-                  <div class="col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
+                  <div class="col col-3" *ngIf="orders.quantidadeParcelas > 0" @fadeBox>
                     <label for="observacao">Perido entre Pagamentos</label>
                     <select class="form-control border-style" id="pagamentoPeriodoSelect" disabled>
-                      <option value="Pagamento à Vista">Pagamento Semanal</option>
+                      <option value="Pagamento à Vista">Pagamento {{orders.tipoPagamento | titlecase}}</option>
                     </select>
                   </div>
-                  <div class="col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
+                  <div class="col col-3" *ngIf="orders.quantidadeParcelas > 0" @fadeBox>
                     <label for="observacao">Valor das Parcelas</label>
                     <select class="form-control border-style" id="valorParcelasSelect">
-                      <option value="Pagamento à Vista">£200.00 - 21/11/2024 - [PAGO]</option>
-                      <option value="Pagamento Parcelado">£200.00 - 04/12/2024 - [AGENDADO]</option>
-                      <option value="Pagamento Parcelado">£200.00 - 04/12/2024 - [AGENDADO]</option>
+                      <option *ngFor="let parcela of orders.parcela" value="Pagamento à Vista">
+                        {{parcela.valorParcela | currency:'GBP':'symbol':'1.2-2'}} - {{parcela.dataVencimento}} - {{parcela.statusParcela}}
+                      </option>
                     </select>  
                   </div>
         
@@ -164,7 +164,7 @@
       <!-- Footer do modal -->
       <div class="modal-footer">
         <div class="form-row align-items-end mt-0 d-flex justify-content-start">
-          <div class="col-auto" placement="bottom" ngbTooltip="Valor Total da Ordem de Serviço.">
+          <div class="col-auto" placement="top" ngbTooltip="Valor Total da Ordem de Serviço.">
             <div style="width: 14rem;">
               <div class="card card-stats bg-success mb-0 mb-lg-0">
                 <div class="card-body">
@@ -205,7 +205,7 @@
           <div class="col-auto">
             <div @fadeIn class="col-auto">
               <div style="width: 14rem;">
-                <div class="card card-stats mb-4 mb-lg-0" [ngClass]="orders?.statusOrdemServico?.saldoDevedor <= 0 ? 'bg-info' : status == 'AGENDADO' ? 'bg-agendado' : 'bg-danger'   " style="width: 255px;" placement="bottom" ngbTooltip="(Valor Total) subtraído pelo (Valor de Entrada)">
+                <div class="card card-stats mb-4 mb-lg-0" [ngClass]="orders?.statusOrdemServico?.saldoDevedor <= 0 ? 'bg-info' : status == 'AGENDADO' ? 'bg-agendado' : 'bg-danger'   " style="width: 255px;" placement="top" ngbTooltip="(Valor Total) subtraído pelo (Valor Total Pago)">
                   <div class="card-body">
                     <div class="row">
                       <div class="col">
@@ -229,7 +229,7 @@
           <!-- Linha com a label e o botão de copiar ao lado -->
           <div class="d-flex align-items-center mb-2" *ngIf="dataUltimoPagamento != null">
             <label class="text-sm mb-0" for="observacao">Último pagamento feito {{dataUltimoPagamento}}</label>
-            <button class="btn btn-icon btn-outline btn-sm ml-2" type="button" placement="top" ngbTooltip="Histórico de pagamentos">
+            <button class="btn btn-icon btn-outline-danger btn-sm ml-2" type="button" placement="top" ngbTooltip="Histórico de pagamentos">
               <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
             </button>
           </div>
