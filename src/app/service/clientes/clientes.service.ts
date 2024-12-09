@@ -9,7 +9,7 @@ import { Cliente } from '../models/cliente.model';  // Importando a interface Cl
 export class ClientesService {
 
   private apiUrlListClient = 'http://localhost:8080/oficina/cliente';  // URL da sua API
-  private apiUrlSaveClient = 'http://localhost:8080/oficina/cliente/52' // 2 representa o id da oficina
+  private apiUrlSaveClient = 'http://localhost:8080/oficina/cliente/2' // 2 representa o id da oficina
   private apiUrlGetClienteByIdOrdemServico = "http://localhost:8080/oficina/cliente/ordemServico/";
 
 

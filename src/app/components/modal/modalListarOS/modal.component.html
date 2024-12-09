@@ -4,8 +4,10 @@
       <div class="modal-header">
         <h1 class="modal-title">Detalhes da Ordem de Serviço</h1>
         <div class="ml-auto d-flex">
-          <button type="button" class="btn btn-danger" placement="bottom" ngbTooltip="Imprimir"><i class="fa fa-print" style="font-size:20px"></i></button>
-          <button type="button" class="btn btn-default" placement="bottom" ngbTooltip="Negociar"><i class="fa fa-calculator" style="font-size:20px"></i></button>
+          <button type="button" class="btn btn-outline-success" placement="bottom" ngbTooltip="Pagar"><i class="ni ni-check-bold" style="font-size:25px"></i></button>
+          <button type="button" class="btn btn-outline-primary" placement="bottom" ngbTooltip="Cliente"><i class="ni ni-circle-08" style="font-size:20px"></i></button>
+          <button type="button" class="btn btn-outline-danger" placement="bottom" ngbTooltip="Imprimir"><i class="fa fa-print" style="font-size:20px"></i></button>
+          <button type="button" class="btn btn-outline-default" placement="bottom" ngbTooltip="Negociar"><i class="fa fa-calculator" style="font-size:20px"></i></button>
         </div>
         <button type="button" class="close" aria-label="Close" (click)="closeModal()">
           <span aria-hidden="true">&times;</span>
@@ -58,22 +60,25 @@
                           <h3 style="color: white;">PLACA: {{ grupo.placa | uppercase }}</h3>
                         </span>
                         <span *ngIf="!detalheServicoCollapse[grupo.placa]" class="ml-auto" style="margin-right: 30px;">
-                          <h3 style="color: white;">TOTAL: </h3>
+                          <h3 style="color: white;">TOTAL: {{ valorTotalDetalheServicoPorPlaca[grupo.placa] | currency:'GBP':'symbol':'1.2-2' }}</h3>
                         </span>
                         <button class="btn btn-outline btn-lg" type="button" (click)="removerMoto(i)">
                           <i class="fas fa-trash" style="font-size: 18px;"></i>
                         </button>
                       </div>
                 
-                      <div class="card-body">
+                      <div *ngIf="detalheServicoCollapse[grupo.placa]" class="card-body">
                         <div class="form-row align-items-end">
                           <div class="col col-2">
-                            <input type="text" class="form-control" [value]="grupo.placa" placeholder="Placa" readonly>
+                            <label>Placa</label>
+                            <input type="text" class="form-control" [value]="grupo.placa | uppercase" placeholder="Placa" readonly>
                           </div>
                           <div class="col col-3">
+                            <label>Motorista</label>
                             <input type="text" class="form-control" (input)="updateMotorista(i, $event)" placeholder="Nome Motorista">
                           </div>
                           <div class="col col-3">
+                            <label>Observação</label>
                             <input type="text" class="form-control" (input)="updateObservacao(i, $event)" placeholder="Observação">
                           </div>
                           <div class="col col-2 input-group">
@@ -82,7 +87,7 @@
                                 <i class="ni ni-calendar-grid-58"></i>
                               </span>
                             </div>
-                            <input type="text" class="form-control text-center" [value]="orders.dataInicio" readonly style="background-color: #172b4d; color: #f4f5f7; font-style: bold;">
+                            <input type="text" class="form-control text-center" [value]="grupo.detalhes[0].data" readonly style="background-color: #172b4d; color: #f4f5f7; font-style: bold;">
                           </div>
                         </div>
                 
@@ -90,15 +95,19 @@
                           <!-- <pre>{{ registro | json }}</pre> -->
                           <div class="form-row align-items-end mt-2">
                             <div class="col col-1">
+                              <label>QTD</label>
                               <input type="number" class="form-control" [value]="registro.quantidade" (input)="updateQuantidade(grupo, j, $event)">
                             </div>
                             <div class="col col-6">
+                              <label>Descrição</label>
                               <input type="text" class="form-control" [value]="registro.descricao" (input)="updateDescricao(grupo, j, $event)">
                             </div>
                             <div class="col col-2">
+                              <label>Preço</label>
                               <input type="text" appCurrencyFormat class="form-control" [value]="registro.valor | currency:'GBP':'symbol':'1.2-2'" (input)="updateValor(grupo, j, $event)">
                             </div>
                             <div class="col col-2">
+                              <label>Milhagem</label>
                               <input type="text" class="form-control" [value]="registro.milhagem | number:'1.0-0'" (input)="updateMilhagem(grupo, j, $event)">
                             </div>
                             <div class="col">
@@ -108,8 +117,8 @@
                             </div>
                           </div>
                 
-                          <span *ngIf="!detalheServicoCollapse[registro.id]" class="ml-4">
-                            <h3 id="">TOTAL:</h3>
+                          <span *ngIf="j === grupo.detalhes.length -1 " class="ml-4">
+                            <h3 id="">TOTAL: {{ valorTotalDetalheServicoPorPlaca[grupo.placa] | currency:'GBP':'symbol':'1.2-2' }}</h3>
                           </span>
                         </div>
                       </div>
@@ -127,7 +136,7 @@
                 <div class="form-row align-items-end mb-2">
                   <div class="col col-3">
                     <label for="observacao">Forma de Pagamento</label>
-                    <select class="form-control border-style" id="pagamentoSelect" (change)="onPagamentoChange($event.target.value)">
+                    <select class="form-control border-style" id="pagamentoSelect" (change)="onPagamentoChange($event.target.value)" disabled>
                       <option value="Pagamento à Vista">Pagamento à Vista</option>
                       <option value="Pagamento Parcelado">Pagamento Parcelado - 10 vezes</option>
                     </select>

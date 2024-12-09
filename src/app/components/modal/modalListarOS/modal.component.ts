@@ -43,7 +43,7 @@ export class ModalComponent {
 
    // Objeto de controle para o estado de colapso
    detalheServicoCollapse: { [key: number]: boolean } = {};
-
+  valorTotalDetalheServicoPorPlaca: {[key: string] : number} = {};
 
    // Dados iniciais do formulário
   motos: any[] = [];  // Lista de motos
@@ -114,7 +114,7 @@ export class ModalComponent {
       groups[placa].push(detalhe);
       return groups;
     }, {});
-
+    
     // Converte o objeto de grupos em um array
     return Object.keys(grouped).map(placa => ({
       placa: placa,
@@ -130,17 +130,31 @@ export class ModalComponent {
         this.calcularRegistrosUnicos();
         console.log("registros: "+this.calcularRegistrosUnicos());
 
+        /*
         this.orders.detalheServico.forEach(detalhe => {
           // Inicializa a chave para cada id
           if (this.detalheServicoCollapse[detalhe.id] === undefined) {
             this.detalheServicoCollapse[detalhe.id] = true;  // Inicia como colapsado
           }
-        });
+        });*/
 
         // Agrupar ordens de serviço por placa
         this.groupedDetalheServico = this.groupByPlaca(this.orders.detalheServico);
 
-        this.orders.dataInicio = this.formatDate(this.orders.dataInicio);
+        this.calcularValorTotalDetalheServiçoPorPlaca();
+
+        console.log("Tamanho: "+this.groupedDetalheServico.length);
+        if (this.groupedDetalheServico.length === 1) {
+          this.groupedDetalheServico.forEach(grupo => {
+            console.log("pASSOU AQUI PARA ABRIR COLLAPSE");
+            this.detalheServicoCollapse[grupo.placa] = true;
+          });
+        };
+
+        this.orders.detalheServico.forEach(detalheOs => {
+          detalheOs.data = this.formatDate(detalheOs.data);
+        });
+
         console.log("Dados agrupados por placa: ", this.groupedDetalheServico);
 
 
@@ -218,6 +232,20 @@ export class ModalComponent {
     return this.totalValue2 - this.valorEntrada;
   }
 
+  calcularValorTotalDetalheServiçoPorPlaca(){
+    for(let i = 0; i < this.groupedDetalheServico.length; i++ ){
+      this.totalValue2 = 0;
+      console.log("Placa: "+ this.groupedDetalheServico[i].placa);
+
+      for(let j = 0; j < this.groupedDetalheServico[i].detalhes.length; j++){
+        console.log(this.groupedDetalheServico[j].detalhes[j].valor);
+        this.totalValue2 += this.groupedDetalheServico[i].detalhes[j].valor;
+      }
+      console.log(this.totalValue2);
+      this.valorTotalDetalheServicoPorPlaca[this.groupedDetalheServico[i].placa] = this.totalValue2;
+    }
+  }
+
   // Método para manipular o tipo de pagamento (à vista ou parcelado)
   onPagamentoChange(valor: string) {
     this.pagamentoTipo = valor;
@@ -229,6 +257,10 @@ export class ModalComponent {
     if (isNaN(this.valorEntrada)) {
       this.valorEntrada = 0;
     }
+  }
+
+  toggleCollapse(placa: string) {
+    this.detalheServicoCollapse[placa] = !this.detalheServicoCollapse[placa];
   }
 
   // Método para enviar o formulário
