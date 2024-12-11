@@ -44,7 +44,7 @@
                 </div>
                 <div class="col-md-4 mb-2">
                   <label>Data de Nascimento</label>
-                  <input type="text" class="form-control" placeholder="dd/MM/yyyy" [(ngModel)]="newCliente.dataNascimento" name="dataNascimento">
+                  <input type="text" class="form-control" placeholder="dd/MM/yyyy" [(ngModel)]="newCliente.dataNascimento" name="dataNascimento" (input)="formatarData()">
                 </div>
               </div>
 
@@ -59,29 +59,31 @@
                 </div>
                 <div class="col-md-3 mb-2">
                   <label>Telefone 2</label>
-                  <input type="text" class="form-control" placeholder="Digite o telefone" [(ngModel)]="newCliente.telefone[0].numero" name="telefone2">
+                  <input type="text" class="form-control" placeholder="Digite o telefone" [(ngModel)]="newCliente?.telefone?.[1].numero" name="telefone2">
                 </div>
               </div>
               <h2 class="mt-4 mb-4">ENDEREÇO</h2>
               <div class="form-row">
-                <div class="col-md-6 mb-2">
+                <div class="col-md-4 mb-2">
                   <label>Rua</label>
                   <input type="text" class="form-control" placeholder="Nome da Rua" [(ngModel)]="newCliente.endereco[0].rua" name="rua">
                 </div>
-                <div class="col-md-3 mb-2">
+                <div class="col-md-2 mb-2">
                   <label>Número</label>
-                  <input type="text" class="form-control" placeholder="Número da casa" [(ngModel)]="newCliente.endereco[0].numero" name="numero">
+                  <input type="text" class="form-control" placeholder="Número" [(ngModel)]="newCliente.endereco[0].numero" name="numero">
                 </div>
                 <div class="col-md-3 mb-2">
                   <label>Postcode</label>
-                  <input type="text" class="form-control" placeholder="postcode" [(ngModel)]="newCliente.endereco[0].postcode" name="postcode">
+                  <input type="text" class="form-control" placeholder="Postcode" [(ngModel)]="newCliente.endereco[0].postcode" name="postcode">
                 </div>
-              </div>
-              <div class="form-row">
                 <div class="col-md-3 mb-2">
                   <label>Cidade</label>
                   <input type="text" class="form-control" placeholder="Nome da Cidade" [(ngModel)]="newCliente.endereco[0].cidade" name="cidade">
                 </div>
+              </div>
+              
+              <div class="form-row">
+                
               </div>
             </form>
           </div>

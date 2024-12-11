@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { ClientesService } from '../../../service/clientes/clientes.service';
 import { Cliente } from '../../../service/models/cliente.model';
+import { Telefone } from 'src/app/service/models/telefone.model';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -27,6 +28,8 @@ export class ModalCriarClienteComponent {
   showSuccessAlert: boolean = false;
   showDangerAlert: boolean = false;
 
+  constructor(private clientesService: ClientesService) { }
+
   newCliente: Cliente = {
     id: 0,  // Este ID será gerado automaticamente pelo backend
     nome: '',
@@ -37,14 +40,13 @@ export class ModalCriarClienteComponent {
     numeroPassaporte: 0,
     numeroRg: 0,
     telefone: [
+      { id_telefone: 0, tipo: 'CELULAR', country: 'BR', ddd: 44, numero: null },
       { id_telefone: 0, tipo: 'CELULAR', country: 'BR', ddd: 44, numero: null }
     ],
     endereco: [
       { id_endereco: 0, rua: '', numero: null, postcode: '', cidade: '' }
     ],
   };
-
-  constructor(private clientesService: ClientesService) { }
 
   closeModal() {
     this.close.emit(); // Emite o evento para o componente pai
@@ -63,11 +65,20 @@ export class ModalCriarClienteComponent {
     }
   }
 
+  criarCliente(): Cliente{
+
+   // Usando filter para criar um novo array com os itens válidos
+  this.newCliente.telefone = this.newCliente.telefone.filter(telefone => telefone.numero != null && telefone.numero != 0);
+
+
+    return this.newCliente;
+  }
+
   onSubmit(form: NgForm) {
     // Enviar os dados para o backend
-    console.log('Enviando dados para o backend:', this.newCliente); // Verifique os dados
-
-    this.clientesService.criarCliente(this.newCliente).subscribe(
+    console.log('Enviando dados para o backend:', this.criarCliente()); // Verifique os dados
+    
+    this.clientesService.criarCliente(this.criarCliente()).subscribe(
       (response) => {
         console.log('Cliente criado com sucesso!', response);
         this.showSuccessAlert = true;
@@ -80,6 +91,23 @@ export class ModalCriarClienteComponent {
         this.autoCloseAlert();
       }
     );
+    
+  }
+    
+  formatarData() {
+    // Remove todos os caracteres não numéricos
+    let data = this.newCliente.dataNascimento.replace(/\D/g, '');
+
+    // Formata a data para o formato dd/MM/yyyy
+    if (data.length > 2) {
+      data = data.substring(0, 2) + '/' + data.substring(2);
+    }
+    if (data.length > 5) {
+      data = data.substring(0, 5) + '/' + data.substring(5, 9);
+    }
+
+    // Atualiza o valor no modelo (ngModel)
+    this.newCliente.dataNascimento = data;
   }
 
   // Função para fechar o alerta automaticamente após 5 segundos

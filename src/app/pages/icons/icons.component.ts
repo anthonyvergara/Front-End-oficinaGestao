@@ -37,7 +37,7 @@ export class IconsComponent implements OnInit {
   constructor(private clientesService: ClientesService, private ordemServicoService : OrdemservicoService) { }
 
   currentPage = 1;  // Página atual
-  itemsPerPage = 1; // Número de itens por página (no seu caso, 1 cliente por página)
+  itemsPerPage = 2; // Número de itens por página (no seu caso, 1 cliente por página)
 
 
   ngOnInit() {
@@ -135,7 +135,7 @@ export class IconsComponent implements OnInit {
     return Math.ceil(this.filteredOrders.length / this.itemsPerPage);
   }
 
-  
+
   getPaginationPages(): number[] {
     const totalPages = this.totalPages();
     const pages = [];

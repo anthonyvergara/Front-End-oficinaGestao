@@ -22,7 +22,7 @@
                                             <div class="mt-3">
                                                 <h4>{{nome}}</h4>
                                                 <p class="text-secondary mb-1" style="color: grey !important;">{{dataNascimento}}</p>
-                                                <p class="text-muted font-size-sm">United Kingdom, {{cidade}}, {{postcode}}</p>
+                                                <p class="text-muted font-size-sm">United Kingdom, {{cidade}}, {{postcode | uppercase}}</p>
                                                 <button *ngIf="saldoDevedor > 0" class="btn btn-danger">ATRASADO</button>
                                                 <button *ngIf="saldoDevedor > 0" class="btn btn-outline-primary">COBRAR</button>
                                             </div>
@@ -91,7 +91,7 @@
                                             </div>
                                             <div class="col-sm-3 text-secondary">
                                                 <label>Postcode</label>
-                                                <input type="text" class="form-control" [(ngModel)]="postcode" name="postcode">
+                                                <input type="text" class="form-control text-uppercase" [(ngModel)]="postcode" name="postcode">
                                             </div>
                                             <div class="col-sm-3 text-secondary">
                                                 <label>Cidade</label>
