@@ -36,6 +36,10 @@ export class IconsComponent implements OnInit {
 
   constructor(private clientesService: ClientesService, private ordemServicoService : OrdemservicoService) { }
 
+  currentPage = 1;  // Página atual
+  itemsPerPage = 1; // Número de itens por página (no seu caso, 1 cliente por página)
+
+
   ngOnInit() {
     this.loadClientes();  // Carregar os dados da API
   }
@@ -103,6 +107,55 @@ export class IconsComponent implements OnInit {
       );
     }
   }
+
+  getPagedClients() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredOrders.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number) {
+    if (page < 1 || page > this.totalPages()) return;
+    this.currentPage = page;
+  }
+  
+  nextPage() {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+    }
+  }
+  
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+  
+  totalPages(): number {
+    return Math.ceil(this.filteredOrders.length / this.itemsPerPage);
+  }
+
+  
+  getPaginationPages(): number[] {
+    const totalPages = this.totalPages();
+    const pages = [];
+  
+    if (totalPages <= 4) {
+      // Se houver 4 ou menos páginas, exibe todas
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Se houver mais de 4 páginas, exibe 1, 2, 3, ..., e a última
+      pages.push(1, 2, 3); // sempre mostra 1, 2, 3
+      pages.push(-1); // Indica os "..."
+      pages.push(totalPages); // sempre mostra a última página
+    }
+  
+    return pages;
+  }
+    
+  
   
   // Método para calcular o saldo devedor de um cliente específico
   calculateSaldoDevedorPorCliente(clienteId: string, ordens: OrdemServico[]): void {
