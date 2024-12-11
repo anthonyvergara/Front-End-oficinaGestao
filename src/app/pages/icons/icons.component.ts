@@ -37,7 +37,7 @@ export class IconsComponent implements OnInit {
   constructor(private clientesService: ClientesService, private ordemServicoService : OrdemservicoService) { }
 
   currentPage = 1;  // Página atual
-  itemsPerPage = 2; // Número de itens por página (no seu caso, 1 cliente por página)
+  itemsPerPage = 3; // Número de itens por página (no seu caso, 1 cliente por página)
 
 
   ngOnInit() {
@@ -213,6 +213,11 @@ export class IconsComponent implements OnInit {
       let aValue = a[column];
       let bValue = b[column];
   
+      // Se a propriedade for 'saldoDevedor', usamos o valor da propriedade em 'saldosDevedores'
+      if (column === 'valorTotal') {
+        aValue = this.saldosDevedores[a.id.toString()] || 0;  // Acessa o saldo devedor do cliente
+        bValue = this.saldosDevedores[b.id.toString()] || 0;  // Acessa o saldo devedor do cliente
+      }
       // Se a propriedade for 'telefone', pegamos o primeiro número do array
       if (column === 'telefone' && aValue && bValue) {
         aValue = aValue[0].numero;  // Acessa o primeiro telefone
@@ -221,9 +226,12 @@ export class IconsComponent implements OnInit {
   
       // Comparação de strings e números
       if (typeof aValue === 'string' && typeof bValue === 'string') {
-        // Convertendo os valores para minúsculas para ignorar maiúsculas/minúsculas
-        return direction === 'asc' ? aValue.toLowerCase().localeCompare(bValue.toLowerCase()) : bValue.toLowerCase().localeCompare(aValue.toLowerCase());
+        // Se for string, compara lexicograficamente
+        return direction === 'asc' 
+          ? aValue.toLowerCase().localeCompare(bValue.toLowerCase()) 
+          : bValue.toLowerCase().localeCompare(aValue.toLowerCase());
       } else if (typeof aValue === 'number' && typeof bValue === 'number') {
+        // Se for número, compara numericamente
         return direction === 'asc' ? aValue - bValue : bValue - aValue;
       }
   
@@ -231,6 +239,4 @@ export class IconsComponent implements OnInit {
       return 0;
     });
   }
-  
-  
 }
