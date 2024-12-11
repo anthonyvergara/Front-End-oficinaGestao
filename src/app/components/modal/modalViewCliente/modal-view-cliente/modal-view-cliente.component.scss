@@ -7,7 +7,7 @@ ul li span{
     cursor: pointer;
 }
 
-.card-ordem-primary:hover {
+.card-ordem-color:hover {
     background-color: rgb(102, 123, 239) !important;
 }
 
@@ -16,4 +16,13 @@ ul li span{
 }
 .icon-danger {
     color: #f5365c;
+}
+
+.row label{
+    color: rgb(50, 50, 93);
+}
+
+.card-ordem-color{
+    background-color: rgb(94, 114, 228); 
+    color: white;
 }

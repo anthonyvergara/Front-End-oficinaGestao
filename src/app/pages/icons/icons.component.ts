@@ -26,7 +26,7 @@ export class IconsComponent implements OnInit {
   isModalOpen = false;
   isModalViewClienteOpen = false;
   ordemServicos: OrdemServico[] = [];
-  orders: Cliente[] = [];  // Usando a interface Cliente
+  clientes: Cliente[] = [];  // Usando a interface Cliente
   searchQuery = '';   // Para buscar pelo nome do cliente
   sortDirection: { [key: string]: 'asc' | 'desc' } = {};  // Para controlar a direção da ordenação
   sortColumn: string = '';  // Para armazenar a coluna que está sendo ordenada
@@ -43,7 +43,7 @@ export class IconsComponent implements OnInit {
   openModalViewCliente(id: number, nome: string, email: string, telefone: number){
     this.isModalViewClienteOpen = true;
 
-    this.orders.forEach(clientes => {
+    this.clientes.forEach(clientes => {
       if(email.toUpperCase() == clientes.email.toUpperCase()){
         const telefone = clientes.telefone.length > 0 ? clientes.telefone[0].numero : null;
         const ddd = clientes.telefone.length > 0 ? clientes.telefone[0].ddd : null;
@@ -69,7 +69,8 @@ export class IconsComponent implements OnInit {
           numero,
           cidade,
           postcode,
-          saldoDevedor
+          saldoDevedor,
+
         }
       }
     })
@@ -119,9 +120,9 @@ export class IconsComponent implements OnInit {
   loadClientes(): void {
     this.clientesService.getClientes().subscribe(
       (clientes) => {
-        this.orders = clientes;
+        this.clientes = clientes;
         // Para cada cliente, carrega as ordens de serviço e calcula o saldo devedor
-        this.orders.forEach(cliente => {
+        this.clientes.forEach(cliente => {
           this.loadOrdemServico(cliente.id.toString()); // Passa o clienteId como string
         });
       },
@@ -142,8 +143,8 @@ export class IconsComponent implements OnInit {
   }
 
   get filteredOrders() {
-    return this.orders.filter(order =>
-      order.nome.toLowerCase().includes(this.searchQuery.toLowerCase())
+    return this.clientes.filter(cliente =>
+      cliente.nome.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
   }
 
@@ -155,7 +156,7 @@ export class IconsComponent implements OnInit {
     this.sortColumn = column;
   
     // Ordenação personalizada
-    this.orders = this.orders.sort((a, b) => {
+    this.clientes = this.clientes.sort((a, b) => {
       let aValue = a[column];
       let bValue = b[column];
   
