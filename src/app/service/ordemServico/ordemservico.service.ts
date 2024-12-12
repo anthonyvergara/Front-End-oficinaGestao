@@ -9,7 +9,7 @@ export class OrdemservicoService {
 
   private apiGetOrdemServicoByIdCliente = 'http://localhost:8080/oficina/ordemServico/cliente/';// 2 representa o id da oficina
   private apiUrlPostOrdemServico = 'http://localhost:8080/oficina/ordemServico/cliente/457/oficina/2';
-  private apiUrlGetAllOrdemServico = "http://localhost:8080/oficina/ordemServico";
+  private apiUrlGetAllOrdemServico = "http://localhost:8080/oficina/ordemServico/oficina/2";
   private apiUrlGetOrdemServicoById = "http://localhost:8080/oficina/ordemServico/";
 
   constructor(private http: HttpClient) { }
