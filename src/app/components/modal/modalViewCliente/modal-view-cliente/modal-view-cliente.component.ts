@@ -67,6 +67,22 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
     return Object.keys(obj).map(key => parseInt(key));
   }
 
+  getParcelasAtrasadas() : number{
+    let keys : number[] = this.objectKeys(this.listParcelasEmAtrasoEPagas);
+    
+    let valorTotalAtrasado = 0;
+
+    keys.forEach(key => {
+      this.listParcelasEmAtrasoEPagas[key].forEach(value => {
+        if(value.statusParcela == "ATRASADO"){
+          valorTotalAtrasado += value.valorParcela;
+        }
+      })
+    })
+
+    return valorTotalAtrasado;
+  }
+
   findOrdemServicoCliente(idCliente : string): void{
 
     this.ordemServico.getOrdemServicoByIdCliente(idCliente).subscribe(
@@ -79,12 +95,12 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
             let parcelas : Parcela[] = [];
 
             ordens.parcela.forEach(parcela => {
-              if(parcela.statusParcela != 'ATRASADO'){
+              if(parcela.statusParcela != 'PAGO'){
                 parcelas.push(parcela);
               }
             })
 
-            this.listParcelasEmAtrasoEPagas[ordens.invoiceNumber] = parcelas;
+            this.listParcelasEmAtrasoEPagas[ordens.invoiceNumber] = parcelas.sort((a,b) => a.dataVencimento.localeCompare(b.dataVencimento));
           }
         })
 

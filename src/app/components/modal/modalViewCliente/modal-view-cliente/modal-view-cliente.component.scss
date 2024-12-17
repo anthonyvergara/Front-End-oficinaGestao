@@ -11,11 +11,18 @@ ul li span{
     background-color: rgb(102, 123, 239) !important;
 }
 
-.icon-succes {
+.icon-success {
     color: #2dce89;
+}
+.icon-alert {
+    color: #ffc107;
 }
 .icon-danger {
     color: #f5365c;
+}
+
+.bg-agendado{
+    background-color: #ffc107;;
 }
 
 .row label{
