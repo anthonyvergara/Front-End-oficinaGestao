@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
+import { Console } from 'console';
 
 @Component({
   selector: 'modal-listar-ordemServico',
@@ -67,8 +68,6 @@ export class ModalComponent {
   }
 
   ngOnInit(): void {
-    console.log("id cliente? "+this.id);
-    console.log(this.status);
     this.getOrdemServicoById(this.id);
   }
 
@@ -82,12 +81,6 @@ export class ModalComponent {
     this.closeModal();
   }
   
-  calcularRegistrosUnicos(): number{
-    const placasUnicas = new Set(this.orders.detalheServico.map(item => item.placa));
-    this.contadorRegistros = placasUnicas.size
-    return this.contadorRegistros;
-  }
-
   // Método para incluir uma nova moto
   incluirMoto() {
     this.motos.push({ placa: '', descricao: '', milhagem: '', preco: '', registros: [], isCollapsed: true });
@@ -127,8 +120,9 @@ export class ModalComponent {
       (ordemServico) => {
         this.orders = ordemServico;
 
-        this.calcularRegistrosUnicos();
-        console.log("registros: "+this.calcularRegistrosUnicos());
+        this.orders.detalheServico.forEach(detalheOs => {
+          detalheOs.data = this.formatDate(detalheOs.data);
+        });
 
         /*
         this.orders.detalheServico.forEach(detalhe => {
@@ -143,22 +137,11 @@ export class ModalComponent {
 
         this.calcularValorTotalDetalheServiçoPorPlaca();
 
-        console.log("Tamanho: "+this.groupedDetalheServico.length);
         if (this.groupedDetalheServico.length === 1) {
           this.groupedDetalheServico.forEach(grupo => {
-            console.log("pASSOU AQUI PARA ABRIR COLLAPSE");
             this.detalheServicoCollapse[grupo.placa] = true;
           });
         };
-
-        this.orders.detalheServico.forEach(detalheOs => {
-          detalheOs.data = this.formatDate(detalheOs.data);
-        });
-
-        console.log("Dados agrupados por placa: ", this.groupedDetalheServico);
-
-
-        console.log("Invoice number: "+this.orders.invoiceNumber);
       },
       (error) => {
         console.error("Erro ao encontrar ordem de serviço" + error);
@@ -235,13 +218,10 @@ export class ModalComponent {
   calcularValorTotalDetalheServiçoPorPlaca(){
     for(let i = 0; i < this.groupedDetalheServico.length; i++ ){
       this.totalValue2 = 0;
-      console.log("Placa: "+ this.groupedDetalheServico[i].placa);
 
       for(let j = 0; j < this.groupedDetalheServico[i].detalhes.length; j++){
-        console.log(this.groupedDetalheServico[j].detalhes[j].valor);
         this.totalValue2 += this.groupedDetalheServico[i].detalhes[j].valor;
       }
-      console.log(this.totalValue2);
       this.valorTotalDetalheServicoPorPlaca[this.groupedDetalheServico[i].placa] = this.totalValue2;
     }
   }
