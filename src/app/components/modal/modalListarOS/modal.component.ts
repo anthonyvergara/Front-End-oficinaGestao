@@ -63,6 +63,8 @@ export class ModalComponent {
 
   groupedDetalheServico: any[] = [];
 
+  isModalOpen : boolean = false;
+
 
   constructor(private ordemServico : OrdemservicoService) {
   }
@@ -241,6 +243,17 @@ export class ModalComponent {
 
   toggleCollapse(placa: string) {
     this.detalheServicoCollapse[placa] = !this.detalheServicoCollapse[placa];
+  }
+
+  openModalCliente() {
+    this.isModalOpen = true;
+    console.log("abrindo.");
+    document.getElementById('modal-bellow-overlay')?.classList.add('show');
+
+  }
+  closedModal() {
+    this.isModalOpen = false;
+    document.getElementById('modal-bellow-overlay')?.classList.remove('show');
   }
 
   // Método para enviar o formulário
