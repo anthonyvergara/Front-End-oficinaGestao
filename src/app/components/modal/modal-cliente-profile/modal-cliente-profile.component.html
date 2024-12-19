@@ -1,6 +1,6 @@
-<div class="modal fade show" tabindex="-1" role="dialog" style="display: block;" (click)="onBackgroundClick($event)"
+<div class="modal fade show" tabindex="-1" role="dialog" style="display: block;"
     @fadeIn>
-    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title">PERFIL DO USUÁRIO</h1>
@@ -15,7 +15,7 @@
                     <div class="col">
 
 
-                        <div class="container mt-5 d-flex justify-content-center">
+                        <div class="container mt-0 d-flex justify-content-center">
 
                             <div class="card p-3">
                         
@@ -26,20 +26,20 @@
                                             class="rounded" width="155">
                                     </div>
                                     <div class="ml-3 w-100">
-                                        <h4 class="mb-0 mt-0">Alex HMorrision</h4>
-                                        <span>Senior Journalist</span>
+                                        <h4 class="mb-0 mt-0">Anthony Vergara</h4>
+                                        <span>UK London</span>
                                         <div class="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
                         
                                             <div class="d-flex flex-column">
                         
-                                                <span class="articles">Articles</span>
+                                                <span class="articles">Ordens</span>
                                                 <span class="number1">38</span>
                         
                                             </div>
                         
                                             <div class="d-flex flex-column">
                         
-                                                <span class="followers">Followers</span>
+                                                <span class="followers">Atrasado</span>
                                                 <span class="number2">980</span>
                         
                                             </div>
@@ -47,36 +47,37 @@
                         
                                             <div class="d-flex flex-column">
                         
-                                                <span class="rating">Rating</span>
+                                                <span class="rating">Agendado</span>
                                                 <span class="number3">8.9</span>
                         
                                             </div>
                                             `
                                         </div>
                                         <div class="button mt-2 d-flex flex-row align-items-center">
-                                            <button class="btn btn-sm btn-outline-primary w-100">Chat</button>
-                                            <button class="btn btn-sm btn-primary w-100 ml-2">Follow</button>
+                                            <button class="btn btn-sm btn-outline-primary w-100">Pagar</button>
+                                            <button class="btn btn-sm btn-primary w-100 ml-2">Cobrança</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
 
                     </div>
                 </div>
+                <div class="row mt-2 d-flex bg-secondary justify-content-center rounded text-white stats">
+                    ENDEREÇO: Rua Rosebery Ave, 58, N179SA, London
+                </div>
             </div>
 
             <!-- Footer do modal -->
-            <div class="modal-footer">
-                
+            <div class="modal-footer text-center">
                 <!-- Alinha os botões no canto direito -->
                 <div class="ml-auto d-flex flex-column align-items-end">
                     <!-- Linha com a label e o botão de copiar ao lado -->
 
                     <!-- Botões -->
                     <div class="d-flex">
-                        <button type="button" class="btn btn-success btn-sm">Salvar</button>
-                        <button type="button" class="btn btn-danger btn-sm">Excluir</button>
                         <button type="button" class="btn btn-secondary btn-sm ml-2" (click)="closedModal()">Fechar</button>
                     </div>
                 </div>

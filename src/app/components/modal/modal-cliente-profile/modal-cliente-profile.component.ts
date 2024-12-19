@@ -15,10 +15,6 @@ export class ModalClienteProfileComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onBackgroundClick(event: MouseEvent) {
-    this.closedModal();
-  }
-
   closedModal() {
     this.isModalOpen = false;  // Fecha o modal
     this.close.emit();  // Emite evento para o componente pai
