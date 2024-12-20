@@ -1,0 +1,85 @@
+<div class="modal fade show" tabindex="-1" role="dialog" style="display: block;"
+    @fadeIn>
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title">EFETUAR PAGAMENTO</h1>
+                <div class="ml-auto d-flex">
+                </div>
+                <button type="button" class="close" aria-label="Close" (click)="closedModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <div class="row">
+                    <div class="col">
+
+
+                        <div class="container d-flex justify-content-center mt-0">
+                            <div class="card">
+                                
+                        
+                        
+                                <div>
+                                    <div class="d-flex pt-3 pl-3">
+                                    <div><img src="https://img.icons8.com/ios-filled/50/000000/visa.png" width="60" height="80" /></div>
+                                    <div class="mt-3 pl-2"><span class="name">Martina Thomas</span><div><span class="cross">****</span><span class="pin ml-2">8880</span></div></div>
+                                    </div>
+                        
+                        
+                                    <div class="py-2  px-3" (click)="optionTotalPayment()">
+                                        <div class="pl-2 d-flex py-2" [ngClass]="totalPayment ? 'active' : 'second' ">
+                                        <div class="form-check">
+                                        <input type="radio" name="optradio" class="form-check-input mt-3 dot" [attr.checked]="totalPayment ? true : null">
+                                        </div>
+                                        <div class="border-left pl-2"><span class="head">Valor total devido</span><div><span class="dollar">£</span><span class="amount">8245</span></div></div>
+                        
+                                         </div>
+                                    </div>
+                        
+                        
+                                     <div class="py-2  px-3" (click)="optionParcialPayment()">
+                                        <div class="pl-2 d-flex py-2" [ngClass]="parcialPayment ? 'active' : 'second' ">
+                                        <div class="form-check">
+                                        <input type="radio" name="optradio" class="form-check-input mt-3 dot" [attr.checked]="parcialPayment ? true : null">
+                                        </div>
+                                        <div class="border-left pl-2"><span class="head">Outro valor</span><div class="d-flex"><span class="dollar">£</span><input type="text" name="text" class="form-control ml-1" placeholder="0"></div></div>
+                        
+                                         </div> 
+                                    </div>	
+                        
+                                        <div class="d-flex justify-content-between px-3 pt-4 pb-3">
+                                            <div><span class="back">Valor Restante: </span></div>
+                                            <button type="button" class="btn btn-primary button">Pagar valor</button>
+                                        </div>
+                        
+                                </div>
+                            </div>
+                        
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row mt-2 d-flex bg-secondary justify-content-center rounded text-white stats">
+                    <span class="followers">ENDEREÇO: Rua Rosebery Ave, 58, N179SA, London</span>
+                </div>
+                <div class="row mt-2 d-flex bg-secondary justify-content-center rounded text-white stats">
+                    <span class="followers">TELEFONE: 62995256017</span>
+                </div>
+            </div>
+
+            <!-- Footer do modal -->
+            <div class="modal-footer text-center mt--7">
+                <!-- Alinha os botões no canto direito -->
+                <div class="ml-auto d-flex flex-column align-items-end">
+                    <!-- Linha com a label e o botão de copiar ao lado -->
+
+                    <!-- Botões -->
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-secondary btn-sm ml-2" (click)="closedModal()">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

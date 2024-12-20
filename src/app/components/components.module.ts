@@ -17,7 +17,7 @@ import { HeaderBarComponent } from './headerbar/header-bar..component';
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
-    HeaderBarComponent,
+    HeaderBarComponent
   ],
   exports: [
     FooterComponent,

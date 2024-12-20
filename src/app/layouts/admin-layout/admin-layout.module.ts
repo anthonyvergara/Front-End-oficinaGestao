@@ -17,6 +17,7 @@ import { ModalComponent } from 'src/app/components/modal/modalListarOS/modal.com
 import { ModalCriarClienteComponent } from 'src/app/components/modal/modalCriarCliente/modal-criarCliente.component';
 import { ModalViewClienteComponent } from 'src/app/components/modal/modalViewCliente/modal-view-cliente/modal-view-cliente.component';
 import { ModalClienteProfileComponent } from 'src/app/components/modal/modal-cliente-profile/modal-cliente-profile.component';
+import { ModalPagarComponent } from 'src/app/components/modal/modal-pagar/modal-pagar.component';
 
 import { CriarOrdemComponent } from 'src/app/components/criar-ordem/criar-ordem.component';
 
@@ -48,7 +49,8 @@ import { CurrencyFormatDirective } from '../../pages/maps/currency-input.directi
     ModalCriarClienteComponent,
     CriarOrdemComponent,
     ModalViewClienteComponent,
-    ModalClienteProfileComponent
+    ModalClienteProfileComponent,
+    ModalPagarComponent
   ],
   exports: [
     MapsComponent // Exportar para que possa ser usado em outros módulos
