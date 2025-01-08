@@ -26,21 +26,21 @@
                                             class="rounded" width="155">
                                     </div>
                                     <div class="ml-3 w-100">
-                                        <h4 class="mb-0 mt-0">Anthony Vergara</h4>
-                                        <span>UK London</span>
+                                        <h4 class="mb-0 mt-0">{{client.nome}}</h4>
+                                        <span>UK {{client?.endereco?.[0]?.cidade}}</span>
                                         <div class="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
                         
                                             <div class="d-flex flex-column">
                         
                                                 <span class="articles">Ordens</span>
-                                                <span class="number1">38</span>
+                                                <span class="number1">?</span>
                         
                                             </div>
                         
                                             <div class="d-flex flex-column">
                         
                                                 <span class="followers">Atrasado</span>
-                                                <span class="number2">980</span>
+                                                <span class="number2">?</span>
                         
                                             </div>
                         
@@ -48,7 +48,7 @@
                                             <div class="d-flex flex-column">
                         
                                                 <span class="rating">Agendado</span>
-                                                <span class="number3">8.9</span>
+                                                <span class="number3">?</span>
                         
                                             </div>
                                             
@@ -66,10 +66,10 @@
                     </div>
                 </div>
                 <div class="row mt-2 d-flex bg-secondary justify-content-center rounded text-white stats">
-                    <span>ENDEREÇO: Rua Rosebery Ave, 58, N179SA, London</span>
+                    <span>ENDEREÇO: {{client?.endereco?.[0]?.rua}}, {{client?.endereco?.[0]?.numero}}, {{client?.endereco?.[0]?.postcode | uppercase}}, {{client?.endereco?.[0]?.cidade}}</span>
                 </div>
                 <div class="row mt-2 d-flex bg-secondary justify-content-center rounded text-white stats">
-                    <span>TELEFONE: 62995256017</span>
+                    <span>TELEFONE: {{client?.telefone?.[0]?.ddd}} {{client?.telefone?.[0]?.numero}} ( {{client?.telefone?.[0]?.tipo}} )</span>
                 </div>
             </div>
 

@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ClientesService } from 'src/app/service/clientes/clientes.service';
+import { Cliente } from 'src/app/service/models/cliente.model';
 
 @Component({
   selector: 'app-modal-cliente-profile',
@@ -7,12 +9,30 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class ModalClienteProfileComponent implements OnInit {
 
-  constructor() { }
-
   @Input() isModalOpen: boolean = false;  // Recebe a visibilidade
+  @Input() invoiceId: number;
+
+  client : Cliente = {} as Cliente | undefined;
+
   @Output() close = new EventEmitter<void>();  // Evento de fechamento do modal
 
+  constructor(private cliente: ClientesService) {
+    this.client = undefined;
+   }
+
   ngOnInit(): void {
+    this.getClienteByInvoiceNumber();
+  }
+
+  getClienteByInvoiceNumber(){
+    this.cliente.getClienteByIdOrdemServico(this.invoiceId.toString()).subscribe(
+      (cliente) => {
+        this.client = cliente;
+      },
+      (error) => {
+        console.error("Não foi possivel localizar o cliente." +error)
+      }
+    )
   }
 
   closedModal() {

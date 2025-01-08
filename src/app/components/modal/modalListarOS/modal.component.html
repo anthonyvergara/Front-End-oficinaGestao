@@ -261,8 +261,10 @@
   </div>
 </div>
               <app-modal-cliente-profile *ngIf="isModalOpen"
+              [invoiceId]="orders?.id"
               (close)="closedModal()">
               </app-modal-cliente-profile>
+
               <app-modal-pagar *ngIf="modalPagarOpen"
               [valorTotal]="valorTotal"
               [valorPago]="valorDaEntrada"
