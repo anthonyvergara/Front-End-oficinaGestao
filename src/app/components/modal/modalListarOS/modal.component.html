@@ -153,7 +153,7 @@
                     </select>
                   </div>
                   <div class="col col-3" *ngIf="orders.quantidadeParcelas > 0" @fadeBox>
-                    <label for="observacao">Valor das Parcelas</label>
+                    <label for="observacao">Parcelas</label>
                     <select class="form-control border-style" id="valorParcelasSelect">
                       <option *ngFor="let parcela of orders.parcela" value="Pagamento à Vista">
                         {{parcela.valorParcela | currency:'GBP':'symbol':'1.2-2'}} - {{parcela.dataVencimento}} - {{parcela.statusParcela}}
@@ -260,7 +260,16 @@
     </div>
   </div>
 </div>
-              <app-modal-cliente-profile *ngIf="isModalOpen" (close)="closedModal()">
+              <app-modal-cliente-profile *ngIf="isModalOpen"
+              (close)="closedModal()">
               </app-modal-cliente-profile>
-              <app-modal-pagar *ngIf="modalPagarOpen" (close)="closedModal()">
+              <app-modal-pagar *ngIf="modalPagarOpen"
+              [valorTotal]="valorTotal"
+              [valorPago]="valorDaEntrada"
+              [saldoDevedor]="orders?.statusOrdemServico?.saldoDevedor"
+              [invoiceNumber]="orders?.invoiceNumber"
+              [vat]="orders.vat"
+              [nomeCliente]="nome"
+              [ordemServico]="orders"
+              (close)="closedModal()">
               </app-modal-pagar>

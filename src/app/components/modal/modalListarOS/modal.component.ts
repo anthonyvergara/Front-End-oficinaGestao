@@ -3,6 +3,7 @@ import { trigger, style, transition, animate } from '@angular/animations';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
 import { Console } from 'console';
+import { Pagamento } from 'src/app/service/models/pagamento.model';
 
 @Component({
   selector: 'modal-listar-ordemServico',

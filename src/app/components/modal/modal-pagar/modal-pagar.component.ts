@@ -7,8 +7,17 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class ModalPagarComponent implements OnInit {
 
+  @Input() valorTotal : number | undefined;
+  @Input() valorPago: number | undefined;
+  @Input() saldoDevedor: number | undefined;
+  @Input() invoiceNumber: number | undefined;
+  @Input() vat: number | undefined;
+  @Input() nomeCliente: string | undefined;
+
   totalPayment : boolean = true;
   parcialPayment : boolean = false;
+
+  today : Date = new Date();
 
   @Output() close = new EventEmitter<void>();  // Evento de fechamento do modal
 
