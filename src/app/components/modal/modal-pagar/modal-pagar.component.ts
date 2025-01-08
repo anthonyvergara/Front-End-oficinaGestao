@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 
 @Component({
   selector: 'app-modal-pagar',
@@ -13,9 +14,14 @@ export class ModalPagarComponent implements OnInit {
   @Input() invoiceNumber: number | undefined;
   @Input() vat: number | undefined;
   @Input() nomeCliente: string | undefined;
+  @Input() ordemServico: OrdemServico | undefined;
 
   totalPayment : boolean = true;
   parcialPayment : boolean = false;
+  precoParcial : string;
+
+  valorTotalAhPagar : number = 0;
+  valorParcialAhPagar : number = 0;
 
   today : Date = new Date();
 
@@ -24,15 +30,41 @@ export class ModalPagarComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.valorTotalAhPagar = this.saldoDevedor;
+  }
+
+  valorTotalAtrasado() : number{
+    let valorTotalAtrasado: number = 0;
+
+    this.ordemServico.parcela.forEach(parcela => {
+      if(parcela.statusParcela == "ATRASADO"){
+        valorTotalAtrasado += parcela.valorParcela;
+      }
+    })
+
+    return valorTotalAtrasado;
+  }
+
+  proximaParcela() : string{
+    return this.ordemServico.statusOrdemServico.proximoVencimento;
+  }
+
+  onPrecoParcialChange(){
+    this.valorParcialAhPagar = parseFloat(this.precoParcial.replace(/[^\d]/g, "")) / 100 || 0;
+    this.valorTotalAhPagar = this.valorParcialAhPagar;
   }
 
   optionTotalPayment(){
     this.totalPayment = true;
     this.parcialPayment = false;
+
+    this.valorTotalAhPagar = this.saldoDevedor;
   }
   optionParcialPayment(){
     this.parcialPayment = true;
     this.totalPayment = false;
+
+    this.valorTotalAhPagar = this.valorParcialAhPagar;
   }
 
   closedModal() {

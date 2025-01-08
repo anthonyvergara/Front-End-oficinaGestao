@@ -22,32 +22,31 @@
                                 </div>
                                 <label>Valor total atrasado</label>
                                 <div class="fw-bolder mb-4">
-                                    <span class="fas fa-dollar-sign"></span>
-                                    <span class="ps-1">599,00</span>
+                                    <span class="ps-1">{{valorTotalAtrasado() | currency:'GBP':'symbol':'1.2-2'}}</span>
                                 </div>
                                 <div class="d-flex flex-column">
                                     <div class="d-flex align-items-center justify-content-between text"> <span class="">Valor a pagar:</span> <span
-                                            class="fas fa-dollar-sign"><span class="ps-1">0.00</span></span> </div>
+                                            ><span class="ps-1">{{valorTotalAhPagar | currency:'GBP':'symbol':'1.2-2'}}</span></span> </div>
                                     <div class="d-flex align-items-center justify-content-between text mb-4"> <span>Valor Total devido:</span> <span
-                                            class="fas fa-dollar-sign"><span class="ps-1">600.99</span></span> </div>
+                                            ><span class="ps-1">{{saldoDevedor - valorTotalAhPagar | currency:'GBP':'symbol':'1.2-2'}}</span></span> </div>
                                     <div class="border-bottom mb-4"></div>
                                     <div class="d-flex flex-column mb-4"> <span class="far fa-file-alt text"><span class="ps-2">&nbsp; Invoice
                                                 NUMBER:</span></span> <span class="ps-3">{{invoiceNumber}}</span> </div>
                                     <div class="d-flex flex-column mb-5"> <span class="far fa-calendar-alt text"><span class="ps-2">&nbsp; Próxima
-                                                parcela:</span></span> <span class="ps-3">22 july,2018</span> </div>
-                                    <div class="d-flex align-items-center justify-content-between text mt-5">
+                                                parcela:</span></span> <span class="ps-3">{{proximaParcela()}}</span> </div>
+                                    <!--<div class="d-flex align-items-center justify-content-between text mt-5">
                                         <div class="d-flex flex-column text"> <span>Customer Support:</span> <span>online chat 24/7</span>
                                         </div>
                                         <div class="btn btn-primary rounded-circle"><span class="fas fa-comment-alt"></span></div>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                             <div class="card box2">
                                         <div>
                                             <div class="d-flex pt-3 pl-3">
-                                                <div><img src="https://img.icons8.com/ios-filled/50/000000/visa.png" style="width: 60px; height : 80px " /></div>
+                                                <div><img src="../../../../assets/img/icons/money-management.png" style="width: 60px; height : 80px" /></div>
                                                 <div class="mt-3 pl-2"><span class="name">{{nomeCliente}}</span>
-                                                    <div><span class="cross">****</span><span class="pin ml-2">8880</span></div>
+                                                    <div><span class="cross">Data:</span><span class="pin ml-2">{{today | date}}</span></div>
                                                 </div>
                                             </div>
                         
@@ -73,15 +72,15 @@
                                                             [attr.checked]="parcialPayment ? true : null">
                                                     </div>
                                                     <div class="border-left pl-2"><span class="head">Outro valor</span>
-                                                        <div class="d-flex"><span class="dollar">£</span><input type="text"
-                                                                name="text" class="form-control ml-1" placeholder="0"></div>
+                                                        <div class="d-flex"><span *ngIf="precoParcial == null" class="dollar">£</span>
+                                                            <input type="text" appCurrencyFormat [(ngModel)]="precoParcial" (ngModelChange)="onPrecoParcialChange()" name="text" class="form-control ml-1" placeholder="0"></div>
                                                     </div>
                         
                                                 </div>
                                             </div>
                         
                                             <div class="d-flex justify-content-between px-3 pt-4 pb-3">
-                                                <div><span class="back">Data: {{today | date}} </span></div>
+                                                <div><span class="back"> </span></div>
                                                 <button type="button" class="btn btn-success btn-3" style="width: 150px !important; 
                                                 height: 60px !important;
                                                 border-radius: 8px !important;
