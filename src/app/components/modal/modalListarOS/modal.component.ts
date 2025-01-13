@@ -68,6 +68,8 @@ export class ModalComponent {
 
   modalPagarOpen : boolean = false;
 
+  isModalNegociarOpen : boolean = false;
+
   constructor(private ordemServico : OrdemservicoService) {
   }
 
@@ -256,11 +258,17 @@ export class ModalComponent {
   closedModal() {
     this.isModalOpen = false;
     this.modalPagarOpen = false;
+    this.isModalNegociarOpen = false;
     document.getElementById('modal-bellow-overlay')?.classList.remove('show');
   }
 
   openModalPagar(){
     this.modalPagarOpen = true;
+    document.getElementById('modal-bellow-overlay')?.classList.add('show');
+  }
+
+  openModalNegociar(){
+    this.isModalNegociarOpen = true;
     document.getElementById('modal-bellow-overlay')?.classList.add('show');
   }
 
