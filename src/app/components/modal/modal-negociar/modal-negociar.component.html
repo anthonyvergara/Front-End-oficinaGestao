@@ -25,15 +25,17 @@
                                     <span class="ps-1">{{100 | currency:'GBP':'symbol':'1.2-2'}}</span>
                                 </div>
                                 <div class="d-flex flex-column">
-                                    <div class="d-flex align-items-center justify-content-between text"> <span class="">Valor a pagar:</span> <span
-                                            ><span class="ps-1">{{valorTotalAhPagar | currency:'GBP':'symbol':'1.2-2'}}</span></span> </div>
+                                    <div class="d-flex align-items-center justify-content-between text"> <span class="">Valor a negociar:</span> <span
+                                            ><span class="ps-1">{{ordemServico.statusOrdemServico.saldoDevedor| currency:'GBP':'symbol':'1.2-2'}}</span></span> </div>
+                                    <div class="d-flex align-items-center justify-content-between text"> <span class="">Juros:</span> <span
+                                                ><span class="ps-1">{{0| currency:'GBP':'symbol':'1.2-2'}}</span></span> </div>
                                     <div class="d-flex align-items-center justify-content-between text mb-4"> <span>Valor Total devido:</span> <span
-                                            ><span class="ps-1">{{saldoDevedor - valorTotalAhPagar | currency:'GBP':'symbol':'1.2-2'}}</span></span> </div>
+                                            ><span class="ps-1">{{ordemServico.statusOrdemServico.saldoDevedor| currency:'GBP':'symbol':'1.2-2'}}</span></span> </div>
                                     <div class="border-bottom mb-4"></div>
                                     <div class="d-flex flex-column mb-4"> <span class="far fa-file-alt text"><span class="ps-2">&nbsp; Invoice
-                                                NUMBER:</span></span> <span class="ps-3">{{invoiceNumber}}</span> </div>
+                                                NUMBER:</span></span> <span class="ps-3">{{ordemServico.invoiceNumber}}</span> </div>
                                     <div class="d-flex flex-column mb-5"> <span class="far fa-calendar-alt text"><span class="ps-2">&nbsp; Próxima
-                                                parcela:</span></span> <span class="ps-3">{{2028}}</span> </div>
+                                                parcela:</span></span> <span class="ps-3">{{ordemServico.statusOrdemServico.proximoVencimento}}</span> </div>
                                     <!--<div class="d-flex align-items-center justify-content-between text mt-5">
                                         <div class="d-flex flex-column text"> <span>Customer Support:</span> <span>online chat 24/7</span>
                                         </div>
@@ -55,46 +57,52 @@
                                                 <div class="pl-2 d-flex py-2" [ngClass]="totalPayment ? 'active' : 'second' ">
                                                     <div class="form-check">
                                                         <input type="radio" name="optradio" class="form-check-input mt-3 dot"
-                                                            [attr.checked]="totalPayment ? true : null">
+                                                            [attr.checked]="true">
                                                     </div>
                                                     <div class="border-left pl-2"><span class="head">Valor total devido</span>
-                                                        <div><span class="amount">{{saldoDevedor | currency:'GBP':'symbol':'1.2-2'}}</span></div>
-                                                    </div>
-                        
-                                                </div>
-                                            </div>
-                        
-                        
-                                            <div class="py-2  px-3">
-                                                <div class="pl-2 d-flex py-2" [ngClass]="parcialPayment ? 'active' : 'second' ">
-                                                    <div class="form-check">
-                                                        <input type="radio" name="optradio" class="form-check-input mt-3 dot"
-                                                            [attr.checked]="parcialPayment ? true : null">
-                                                    </div>
-                                                    <div class="border-left pl-2"><span class="head">Outro valor</span>
-                                                        <div class="d-flex"><span *ngIf="precoParcial == null" class="dollar">£</span>
-                                                            <input type="text" appCurrencyFormat [(ngModel)]="precoParcial" name="text" class="form-control ml-1" placeholder="0"></div>
+                                                        <div><span class="amount">{{ordemServico.statusOrdemServico.saldoDevedor| currency:'GBP':'symbol':'1.2-2'}}</span></div>
                                                     </div>
                         
                                                 </div>
                                             </div>
 
-                                            <div class="py-2  px-3">
-                                                <div class="pl-2 d-flex py-2" [ngClass]="parcialPayment ? 'active' : 'second' ">
-                                                    <div class="form-group">
-                                                        <label for="exampleFormControlSelect1">Parcelas</label>
-                                                        <select class="form-control" id="exampleFormControlSelect1">
-                                                          <option>£100.00 29/10/18</option>
-                                                          <option>£70.00 13/02/19</option>
-                                                          <option>£20.00 02/01/21</option>
-                                                          <option>£300.00 10/08/25</option>
-                                                          <option>£70.00 20/07/24</option>
-                                                        </select>
-                                                      </div>
+                                            <div class="py-2 px-3">
+                                                <div class="pl-2 d-flex py-2" [ngClass]="totalPayment ? 'active' : 'second'">
+                                                    <div class="border-left pl-2 d-flex justify-content-between w-100">
+                                                        <!-- Quantidade de Parcelas à esquerda -->
+                                                        <div>
+                                                            <label for="exampleFormControlSelect1" class="amount">Quantidade</label>
+                                                            <select class="form-control" id="exampleFormControlSelect1" style="width: 60px !important;">
+                                                                <option>1</option>
+                                                                <option>2</option>
+                                                                <option>3</option>
+                                                                <option>4</option>
+                                                                <option>5</option>
+                                                                <option>6</option>
+                                                                <option>7</option>
+                                                                <option>8</option>
+                                                                <option>9</option>
+                                                                <option>10</option>
+                                                            </select>
+                                                        </div>
+                                                        <!-- Parcelas à direita -->
+                                                        <div class="mr-2">
+                                                            <label for="exampleFormControlSelect2" class="amount">Parcelas</label>
+                                                            <select class="form-control" id="exampleFormControlSelect2" style="width: 180px !important;">
+                                                                <option>£100.00 - 29/10/18</option>
+                                                                <option>£70.00 - 13/02/19</option>
+                                                                <option>£20.00 - 02/01/21</option>
+                                                                <option>£300.00 - 10/08/25</option>
+                                                                <option>£70.00 - 20/07/24</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+
+                                            
                                             <div class="col-12 px-md-5 px-4 mt-3"> 
-                                                <div class="btn btn-pagar w-100">Pagar</div> 
+                                                <div class="btn btn-pagar w-100">Negociar</div> 
                                             </div>
                         
                                         </div>

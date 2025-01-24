@@ -277,5 +277,6 @@
               </app-modal-pagar>
 
               <app-modal-negociar *ngIf="isModalNegociarOpen"
+              [ordemServico]="orders"
               (close)="closedModal()">
               </app-modal-negociar>
