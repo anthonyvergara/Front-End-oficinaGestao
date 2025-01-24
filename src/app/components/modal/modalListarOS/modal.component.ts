@@ -4,6 +4,8 @@ import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
 import { Console } from 'console';
 import { Pagamento } from 'src/app/service/models/pagamento.model';
+import { Router } from '@angular/router';
+import { ImpressaoService } from 'src/app/service/impressao/impressao.service';
 
 @Component({
   selector: 'modal-listar-ordemServico',
@@ -70,13 +72,12 @@ export class ModalComponent {
 
   isModalNegociarOpen : boolean = false;
 
-  constructor(private ordemServico : OrdemservicoService) {
+  constructor(private ordemServico : OrdemservicoService, private router: Router, private impressaoService : ImpressaoService) {
   }
 
   ngOnInit(): void {
     this.getOrdemServicoById(this.id);
   }
-
 
   closeModal() {
     this.close.emit(); // Emite o evento para o componente pai
@@ -281,5 +282,18 @@ export class ModalComponent {
     console.log('Data de Criação:', this.creationDate);
     console.log('Motos:', this.motos);
     // Aqui você pode chamar um serviço para enviar esses dados a uma API, por exemplo
+  }
+
+  imprimir() {
+    this.impressaoService.setOrdemServico(this.orders)
+    this.router.navigate(['/impressao']);
+
+    /* Abre uma nova janela ou aba com uma URL absoluta
+    const novaJanela = window.open('', '_blank');  // Abre uma nova aba
+
+    if (novaJanela) {
+      // Navegar para a rota de impressão. Aqui usamos a URL com #.
+      novaJanela.location.href = `${window.location.origin}/#impressao`;
+    } */
   }
 }

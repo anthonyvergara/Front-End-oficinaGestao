@@ -7,7 +7,7 @@
         <div class="ml-auto d-flex">
           <button *ngIf="status != 'PAGO' " type="button" class="btn btn-outline-success" placement="bottom" ngbTooltip="Pagar" (click)="openModalPagar()"><i class="ni ni-check-bold" style="font-size:25px"></i></button>
           <button type="button" class="btn btn-outline-primary" placement="bottom" ngbTooltip="Cliente" (click)="openModalCliente()"><i class="ni ni-circle-08" style="font-size:20px"></i></button>
-          <button type="button" class="btn btn-outline-danger" placement="bottom" ngbTooltip="Imprimir"><i class="fa fa-print" style="font-size:20px"></i></button>
+          <button type="button" (click)="imprimir()" class="btn btn-outline-danger" placement="bottom" ngbTooltip="Imprimir"><i class="fa fa-print" style="font-size:20px"></i></button>
           <button type="button" class="btn btn-outline-default" placement="bottom" ngbTooltip="Negociar" (click)="openModalNegociar()"><i class="fa fa-calculator" style="font-size:20px"></i></button>
         </div>
         <button type="button" class="close" aria-label="Close" (click)="closeModal()">
