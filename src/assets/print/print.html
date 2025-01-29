@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Invoice</title>
+    <!-- Link para fontes, ícones, estilos ou qualquer outro recurso -->
+    <link rel="stylesheet" href="style.css"> <!-- Caso tenha um arquivo de CSS externo -->
+</head>
+
+<body>
+    <div class="row invoice">
+        <div class="col-md-3 invoice-aside">
+            <div class="invoice-logo"></div>
+            <div class="invoice-data">
+                <div class="invoice-person">
+                    <span class="name">Kristopher Donny</span>
+                    <span class="position">Developer and Designer</span>
+                    <span>donny@designer.co</span>
+                    <span>661 Bubby Street</span>
+                    <span>United States</span>
+                </div>
+                <div class="invoice-payment-direction">
+                    <i class="icon s7-angle-down-circle"></i>
+                </div>
+                <div class="invoice-person">
+                    <span class="name">Elliot Mark</span>
+                    <span class="position">CEO at BLX</span>
+                    <span>ceoblx@company.co</span>
+                    <span>839 Owagner Drive</span>
+                    <span>United States</span>
+                </div>
+                <div class="invoice-company-info">
+                    <div class="summary">
+                        <span class="title">Maisonette Company</span>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </div>
+                    <div class="phone">
+                        <ul class="list-unstyled">
+                            <li>+1(535)-8999278</li>
+                            <li>+1(656)-3558302</li>
+                        </ul>
+                    </div>
+                    <div class="email">
+                        <ul class="list-unstyled">
+                            <li>maisonette@company.co</li>
+                            <li>maisonette@support.co</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 invoice-content">
+            <div class="row invoice-header">
+                <div class="col-6 invoice-title"><span>Invoice</span></div>
+                <div class="col-6 invoice-order">
+                    <span class="invoice-number">Number 2308</span>
+                    <span class="invoice-date">August 23, 2018</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="invoice-details">
+                        <thead>
+                            <tr>
+                                <th style="width:60%">Description</th>
+                                <th class="hours" style="width:17%">Hours</th>
+                                <th class="amount" style="width:15%">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="description">Web design (Etiam sagittis metus sit amet mauris gravida hendrerit)</td>
+                                <td class="hours">60</td>
+                                <td class="amount">$4,200.00</td>
+                            </tr>
+                            <tr>
+                                <td class="description">Responsive design (Etiam sagittis metus sit amet mauris gravida hendrerit)</td>
+                                <td class="hours">10</td>
+                                <td class="amount">$1,500.00</td>
+                            </tr>
+                            <tr>
+                                <td class="description">Logo design (Cras faucibus tincidunt elit id rhoncus.)</td>
+                                <td class="hours">12</td>
+                                <td class="amount">$1,700.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="invoice-summary">
+                        <thead>
+                            <tr>
+                                <th>Subtotal</th>
+                                <th>Discount (20%)</th>
+                                <th class="total">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="amount">$7,400,00</td>
+                                <td class="amount">$1,480,00</td>
+                                <td class="amount total-value">$5,920</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="invoice-payment-details">
+                        <p><b>Payment Method:</b> Credit card</p>
+                        <p><b>Card type:</b> Mastercard</p>
+                        <p><b>Number verification:</b> 4256981387</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 invoice-message mt-5 mb-5 mt-sm-6 mb-sm-6">
+                    <span class="title mb-4">Thank you for contacting us!</span>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis massa nisl. Sed fringilla turpis id mi ultrices, et faucibus ipsum aliquam.</p>
+                </div>
+            </div>
+            <div class="row invoice-footer">
+                <div class="col-md-12">
+                    <button class="btn btn-space btn-secondary">Save PDF</button>
+                    <button class="btn btn-space btn-secondary">Print</button>
+                    <button class="btn btn-space btn-primary">Pay now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

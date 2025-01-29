@@ -285,15 +285,20 @@ export class ModalComponent {
   }
 
   imprimir() {
-    this.impressaoService.setOrdemServico(this.orders)
-    this.router.navigate(['/impressao']);
-
-    /* Abre uma nova janela ou aba com uma URL absoluta
-    const novaJanela = window.open('', '_blank');  // Abre uma nova aba
-
-    if (novaJanela) {
-      // Navegar para a rota de impressão. Aqui usamos a URL com #.
-      novaJanela.location.href = `${window.location.origin}/#impressao`;
-    } */
+    const url = '../../../../assets/print/invoice.html';
+    window.open(url, '_blank');
   }
+
+  // imprimir() {
+  //   this.impressaoService.setOrdemServico(this.orders)
+  //   this.router.navigate(['/impressao']);
+
+  //   /* Abre uma nova janela ou aba com uma URL absoluta
+  //   const novaJanela = window.open('', '_blank');  // Abre uma nova aba
+
+  //   if (novaJanela) {
+  //     // Navegar para a rota de impressão. Aqui usamos a URL com #.
+  //     novaJanela.location.href = `${window.location.origin}/#impressao`;
+  //   } */
+  // }
 }
