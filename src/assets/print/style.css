@@ -22,13 +22,14 @@ body{margin-top:20px;
     }
     
     .invoice-logo {
-        height: 39px;
+        height: 200px;
         min-width: 233px;
-        background-image: url(../img/logo-inv-2x.png);
+        background-image: url(../img/brand/CARECA_LOGO.WEBP);
         background-repeat: no-repeat;
         background-size: 100% 100%;
         background-position: 0;
-        margin: 0 auto 115px
+        margin: 0 0 0px;
+        margin-top: -70px
     }
     
     @media (max-width: 575.98px) {
@@ -169,7 +170,7 @@ body{margin-top:20px;
     
     .invoice-title {
         font-size: 2.69231rem;
-        font-weight: 300
+        font-weight: 300;
     }
     
     @media (max-width: 575.98px) {
