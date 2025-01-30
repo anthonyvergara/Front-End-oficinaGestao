@@ -284,10 +284,172 @@ export class ModalComponent {
     // Aqui você pode chamar um serviço para enviar esses dados a uma API, por exemplo
   }
 
+  // imprimir() {
+  //   const url = '../../../../assets/print/invoice.html';
+  //   window.open(url, '_blank');
+  // }
+
   imprimir() {
-    const url = '../../../../assets/print/invoice.html';
-    window.open(url, '_blank');
-  }
+    const printWindow = window.open('', '_blank');
+    
+    if (printWindow) {
+        // Renderizar o template HTML com as informações
+        printWindow.document.write(`
+            <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Invoice with company info and description </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../../assets/print/style.css">
+</head>
+<body>
+<div class="main-content container">
+<div class="row invoice">
+  <div class="col-md-3 invoice-aside">
+    <div class="invoice-logo">
+        <img src="../../../../assets/img/brand/CARECA_LOGO.WEBP" alt="Logo" class="print-logo">
+    </div>
+    <div class="invoice-data">
+        <!--
+      <div class="invoice-person mt-2">
+        <span class="name">INVOICE</span>
+        <span class="position">Developer and Designer</span>
+        <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7b1f141515023b1f1e08121c151e09551814">[email&#160;protected]</a></span>
+        <span>661 Bubby Street</span>
+        <span>United States</span>
+      </div>
+        -->
+      <div class="invoice-payment-direction"><i class="icon s7-angle-down-circle"></i></div>
+      <!--
+      <div class="invoice-person"><span class="name">Elliot Mark</span><span class="position">CEO at BLX</span><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4122242e232d3901222e2c31202f386f222e">[email&#160;protected]</a></span><span>839 Owagner Drive</span><span>United States</span></div>
+      -->
+      <div class="invoice-company-info">
+        <div class="summary">
+         <!-- <span class="title">MOTO HACKNEY LIMITED</span>-->    
+          <p><strong>Company N:</strong> 10689065</p>
+          <p><strong>VAT Reg N:</strong> 336345208</p>
+          <span class="title mt-5">ADDRESS</span>
+          <p>38 Crawley Road</p>
+          <p>London</p>
+          <p>N22 6AG</p>
+          <p>United Kingdom</p>
+        </div>
+
+        <div class="summary mt-5">
+            <span class="title">CONTACT</span>
+            <div class="phone">
+                <ul class="list-unstyled">
+                  <li>+1(535)-8999278</li>
+                  <li>+1(656)-3558302</li>
+                </ul>
+              </div>
+        </div>
+
+        <div class="phone">
+          <ul class="list-unstyled">
+            <li>+1(535)-8999278</li>
+            <li>+1(656)-3558302</li>
+          </ul>
+        </div>
+        <div class="email">
+          <ul class="list-unstyled">
+            <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9af7fbf3e9f5f4ffeeeeffdaf9f5f7eafbf4e3b4f9f5">[email&#160;protected]</a></li>
+            <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dbb6bab2a8b4b5beafafbe9ba8aeababb4a9aff5b8b4">[email&#160;protected]</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 invoice-content">
+    <div class="row invoice-header">
+      <div class="col-6 invoice-title"><span>MOTO HACKNEY LIMITED</span></div>
+      <div class="col-6 invoice-order"><span class="invoice-number">Invoice 2308</span><span class="invoice-date">August 23, 2018</span></div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <table class="invoice-details">
+          <thead>
+            <tr>
+              <th style="width:60%">Description</th>
+              <th class="hours" style="width:17%">Qty</th>
+              <th class="amount" style="width:15%">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="description">Web design (Etiam sagittis metus sit amet mauris gravida hendrerit)</td>
+              <td class="hours">60</td>
+              <td class="amount">£4,200.00</td>
+            </tr>
+            <tr>
+              <td class="description">Responsive design (Etiam sagittis metus sit amet mauris gravida hendrerit)</td>
+              <td class="hours">10</td>
+              <td class="amount">£1,500.00</td>
+            </tr>
+            <tr>
+              <td class="description">Logo design (Cras faucibus tincidunt elit id rhoncus.)</td>
+              <td class="hours">12</td>
+              <td class="amount">£1,700.00</td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="invoice-summary">
+          <thead>
+            <tr>
+              <th>Subtotal</th>
+              <th>VAT (20%)</th>
+              <th class="total">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="amount">£7,400,00</td>
+              <td class="amount">£1,480,00</td>
+              <td class="amount total-value">£5,920</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="invoice-payment-details">
+          <p><b>Payment Method:</b> Credit card</p>
+          <p><b>Card type:</b> Mastercard</p>
+          <p><b>Number verification:</b> 4256981387</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 invoice-message mt-5 mb-5 mt-sm-6 mb-sm-6"><span class="title mb-4">Thank you for contacting us!</span>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis massa nisl. Sed fringilla turpis id mi ultrices, et faucibus ipsum aliquam.</p>
+      </div>
+    </div>
+    <div class="row invoice-footer">
+      <div class="col-md-12">
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
+    window.onload = function() {
+        window.print();
+    };
+</script>
+</body>
+</html>
+        `);
+        printWindow.document.close(); // Necessário para carregar o conteúdo
+        
+    }
+}
+
 
   // imprimir() {
   //   this.impressaoService.setOrdemServico(this.orders)

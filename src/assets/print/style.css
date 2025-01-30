@@ -1,353 +1,510 @@
-body{margin-top:20px;
+/* Estilos gerais */
+body {
+    margin-top: 20px;
     background-color: rgba(235, 238, 255, 1) !important;
-    }
-    
+}
+
+/* Container principal com Flexbox */
+.main-content {
+    display: flex;
+    flex-wrap: wrap; /* Garante que os elementos se ajustem em dispositivos pequenos */
+    justify-content: space-between; /* Espaçamento entre os elementos */
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Estilos para a seção lateral da fatura */
+.invoice-aside {
+    background-color: #ededed;
+    padding: 50px 33px;
+    flex: 0 0 25%; /* Ajusta a largura do sidebar para 25% */
+    box-sizing: border-box;
+    min-width: 250px; /* Ajusta para garantir que a largura não seja menor que isso */
+}
+
+@media (max-width: 575.98px) {
     .invoice-aside {
-        background-color: #ededed;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        padding: 50px 33px;
-        min-width: 300px
+        padding: 25px;
+        flex: 1 1 100%; /* No mobile, ocupa toda a largura */
     }
-    
-    @media (max-width: 575.98px) {
-        .invoice-aside {
-            padding:25px
-        }
-    }
-    
-    .invoice-logo {
-        height: 200px;
-        min-width: 233px;
-        background-image: url(../img/brand/CARECA_LOGO.WEBP);
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-        background-position: 0;
-        margin: 0 0 0px;
-        margin-top: -70px
-    }
-    
-    @media (max-width: 575.98px) {
-        .invoice-logo {
-            height:20px;
-            min-width: 133px;
-            width: 133px;
-            margin: 0 auto 57.5px;
-            float: none;
-            min-width: auto
-        }
-    }
-    
-    .invoice-person {
-        text-align: center
-    }
-    
-    .invoice-person .name {
-        font-size: 1.53846rem;
-        font-weight: 600
-    }
-    
-    @media (max-width: 575.98px) {
-        .invoice-person .name {
-            font-size:1.07692rem
-        }
-    }
-    
-    .invoice-person .position {
-        font-size: 1.23077rem
-    }
-    
-    @media (max-width: 575.98px) {
-        .invoice-person .position {
-            font-size:1rem
-        }
-    }
-    
-    .invoice-person span {
-        font-size: 1.23077rem;
-        line-height: 1.78;
-        display: block;
-        font-weight: 300
-    }
-    
-    @media (max-width: 575.98px) {
-        .invoice-person span {
-            font-size:1rem
-        }
-    }
-    
-    .invoice-payment-direction {
-        text-align: center;
-        margin: 89px 0
-    }
-    
-    @media (max-width: 575.98px) {
-        .invoice-payment-direction {
-            margin:44.5px 0
-        }
-    }
-    
-    .invoice-payment-direction .icon {
-        font-size: 4.23077rem;
-        line-height: 1
-    }
-    
-    @media (max-width: 767.98px) {
-        .invoice-payment-direction .icon {
-            font-size:1.92308rem
-        }
-    }
-    
-    .invoice-company-info {
-        margin-top: 100px
-    }
-    
-    @media (max-width: 575.98px) {
-        .invoice-company-info {
-            margin-top:50px;
-            text-align: center
-        }
-    }
-    
-    .invoice-company-info .summary {
-        font-size: 1.077rem;
-        line-height: 1.3
-    }
-    
-    @media (max-width: 575.98px) {
-        .invoice-company-info .summary {
-            font-size:1rem
-        }
-    }
-    
-    .invoice-company-info .summary .title {
-        display: block;
-        font-size: 1.38462rem;
-        line-height: 1;
-        font-weight: 600;
-        margin-bottom: 1.38462rem
-    }
-    
-    @media (max-width: 575.98px) {
-        .invoice-company-info .summary .title {
-            font-size:1.07692rem
-        }
-    }
-    
-    .invoice-company-info .email li,.invoice-company-info .phone li {
-        font-size: 1.077rem;
-        line-height: 1.7
-    }
-    
+}
+
+/* Estilos para o conteúdo da fatura */
+.invoice-content {
+    background-color: #fff;
+    padding: 50px 33px;
+    flex: 1 1 75%; /* Ajusta o conteúdo para ocupar os 75% restantes */
+    box-sizing: border-box;
+}
+
+@media (max-width: 575.98px) {
     .invoice-content {
-        background-color: #fff;
-        padding: 50px 33px;
-        -webkit-box-flex: 1;
-        -ms-flex: 1 1 0%;
-        flex: 1 1 0%
+        padding: 25px;
+        flex: 1 1 100%; /* No mobile, ocupa toda a largura */
     }
-    
-    @media (max-width: 575.98px) {
-        .invoice-content {
-            padding:25px
-        }
+}
+
+/* Estilos para o logotipo */
+.invoice-logo {
+    height: 200px;
+    min-width: 233px;
+    background-image: url(../img/brand/CARECA_LOGO.WEBP) !important;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: 0;
+    margin-top: -70px;
+}
+
+@media (max-width: 575.98px) {
+    .invoice-logo {
+        height: 20px;
+        min-width: 133px;
+        width: 133px;
+        margin: 0 auto 57.5px;
     }
-    
-    .invoice-header {
-        margin-bottom: 100px
-    }
-    
-    @media (max-width: 575.98px) {
-        .invoice-header {
-            margin-bottom:50px
-        }
-    }
-    
-    .invoice-title {
-        font-size: 2.69231rem;
-        font-weight: 300;
-    }
-    
-    @media (max-width: 575.98px) {
-        .invoice-title {
-            font-size:1.92308rem
-        }
-    }
-    
-    .invoice-order {
-        text-align: right
-    }
-    
-    .invoice-order .invoice-number {
-        display: block;
-        margin-top: 1rem;
-        font-size: 1.38462rem
-    }
-    
-    @media (max-width: 575.98px) {
-        .invoice-order .invoice-number {
-            font-size:1.07692rem
-        }
-    }
-    
-    .invoice-order .invoice-date {
-        font-size: 1.077rem;
-        color: #858585
-    }
-    
-    @media (max-width: 575.98px) {
-        .invoice-order .invoice-date {
-            font-size:1rem
-        }
-    }
-    
-    .invoice-details {
-        width: 100%;
+}
+
+/* Estilos para a pessoa da fatura */
+.invoice-person {
+    text-align: center;
+}
+
+.invoice-person .name {
+    font-size: 1.53846rem;
+    font-weight: 600;
+}
+
+@media (max-width: 575.98px) {
+    .invoice-person .name {
         font-size: 1.07692rem;
-        margin-bottom: 110px
     }
-    
-    @media (max-width: 575.98px) {
-        .invoice-details {
-            font-size:1rem;
-            margin-bottom: 55px
-        }
+}
+
+.invoice-person .position {
+    font-size: 1.23077rem;
+}
+
+@media (max-width: 575.98px) {
+    .invoice-person .position {
+        font-size: 1rem;
     }
-    
+}
+
+.invoice-person span {
+    font-size: 1.23077rem;
+    line-height: 1.78;
+    display: block;
+    font-weight: 300;
+}
+
+@media (max-width: 575.98px) {
+    .invoice-person span {
+        font-size: 1rem;
+    }
+}
+
+/* Estilos para a direção do pagamento */
+.invoice-payment-direction {
+    text-align: center;
+    margin: 89px 0;
+}
+
+@media (max-width: 575.98px) {
+    .invoice-payment-direction {
+        margin: 44.5px 0;
+    }
+}
+
+.invoice-payment-direction .icon {
+    font-size: 4.23077rem;
+    line-height: 1;
+}
+
+@media (max-width: 767.98px) {
+    .invoice-payment-direction .icon {
+        font-size: 1.92308rem;
+    }
+}
+
+/* Estilos para a informação da empresa */
+.invoice-company-info {
+    margin-top: 100px;
+}
+
+@media (max-width: 575.98px) {
+    .invoice-company-info {
+        margin-top: 50px;
+        text-align: center;
+    }
+}
+
+.invoice-company-info .summary {
+    font-size: 1.077rem;
+    line-height: 1.3;
+}
+
+@media (max-width: 575.98px) {
+    .invoice-company-info .summary {
+        font-size: 1rem;
+    }
+}
+
+.invoice-company-info .summary .title {
+    display: block;
+    font-size: 1.38462rem;
+    line-height: 1;
+    font-weight: 600;
+    margin-bottom: 1.38462rem;
+}
+
+@media (max-width: 575.98px) {
+    .invoice-company-info .summary .title {
+        font-size: 1.07692rem;
+    }
+}
+
+.invoice-company-info .email li,
+.invoice-company-info .phone li {
+    font-size: 1.077rem;
+    line-height: 1.7;
+}
+
+/* Estilos para o conteúdo da fatura */
+.invoice-header {
+    margin-bottom: 100px;
+}
+
+@media (max-width: 575.98px) {
+    .invoice-header {
+        margin-bottom: 50px;
+    }
+}
+
+.invoice-title {
+    font-size: 2.69231rem;
+    font-weight: 300;
+}
+
+@media (max-width: 575.98px) {
+    .invoice-title {
+        font-size: 1.92308rem;
+    }
+}
+
+.invoice-order {
+    text-align: right;
+}
+
+.invoice-order .invoice-number {
+    display: block;
+    margin-top: 1rem;
+    font-size: 1.38462rem;
+}
+
+@media (max-width: 575.98px) {
+    .invoice-order .invoice-number {
+        font-size: 1.07692rem;
+    }
+}
+
+.invoice-order .invoice-date {
+    font-size: 1.077rem;
+    color: #858585;
+}
+
+@media (max-width: 575.98px) {
+    .invoice-order .invoice-date {
+        font-size: 1rem;
+    }
+}
+
+/* Estilos para os detalhes da fatura */
+.invoice-details {
+    width: 100%;
+    font-size: 1.07692rem;
+    margin-bottom: 110px;
+}
+
+@media (max-width: 575.98px) {
+    .invoice-details {
+        font-size: 1rem;
+        margin-bottom: 55px;
+    }
+}
+
+.invoice-details thead th {
+    text-align: right;
+    padding-bottom: 1.69231rem;
+    font-size: 1.38462rem;
+}
+
+@media (max-width: 575.98px) {
     .invoice-details thead th {
-        text-align: right;
-        padding-bottom: 1.69231rem;
-        font-size: 1.38462rem
+        font-size: 1rem;
+        padding-bottom: 1.15385rem;
     }
-    
-    @media (max-width: 575.98px) {
-        .invoice-details thead th {
-            font-size:1rem;
-            padding-bottom: 1.15385rem
-        }
+}
+
+.invoice-details thead th:first-child {
+    text-align: left;
+}
+
+.invoice-details tr > td {
+    padding: 23px 0;
+}
+
+@media (max-width: 767.98px) {
+    .invoice-details tr > td {
+        padding: 10px 0;
     }
-    
-    .invoice-details thead th:first-child {
-        text-align: left
-    }
-    
-    .invoice-details tr>td {
-        padding: 23px 0
-    }
-    
-    @media (max-width: 767.98px) {
-        .invoice-details tr>td {
-            padding:10px 0
-        }
-    }
-    
-    .invoice-details tbody .hours {
-        text-align: right
-    }
-    
-    .invoice-details tbody .amount {
-        text-align: right
-    }
-    
+}
+
+.invoice-details tbody .hours {
+    text-align: right;
+}
+
+.invoice-details tbody .amount {
+    text-align: right;
+}
+
+/* Estilos para o resumo da fatura */
+.invoice-summary {
+    width: 100%;
+    font-size: 1.38462rem;
+    border-top: 1px solid #d9d9d9;
+    margin-bottom: 110px;
+}
+
+@media (max-width: 575.98px) {
     .invoice-summary {
-        width: 100%;
-        font-size: 1.38462rem;
-        border-top: 1px solid #d9d9d9;
-        margin-bottom: 110px
+        margin-bottom: 55px;
+        font-size: 1.07692rem;
     }
-    
-    @media (max-width: 575.98px) {
-        .invoice-summary {
-            margin-bottom:55px;
-            font-size: 1.07692rem
-        }
-    }
-    
+}
+
+.invoice-summary th {
+    padding-top: 26px;
+    font-weight: 600;
+    width: 20%;
+}
+
+@media (max-width: 575.98px) {
     .invoice-summary th {
-        padding-top: 26px;
-        font-weight: 600;
-        width: 20%
+        width: 37%;
     }
-    
-    @media (max-width: 575.98px) {
-        .invoice-summary th {
-            width:37%
-        }
-    }
-    
+}
+
+.invoice-summary th.total {
+    width: 60%;
+    font-size: 1.84615rem;
+    text-align: right;
+}
+
+@media (max-width: 575.98px) {
     .invoice-summary th.total {
-        width: 60%;
-        font-size: 1.84615rem;
-        text-align: right
+        font-size: 1.07692rem;
+        width: 26%;
     }
-    
-    @media (max-width: 575.98px) {
-        .invoice-summary th.total {
-            font-size:1.07692rem;
-            width: 26%
-        }
-    }
-    
+}
+
+.invoice-summary .total-value {
+    text-align: right;
+    font-size: 3.07692rem;
+}
+
+@media (max-width: 575.98px) {
     .invoice-summary .total-value {
-        text-align: right;
-        font-size: 3.07692rem
-    }
-    
-    @media (max-width: 575.98px) {
-        .invoice-summary .total-value {
-            font-size:1.07692rem;
-            font-weight: 600
-        }
-    }
-    
-    .invoice-payment-details {
-        border: 1px solid #d9d9d9;
-        border-left-width: 0;
-        border-right-width: 0;
-        padding: 23px 0
-    }
-    
-    .invoice-payment-details p {
-        margin-bottom: .538462rem
-    }
-    
-    .invoice-message .title {
-        display: block;
+        font-size: 1.07692rem;
         font-weight: 600;
-        text-transform: uppercase;
-        color: #545454;
-        font-size: 1.23077rem
     }
-    
-    @media (max-width: 575.98px) {
-        .invoice-message .title {
-            font-size:1.077rem
-        }
+}
+
+/* Estilos para os detalhes do pagamento */
+.invoice-payment-details {
+    border: 1px solid #d9d9d9;
+    border-left-width: 0;
+    border-right-width: 0;
+    padding: 23px 0;
+}
+
+.invoice-payment-details p {
+    margin-bottom: .538462rem;
+}
+
+/* Estilos para a mensagem da fatura */
+.invoice-message .title {
+    display: block;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #545454;
+    font-size: 1.23077rem;
+}
+
+@media (max-width: 575.98px) {
+    .invoice-message .title {
+        font-size: 1.077rem;
     }
-    
+}
+
+.invoice-message p {
+    font-size: 1.23077rem;
+    color: #999;
+    line-height: 1.6;
+}
+
+@media (max-width: 575.98px) {
     .invoice-message p {
-        font-size: 1.23077rem;
-        color: #999;
-        line-height: 1.6
+        font-size: 1rem;
     }
-    
-    @media (max-width: 575.98px) {
-        .invoice-message p {
-            font-size:1rem
-        }
-    }
-    
+}
+
+/* Estilos para o rodapé da fatura */
+.invoice-footer {
+    text-align: right;
+}
+
+@media (max-width: 575.98px) {
     .invoice-footer {
-        text-align: right
+        text-align: center;
     }
-    
-    @media (max-width: 575.98px) {
-        .invoice-footer {
-            text-align:center
-        }
+}
+
+.print-logo {
+    display: none;
+}
+
+/* Regras específicas para impressão */
+@media print {
+    /* Remover margens padrão e garantir que ocupe toda a página */
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif; /* Ajustar a fonte se necessário */
+        width: 100% !important;
     }
+
+    /* Definir a área de impressão */
+    .main-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start; /* Garante que as divs fiquem alinhadas à esquerda */
+        margin: 0;
+        padding: 0;
+        width: 100% !important; /* Certifique-se de que ocupe toda a largura da página */
+        flex-wrap: nowrap !important;
+    }
+    .print-logo {
+        display: block;
+    }
+    /* Ajustar a sidebar (informações da empresa) para ocupar 20% da largura */
+    .invoice-aside {
+        flex: 0 0 20%; /* Sidebar ocupa 20% da largura */
+        padding: 20px;
+        border-right: 1px solid #ddd; /* Uma borda sutil para separar a sidebar */
+        box-sizing: border-box; /* Garantir que o padding não afete o layout */
+    }
+
+    .invoice-logo {
+        background-image: url(../img/brand/CARECA_LOGO.WEBP) !important; /* Inclua o caminho correto da imagem */
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        height: 200px; /* Ajuste conforme necessário */
+        min-width: 200px;
+    }
+
+    /* Garantir que o conteúdo da fatura ocupe o restante da largura */
+    .invoice-content {
+        flex: 1; /* Conteúdo ocupa o restante da largura */
+        width: 800px !important;
+        padding: 20px;
+        box-sizing: border-box;
+        font-size: 10px !important;
+        border-right: none; /* Remove a borda direita */
+    }
+
+    /* Configurar a tabela de detalhes da fatura para caber bem na página */
+    .invoice-details, .invoice-summary {
+        width: 100% !important; /* Ajustar a largura para a impressão */
+        border-collapse: collapse;
+        font-size: 10px !important;
+    }
+
+    /* Ajustar o tamanho das colunas da tabela para caber na página */
+    .invoice-details th, .invoice-details td {
+        padding: 8px;
+        font-size: 10px !important;
+        border: 1px solid #ddd;
+    }
+
+    .invoice-summary th, .invoice-summary td {
+        padding: 8px;
+        font-size: 10px !important;
+        border-top: 1px solid #ddd;
+    }
+
+    /* Títulos das seções */
+    .invoice-title, .invoice-number, .invoice-date, .invoice-message .title {
+        font-size: 1.2rem;
+    }
+
+    /* Garantir que o rodapé fique centralizado e sem margens */
+    .invoice-footer {
+        text-align: center;
+        font-size: 10px !important;
+        margin-top: 20px;
+        width: 100%; /* Ajustar a largura para a impressão */
+    }
+
+    /* Tornar a mensagem de agradecimento mais compacta */
+    .invoice-message p {
+        font-size: 10px !important;
+        color: #333;
+        line-height: 1.5;
+    }
+
+    /* Ajuste da largura das tabelas e o espaço entre os elementos */
+    .invoice-details th {
+        text-align: left;
+    }
+
+    /* Ajustar para uma boa impressão sem sobreposição de elementos */
+    .invoice-details tbody .hours, .invoice-details tbody .amount {
+        text-align: right;
+    }
+
+    /* Remover qualquer espaço extra ou bordas desnecessárias para a impressão */
+    .invoice-message, .invoice-footer {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Garantir que o conteúdo da empresa e a fatura fiquem bem lado a lado */
+    .invoice-company-info, .invoice-payment-details {
+        display: block;
+        width: 100%; /* Ajustar a largura para a impressão */
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Ajustar as informações de contato para impressão */
+    .invoice-company-info .phone li, .invoice-company-info .email li {
+        font-size: 10px !important;
+    }
+
+    /* Ajuste de margem superior para começar no topo */
+    #print-section {
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    /* Garantir que todas as imagens sejam visíveis na impressão */
+    img {
+        display: block !important; /* Garante que imagens sejam visíveis */
+        max-width: 100%; /* Garante que imagens não extrapolem a largura do contêiner */
+        height: auto; /* Mantém a proporção das imagens */
+    }
+}
