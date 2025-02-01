@@ -1,5 +1,5 @@
 export interface Pagamento{
-    id: number;
+    id?: number;
     valorPago: number;
-    dataPagamento: string;
+    dataPagamento?: string;
 }

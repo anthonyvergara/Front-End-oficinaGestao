@@ -76,26 +76,23 @@ export class ModalPagarComponent implements OnInit {
   }
 
   pagar(){
-    this.pagamento = [
-      {
-        id: 0,
-        valorPago: this.valorTotalAhPagar,
-        dataPagamento: ''
-      }
-    ]
+    const idOrdemServico = this.ordemServico.id; // Substitua pelo ID real da ordem de serviço
+    const pagamentos: Pagamento[] = [
+      { valorPago: this.valorTotalAhPagar }
+    ];
 
-    this.pagamentoService.postPayOrdemServico(this.pagamento, String(this.ordemServico.id)).subscribe(
-      (pagamento) => {
-        console.log('Pagamento efetuado com sucesso!', pagamento);
+    this.pagamentoService.postPayOrdemServico(pagamentos, String(idOrdemServico)).subscribe(
+      response => {
+        console.log('Pagamentos salvos com sucesso:', response);
         this.showSuccessAlert = true;
         this.autoCloseAlert();
       },
-      (error) => {
-        console.error('Erro ao pagar:', error);
+      error => {
+        console.error('Erro ao salvar pagamentos:', error);
         this.showSuccessAlert = true;
         this.autoCloseAlert();
       }
-    )
+    );
   };
 
   closedModal() {

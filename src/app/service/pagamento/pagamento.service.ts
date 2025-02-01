@@ -12,7 +12,7 @@ export class PagamentoService {
 
   constructor(private http: HttpClient) { }
 
-  postPayOrdemServico(pagamento: Pagamento[], idOrdemServico: string): Observable<any> {
-    return this.http.post(`${this.apiUrlPostPayOrdemServico}${idOrdemServico}`,pagamento)
+  postPayOrdemServico(pagamento: Pagamento[], idOrdemServico: string): Observable<Pagamento[]> {
+    return this.http.post<Pagamento[]>(`${this.apiUrlPostPayOrdemServico}${idOrdemServico}`,pagamento)
   }
 }
