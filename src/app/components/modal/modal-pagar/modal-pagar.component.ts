@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { Pagamento } from 'src/app/service/models/pagamento.model';
 import { PagamentoService } from 'src/app/service/pagamento/pagamento.service';
+import { SharedService } from 'src/app/service/shared/shared.service';
 
 @Component({
   selector: 'app-modal-pagar',
@@ -24,7 +25,7 @@ export class ModalPagarComponent implements OnInit {
   parcialPayment : boolean = false;
   precoParcial : string;
 
-  valorTotalAhPagar : number = 0;
+  valorTotalAhPagar : number = 0; 
   valorParcialAhPagar : number = 0;
 
   showSuccessAlert: boolean = false;
@@ -34,7 +35,7 @@ export class ModalPagarComponent implements OnInit {
 
   @Output() close = new EventEmitter<void>();  // Evento de fechamento do modal
 
-  constructor(private pagamentoService: PagamentoService) { }
+  constructor(private pagamentoService: PagamentoService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.valorTotalAhPagar = this.saldoDevedor;
@@ -86,6 +87,7 @@ export class ModalPagarComponent implements OnInit {
         console.log('Pagamentos salvos com sucesso:', response);
         this.showSuccessAlert = true;
         this.autoCloseAlert();
+        this.sharedService.notifyPaymentCompleted();
       },
       error => {
         console.error('Erro ao salvar pagamentos:', error);

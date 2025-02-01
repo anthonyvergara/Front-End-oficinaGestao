@@ -3,6 +3,7 @@ import { trigger, style, transition, animate } from '@angular/animations';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
 import { ClientesService } from 'src/app/service/clientes/clientes.service';
+import { SharedService } from 'src/app/service/shared/shared.service';
 
 @Component({
   selector: 'app-listar',
@@ -22,7 +23,7 @@ import { ClientesService } from 'src/app/service/clientes/clientes.service';
 })
 export class ListarComponent implements OnInit {
 
-  constructor(private clienteService: ClientesService, private ordemServico: OrdemservicoService) { }
+  constructor(private clienteService: ClientesService, private ordemServico: OrdemservicoService, private sharedService: SharedService) { }
 
   modalData: any;
   isModalOpen = false;
@@ -31,6 +32,9 @@ export class ListarComponent implements OnInit {
 
   ngOnInit() {
     this.loadOrdemServico();
+    this.sharedService.paymentCompleted$.subscribe(() => {
+      this.loadOrdemServico();
+    })
   }
 
   loadOrdemServico(): void {

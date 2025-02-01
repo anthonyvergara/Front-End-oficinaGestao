@@ -6,6 +6,7 @@ import { Console } from 'console';
 import { Pagamento } from 'src/app/service/models/pagamento.model';
 import { Router } from '@angular/router';
 import { ImpressaoService } from 'src/app/service/impressao/impressao.service';
+import { SharedService } from 'src/app/service/shared/shared.service';
 
 @Component({
   selector: 'modal-listar-ordemServico',
@@ -72,16 +73,29 @@ export class ModalComponent {
 
   isModalNegociarOpen : boolean = false;
 
-  constructor(private ordemServico : OrdemservicoService, private router: Router, private impressaoService : ImpressaoService) {
+  constructor(private ordemServico : OrdemservicoService, private router: Router, private impressaoService : ImpressaoService, 
+    private sharedService : SharedService) {
   }
 
   ngOnInit(): void {
     this.getOrdemServicoById(this.id);
+    this.sharedService.paymentCompleted$.subscribe(() => {
+      this.getOrdemServicoById(this.id);
+    })
+  }
+
+  ngOnChanges(): void {
+    if (this.isModalOpen) {
+      this.getOrdemServicoById(this.id);
+    }
   }
 
   closeModal() {
     this.close.emit(); // Emite o evento para o componente pai
     //document.getElementById('modal-overlay')?.classList.remove('show');
+    this.isModalOpen = false;
+    this.modalPagarOpen = false;
+    this.isModalNegociarOpen = false;
   }
 
   onBackgroundClick(event: MouseEvent) {
