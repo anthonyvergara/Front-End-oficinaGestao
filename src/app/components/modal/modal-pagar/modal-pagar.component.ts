@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
+import { Pagamento } from 'src/app/service/models/pagamento.model';
+import { PagamentoService } from 'src/app/service/pagamento/pagamento.service';
 
 @Component({
   selector: 'app-modal-pagar',
@@ -16,6 +18,8 @@ export class ModalPagarComponent implements OnInit {
   @Input() nomeCliente: string | undefined;
   @Input() ordemServico: OrdemServico | undefined;
 
+  pagamento : Pagamento[];
+
   totalPayment : boolean = true;
   parcialPayment : boolean = false;
   precoParcial : string;
@@ -23,11 +27,14 @@ export class ModalPagarComponent implements OnInit {
   valorTotalAhPagar : number = 0;
   valorParcialAhPagar : number = 0;
 
+  showSuccessAlert: boolean = false;
+  showDangerAlert: boolean = false;
+
   today : Date = new Date();
 
   @Output() close = new EventEmitter<void>();  // Evento de fechamento do modal
 
-  constructor() { }
+  constructor(private pagamentoService: PagamentoService) { }
 
   ngOnInit(): void {
     this.valorTotalAhPagar = this.saldoDevedor;
@@ -52,6 +59,7 @@ export class ModalPagarComponent implements OnInit {
   onPrecoParcialChange(){
     this.valorParcialAhPagar = parseFloat(this.precoParcial.replace(/[^\d]/g, "")) / 100 || 0;
     this.valorTotalAhPagar = this.valorParcialAhPagar;
+    console.log(this.valorParcialAhPagar)
   }
 
   optionTotalPayment(){
@@ -67,8 +75,38 @@ export class ModalPagarComponent implements OnInit {
     this.valorTotalAhPagar = this.valorParcialAhPagar;
   }
 
+  pagar(){
+    this.pagamento = [
+      {
+        id: 0,
+        valorPago: this.valorTotalAhPagar,
+        dataPagamento: ''
+      }
+    ]
+
+    this.pagamentoService.postPayOrdemServico(this.pagamento, String(this.ordemServico.id)).subscribe(
+      (pagamento) => {
+        console.log('Pagamento efetuado com sucesso!', pagamento);
+        this.showSuccessAlert = true;
+        this.autoCloseAlert();
+      },
+      (error) => {
+        console.error('Erro ao pagar:', error);
+        this.showSuccessAlert = true;
+        this.autoCloseAlert();
+      }
+    )
+  };
+
   closedModal() {
     this.close.emit();  // Emite evento para o componente pai
+  }
+
+  autoCloseAlert() {
+    setTimeout(() => {
+      this.showSuccessAlert = false; // Fecha o alerta de sucesso
+      this.showDangerAlert = false; // Fecha o alerta de erro
+    }, 5000); // 5000 milissegundos = 5 segundos
   }
 
 }
