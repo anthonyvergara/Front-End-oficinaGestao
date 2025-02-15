@@ -34,8 +34,10 @@ export class ModalPagarComponent implements OnInit {
   isModalOpen: boolean = false
   isModalConfirmOpen : boolean = false
 
-  today : Date = new Date();
+  message : string = ""
 
+  today : Date = new Date();
+  
   @Output() close = new EventEmitter<void>();  // Evento de fechamento do modal
 
   constructor(private pagamentoService: PagamentoService, private sharedService: SharedService) { }
@@ -111,6 +113,7 @@ export class ModalPagarComponent implements OnInit {
 
   openModalConfirm() {
     this.isModalConfirmOpen = true;
+    this.message = "Você realmente deseja efetuar o pagamento?"
     console.log("abrindo.");
     document.getElementById('modal-bellow-overlay')?.classList.add('show');
 

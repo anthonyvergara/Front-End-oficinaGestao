@@ -19,6 +19,7 @@ import { ModalViewClienteComponent } from 'src/app/components/modal/modalViewCli
 import { ModalClienteProfileComponent } from 'src/app/components/modal/modal-cliente-profile/modal-cliente-profile.component';
 import { ModalPagarComponent } from 'src/app/components/modal/modal-pagar/modal-pagar.component';
 import { ModalNegociarComponent } from 'src/app/components/modal/modal-negociar/modal-negociar.component';
+import { ModalConfirmComponent } from 'src/app/components/modal/modal-confirm/modal-confirm.component';
 
 import { ImpressaoComponent } from 'src/app/components/impressao/impressao/impressao.component';
 
@@ -55,7 +56,8 @@ import { CurrencyFormatDirective } from '../../pages/maps/currency-input.directi
     ModalClienteProfileComponent,
     ModalPagarComponent,
     ModalNegociarComponent,
-    ImpressaoComponent
+    ImpressaoComponent,
+    ModalConfirmComponent
   ],
   exports: [
     MapsComponent // Exportar para que possa ser usado em outros módulos
