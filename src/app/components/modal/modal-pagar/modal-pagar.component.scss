@@ -222,6 +222,23 @@ form .btn.btn-primary:hover {
     background-color: #05cf48
 }
 
+.modal-bellow-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+    backdrop-filter: blur(5px); /* Aplica o desfoque */
+    z-index: 1040; /* Garante que o overlay fique atrás do modal */
+    display: none; /* Inicialmente escondido */
+  }
+  
+  /* Quando o modal estiver aberto, a classe "show" será adicionada ao overlay */
+  .modal-bellow-overlay.show {
+    display: block;
+  }
+
 @media (max-width:750px) {
     .container {
         padding: 10px;

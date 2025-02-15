@@ -31,6 +31,9 @@ export class ModalPagarComponent implements OnInit {
   showSuccessAlert: boolean = false;
   showDangerAlert: boolean = false;
 
+  isModalOpen: boolean = false
+  isModalConfirmOpen : boolean = false
+
   today : Date = new Date();
 
   @Output() close = new EventEmitter<void>();  // Evento de fechamento do modal
@@ -99,6 +102,18 @@ export class ModalPagarComponent implements OnInit {
 
   closedModal() {
     this.close.emit();  // Emite evento para o componente pai
+    this.isModalOpen = false
+  }
+
+  closeModalConfirm(){
+    this.isModalConfirmOpen = false
+  }
+
+  openModalConfirm() {
+    this.isModalConfirmOpen = true;
+    console.log("abrindo.");
+    document.getElementById('modal-bellow-overlay')?.classList.add('show');
+
   }
 
   autoCloseAlert() {
