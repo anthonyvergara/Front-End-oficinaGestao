@@ -38,6 +38,7 @@ export class ModalPagarComponent implements OnInit {
 
   today : Date = new Date();
   
+  @Output() successAlert = new EventEmitter<void>(); 
   @Output() close = new EventEmitter<void>();  // Evento de fechamento do modal
 
   constructor(private pagamentoService: PagamentoService, private sharedService: SharedService) { }
@@ -90,21 +91,24 @@ export class ModalPagarComponent implements OnInit {
     this.pagamentoService.postPayOrdemServico(pagamentos, String(idOrdemServico)).subscribe(
       response => {
         console.log('Pagamentos salvos com sucesso:', response);
-        this.showSuccessAlert = true;
-        this.autoCloseAlert();
         this.sharedService.notifyPaymentCompleted();
       },
       error => {
         console.error('Erro ao salvar pagamentos:', error);
-        this.showSuccessAlert = true;
-        this.autoCloseAlert();
+        this.showDangerAlert = true;
       }
     );
   };
 
+  successAlertShow(){
+    console.log("alert")
+    this.successAlert.emit();
+  }
+
   closedModal() {
     this.close.emit();  // Emite evento para o componente pai
     this.isModalOpen = false
+    console.log("emitiu")
   }
 
   closeModalConfirm(){
@@ -117,13 +121,6 @@ export class ModalPagarComponent implements OnInit {
     console.log("abrindo.");
     document.getElementById('modal-bellow-overlay')?.classList.add('show');
 
-  }
-
-  autoCloseAlert() {
-    setTimeout(() => {
-      this.showSuccessAlert = false; // Fecha o alerta de sucesso
-      this.showDangerAlert = false; // Fecha o alerta de erro
-    }, 5000); // 5000 milissegundos = 5 segundos
   }
 
 }

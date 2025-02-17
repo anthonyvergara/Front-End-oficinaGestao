@@ -34,6 +34,8 @@ export class ModalConfirmComponent implements OnInit {
   @Input() modalControl: boolean | undefined;
   @Input() message: string | undefined;
 
+  @Output() successAlert = new EventEmitter<void>();
+
   constructor() {}
 
   ngOnInit(): void {}
@@ -42,6 +44,7 @@ export class ModalConfirmComponent implements OnInit {
     this.modalControl = false;
     this.fecharModalPagar.emit();
     this.pagar.emit()
+    this.successAlert.emit();
   }
 
   closedModal() {

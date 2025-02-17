@@ -63,6 +63,8 @@ export class ModalComponent {
   valorTotalGeral : number = 0;
   dataUltimoPagamento: any = "14/09/2024";
 
+  showSuccessAlert : boolean = false
+
   contadorRegistros: number = 0;
 
   groupedDetalheServico: any[] = [];
@@ -82,6 +84,18 @@ export class ModalComponent {
     this.sharedService.paymentCompleted$.subscribe(() => {
       this.getOrdemServicoById(this.id);
     })
+  }
+
+  successAlert(){
+    console.log("modal-component")
+    this.showSuccessAlert = true
+    this.autoCloseAlert();
+  }
+
+  autoCloseAlert() {
+    setTimeout(() => {
+      this.showSuccessAlert = false; // Fecha o alerta de sucesso
+    }, 5000); // 5000 milissegundos = 5 segundos
   }
 
   ngOnChanges(): void {

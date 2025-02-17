@@ -2,6 +2,10 @@
   <div id="modal-bellow-overlay" class="modal-bellow-overlay"></div>
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content" (click)="$event.stopPropagation()">
+      <div *ngIf="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert" @fadeIn>
+        <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
+        <span class="alert-inner--text"><strong> Sucesso!</strong> Pagamento efetuado com sucesso!</span>
+      </div>
       <div class="modal-header">
         <h1 class="modal-title">Detalhes da Ordem de Serviço</h1>
         <div class="ml-auto d-flex">
@@ -273,6 +277,7 @@
               [vat]="orders.vat"
               [nomeCliente]="nome"
               [ordemServico]="orders"
+              (successAlert)="successAlert()"
               (close)="closedModal()">
               </app-modal-pagar>
 
