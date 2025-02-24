@@ -91,6 +91,7 @@ export class ModalPagarComponent implements OnInit {
     this.pagamentoService.postPayOrdemServico(pagamentos, String(idOrdemServico)).subscribe(
       response => {
         console.log('Pagamentos salvos com sucesso:', response);
+        this.valorTotalAhPagar = 0;
         this.sharedService.notifyPaymentCompleted();
       },
       error => {

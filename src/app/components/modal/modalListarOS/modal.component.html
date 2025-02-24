@@ -209,7 +209,7 @@
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase mb-0" style="color: white; font-style: bold;">VALOR PAGO</h5>
-                      <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ valorDaEntrada.toString() | currency:'GBP':'symbol':'1.2-2' }}</span>
+                      <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ valorTotalPago() | currency:'GBP':'symbol':'1.2-2' }}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-secondary rounded-circle shadow">
@@ -229,7 +229,7 @@
                     <div class="row">
                       <div class="col">
                         <h5 class="card-title text-uppercase mb-0" style="color: white; font-style: bold;">SALDO DEVEDOR</h5>
-                        <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ orders?.statusOrdemServico?.saldoDevedor| currency:'GBP':true }}</span>
+                        <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ saldoDevedor() | currency:'GBP':'symbol':'1.2-2' }}</span> <!-- currency:'GBP':true -->
                       </div>
                       <div class="col-auto">
                         <div class="icon icon-shape bg-secondary rounded-circle shadow">

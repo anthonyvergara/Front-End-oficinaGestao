@@ -83,6 +83,9 @@ export class ModalComponent {
     this.getOrdemServicoById(this.id);
     this.sharedService.paymentCompleted$.subscribe(() => {
       this.getOrdemServicoById(this.id);
+      this.valorTotalPago();
+      var Teste = this.saldoDevedor();
+      console.log(Teste + "variable teste")
     })
   }
 
@@ -90,6 +93,24 @@ export class ModalComponent {
     console.log("modal-component")
     this.showSuccessAlert = true
     this.autoCloseAlert();
+  }
+
+  valorTotalPago() : number {
+    var valorTotalDePagamentos = 0
+    
+    this.orders.pagamento.forEach(pagamento => {
+      valorTotalDePagamentos += pagamento.valorPago
+    });
+
+    this.saldoDevedor();
+
+    return valorTotalDePagamentos
+  }
+
+  saldoDevedor() : number{
+    var valorTotalSaldoDevedor = 0
+    valorTotalSaldoDevedor = this.orders.statusOrdemServico.saldoDevedor
+    return valorTotalSaldoDevedor;
   }
 
   autoCloseAlert() {
