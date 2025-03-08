@@ -83,10 +83,8 @@ export class ModalComponent {
     this.getOrdemServicoById(this.id);
     this.sharedService.paymentCompleted$.subscribe(() => {
       this.getOrdemServicoById(this.id);
-      this.valorTotalPago();
-      var Teste = this.saldoDevedor();
-      console.log(Teste + "variable teste")
     })
+    console.log("saldoooo:  "+ this.saldoDevedor())
   }
 
   successAlert(){
@@ -102,15 +100,11 @@ export class ModalComponent {
       valorTotalDePagamentos += pagamento.valorPago
     });
 
-    this.saldoDevedor();
-
     return valorTotalDePagamentos
   }
 
   saldoDevedor() : number{
-    var valorTotalSaldoDevedor = 0
-    valorTotalSaldoDevedor = this.orders.statusOrdemServico.saldoDevedor
-    return valorTotalSaldoDevedor;
+    return this.valorTotal - this.valorTotalPago();
   }
 
   autoCloseAlert() {
