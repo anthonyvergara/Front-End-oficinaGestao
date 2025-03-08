@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { Pagamento } from 'src/app/service/models/pagamento.model';
+import { StatusOrdemServico } from 'src/app/service/models/statusOrdemServico.model';
 import { PagamentoService } from 'src/app/service/pagamento/pagamento.service';
 import { SharedService } from 'src/app/service/shared/shared.service';
+import { StatusOrdemServicoService } from 'src/app/service/statusOrdemServico/status-ordem-servico.service';
 
 @Component({
   selector: 'app-modal-pagar',
@@ -20,6 +22,7 @@ export class ModalPagarComponent implements OnInit {
   @Input() ordemServico: OrdemServico | undefined;
 
   pagamento : Pagamento[];
+  status : StatusOrdemServico
 
   totalPayment : boolean = true;
   parcialPayment : boolean = false;
@@ -41,10 +44,10 @@ export class ModalPagarComponent implements OnInit {
   @Output() successAlert = new EventEmitter<void>(); 
   @Output() close = new EventEmitter<void>();  // Evento de fechamento do modal
 
-  constructor(private pagamentoService: PagamentoService, private sharedService: SharedService) { }
+  constructor(private pagamentoService: PagamentoService, private sharedService: SharedService, private statusOrdemService : StatusOrdemServicoService) { }
 
   ngOnInit(): void {
-    this.valorTotalAhPagar = this.saldoDevedor;
+    this.getStatusOrdemServico();
   }
 
   valorTotalAtrasado() : number{
@@ -61,6 +64,20 @@ export class ModalPagarComponent implements OnInit {
 
   proximaParcela() : string{
     return this.ordemServico.statusOrdemServico.proximoVencimento;
+  }
+
+  getStatusOrdemServico() : void{
+
+    this.statusOrdemService.getStatusOrdemServico(this.ordemServico.id).subscribe(
+      (status) => {
+        this.status = status
+        this.valorTotalAhPagar = status.saldoDevedor
+        this.saldoDevedor = status.saldoDevedor
+      },
+      (error) => {
+        console.error("Erro ao encontrar status do serviço" + error);
+      })
+
   }
 
   onPrecoParcialChange(){
