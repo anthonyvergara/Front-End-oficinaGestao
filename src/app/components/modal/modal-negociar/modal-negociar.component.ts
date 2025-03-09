@@ -11,7 +11,8 @@ import { SharedService } from 'src/app/service/shared/shared.service';
 export class ModalNegociarComponent implements OnInit {
   @Input() ordemServico: OrdemServico | undefined;
 
-  @Output() successAlert = new EventEmitter<void>(); 
+  @Output() successAlert = new EventEmitter<string>(); 
+  @Output() dangerAlert = new EventEmitter<string>(); 
 
   // Array de opções para o <select>
   selectOptions: { value: string, label: string }[] = [];
@@ -94,25 +95,29 @@ export class ModalNegociarComponent implements OnInit {
     return this.saldoAtrasado
   }
 
+  dangerAlertShow(){
+    console.log("oi")
+    this.dangerAlert.emit("Não foi possivel efetuar a negociação!");
+  }
+  successAlertShow(){
+    this.successAlert.emit("Negociação efetuada com sucesso!");
+  }
+
   negociar(){
-    const idOrdemServico = this.ordemServico.id
+    const idOrdemServico = this.ordemServico.id;
     const numParcelas = this.selectedValue
 
     this.ParcelamentoService.putParcelamento(idOrdemServico, Number(numParcelas)).subscribe(
       (response) =>{
-        console.log('Negociação feita com sucesso:', response);
         this.sharedService.notifyPaymentCompleted();
+        this.successAlertShow();
+        this.closedModal();
       },
       (error) => {
-        console.error('Erro ao salvar pagamentos:', error);
-        this.showDangerAlert = true;
+        this.dangerAlertShow();
+        this.closedModal();
       }
     )
-  }
-
-  successAlertShow(){
-    console.log("alert")
-    this.successAlert.emit();
   }
 
   openModalConfirm() {

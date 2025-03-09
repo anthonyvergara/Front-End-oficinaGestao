@@ -45,15 +45,11 @@ export class ModalConfirmComponent implements OnInit {
 
     if(this.message.includes("negociação")){
       this.modalControl = false;
-      this.fecharModalPagar.emit();
       this.negociar.emit()
-      this.successAlert.emit();
     }
     if(this.message.includes("pagamento")){
       this.modalControl = false;
-      this.fecharModalPagar.emit();
       this.pagar.emit()
-      this.successAlert.emit();
     }
     
   }

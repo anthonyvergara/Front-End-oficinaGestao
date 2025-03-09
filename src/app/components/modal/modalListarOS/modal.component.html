@@ -1,11 +1,15 @@
 <div class="modal fade show" tabindex="-1" role="dialog" style="display: block;" (click)="onBackgroundClick($event)" @fadeIn>
+  <div *ngIf="showDangerAlert" class="alert alert-danger alert-dismissible fade show showAlert text-center" role="alert" @fadeIn>
+    <span class="alert-inner--icon"><i class="fa fa-thumbs-down"></i></span>
+    <span class="alert-inner--text"><strong> Ops!</strong> {{messageAlert}}</span>
+  </div>
+  <div *ngIf="showSuccessAlert" class="alert alert-success alert-dismissible fade show showAlert text-center" role="alert" @fadeIn>
+    <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
+    <span class="alert-inner--text"><strong> Sucesso!</strong> {{messageAlert}}</span>
+  </div>
   <div id="modal-bellow-overlay" class="modal-bellow-overlay"></div>
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content" (click)="$event.stopPropagation()">
-      <div *ngIf="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert" @fadeIn>
-        <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
-        <span class="alert-inner--text"><strong> Sucesso!</strong> Pagamento efetuado com sucesso!</span>
-      </div>
       <div class="modal-header">
         <h1 class="modal-title">Detalhes da Ordem de Serviço</h1>
         <div class="ml-auto d-flex">
@@ -283,6 +287,7 @@
 
               <app-modal-negociar *ngIf="isModalNegociarOpen"
               [ordemServico]="orders"
-              (successAlert)="successAlert()"
+              (successAlert)="successAlert($event)"
+              (dangerAlert)="dangerAlert($event)"
               (close)="closedModal()">
               </app-modal-negociar>

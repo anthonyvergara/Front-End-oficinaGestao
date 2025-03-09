@@ -73,3 +73,15 @@
 	display: inline-block;
 	margin: 100px auto;
 }
+
+.showAlert {
+    position: fixed;  /* Mantém o alert fixo na tela */
+    top: 0;           /* Posiciona no topo da tela */
+    left: 0;          /* Alinha à esquerda */
+    width: 100%;      /* Ocupa toda a largura */
+    z-index: 1060;    /* Garante que o alert fique acima do modal (modal tem z-index: 1050) */
+    background-color: #f8d7da; /* Exemplo de fundo vermelho claro */
+    color: #721c24;   /* Cor do texto */
+    padding: 10px;    /* Espaçamento interno */
+    box-sizing: border-box; /* Garante que o padding não afete o tamanho */
+}

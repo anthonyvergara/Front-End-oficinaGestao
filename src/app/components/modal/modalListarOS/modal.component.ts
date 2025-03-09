@@ -64,6 +64,9 @@ export class ModalComponent {
   dataUltimoPagamento: any = "14/09/2024";
 
   showSuccessAlert : boolean = false
+  showDangerAlert : boolean = false
+
+  messageAlert : string = ""
 
   contadorRegistros: number = 0;
 
@@ -92,9 +95,15 @@ export class ModalComponent {
     return this.status;
   }
 
-  successAlert(){
+  successAlert(message : string){
     console.log("modal-component")
+    this.messageAlert = message
     this.showSuccessAlert = true
+    this.autoCloseAlert();
+  }
+  dangerAlert(message : string){
+    this.messageAlert = message
+    this.showDangerAlert = true
     this.autoCloseAlert();
   }
 
@@ -115,6 +124,8 @@ export class ModalComponent {
   autoCloseAlert() {
     setTimeout(() => {
       this.showSuccessAlert = false; // Fecha o alerta de sucesso
+      this.showDangerAlert = false;
+      this.messageAlert = ""
     }, 5000); // 5000 milissegundos = 5 segundos
   }
 
