@@ -1,3 +1,11 @@
+<div *ngIf="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert" @fadeIn>
+    <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
+    <span class="alert-inner--text"><strong> Sucesso!</strong> Negociação efetuada com sucesso!</span>
+  </div>
+  <div *ngIf="showDangerAlert" class="alert alert-danger alert-dismissible fade show" role="alert" @fadeIn>
+    <span class="alert-inner--icon"><i class="fa fa-thumbs-down"></i></span>
+    <span class="alert-inner--text"><strong> Ops!</strong> Não foi possivel efetuar a negociação!</span>
+  </div>
 <div class="modal fade show" tabindex="-1" role="dialog" style="display: block;" @fadeIn>
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -22,7 +30,7 @@
                                 </div>
                                 <label>Valor total atrasado</label>
                                 <div class="fw-bolder mb-4">
-                                    <span class="ps-1">{{100 | currency:'GBP':'symbol':'1.2-2'}}</span>
+                                    <span class="ps-1">{{getSaldoAtrasado() | currency:'GBP':'symbol':'1.2-2'}}</span>
                                 </div>
                                 <div class="d-flex flex-column">
                                     <div class="d-flex align-items-center justify-content-between text"> <span class="">Valor a negociar:</span> <span
@@ -54,7 +62,7 @@
                         
                         
                                             <div class="py-2  px-3">
-                                                <div class="pl-2 d-flex py-2" [ngClass]="totalPayment ? 'active' : 'second' ">
+                                                <div class="pl-2 d-flex py-2">
                                                     <div class="form-check">
                                                         <input type="radio" name="optradio" class="form-check-input mt-3 dot"
                                                             [attr.checked]="true">
@@ -67,33 +75,15 @@
                                             </div>
 
                                             <div class="py-2 px-3">
-                                                <div class="pl-2 d-flex py-2" [ngClass]="totalPayment ? 'active' : 'second'">
+                                                <div class="pl-2 d-flex py-2">
                                                     <div class="border-left pl-2 d-flex justify-content-between w-100">
-                                                        <!-- Quantidade de Parcelas à esquerda -->
-                                                        <div>
-                                                            <label for="exampleFormControlSelect1" class="amount">Quantidade</label>
-                                                            <select class="form-control" id="exampleFormControlSelect1" style="width: 60px !important;">
-                                                                <option>1</option>
-                                                                <option>2</option>
-                                                                <option>3</option>
-                                                                <option>4</option>
-                                                                <option>5</option>
-                                                                <option>6</option>
-                                                                <option>7</option>
-                                                                <option>8</option>
-                                                                <option>9</option>
-                                                                <option>10</option>
-                                                            </select>
-                                                        </div>
                                                         <!-- Parcelas à direita -->
                                                         <div class="mr-2">
                                                             <label for="exampleFormControlSelect2" class="amount">Parcelas</label>
-                                                            <select class="form-control" id="exampleFormControlSelect2" style="width: 180px !important;">
-                                                                <option>£100.00 - 29/10/18</option>
-                                                                <option>£70.00 - 13/02/19</option>
-                                                                <option>£20.00 - 02/01/21</option>
-                                                                <option>£300.00 - 10/08/25</option>
-                                                                <option>£70.00 - 20/07/24</option>
+                                                            <select [(ngModel)]="selectedValue" class="form-control" id="exampleFormControlSelect2" style="width: 280px !important;">
+                                                                <option *ngFor="let option of selectOptions" [value]="option.value">
+                                                                    {{ option.label }}
+                                                                </option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -102,7 +92,7 @@
 
                                             
                                             <div class="col-12 px-md-5 px-4 mt-3"> 
-                                                <div class="btn btn-pagar w-100">Negociar</div> 
+                                                <div class="btn btn-pagar w-100" (click)="openModalConfirm()">Negociar</div> 
                                             </div>
                         
                                         </div>
@@ -129,3 +119,12 @@
         </div>
     </div>
 </div>
+
+<app-modal-confirm *ngIf="isModalConfirmOpen"
+            [modalControl]="isModalConfirmOpen"
+            [message]="message"
+            (negociar)="negociar()"
+            (close)="closeModalConfirm()"
+            (successAlert)="successAlertShow()"
+            (fecharModalPagar)="closedModal()"
+            ></app-modal-confirm>

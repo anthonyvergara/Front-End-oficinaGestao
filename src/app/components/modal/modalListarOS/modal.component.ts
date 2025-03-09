@@ -84,7 +84,6 @@ export class ModalComponent {
     this.sharedService.paymentCompleted$.subscribe(() => {
       this.getOrdemServicoById(this.id);
     })
-    console.log("saldoooo:  "+ this.saldoDevedor())
   }
 
   successAlert(){

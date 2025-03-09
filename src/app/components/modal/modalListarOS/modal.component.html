@@ -283,5 +283,6 @@
 
               <app-modal-negociar *ngIf="isModalNegociarOpen"
               [ordemServico]="orders"
+              (successAlert)="successAlert()"
               (close)="closedModal()">
               </app-modal-negociar>

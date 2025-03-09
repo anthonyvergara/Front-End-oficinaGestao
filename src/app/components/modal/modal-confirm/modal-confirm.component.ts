@@ -31,6 +31,7 @@ export class ModalConfirmComponent implements OnInit {
   @Output() close = new EventEmitter<void>();  // Evento de fechamento do modal
   @Output() fecharModalPagar = new EventEmitter<void>();
   @Output() pagar = new EventEmitter<void>();
+  @Output() negociar = new EventEmitter<void>();
   @Input() modalControl: boolean | undefined;
   @Input() message: string | undefined;
 
@@ -40,11 +41,21 @@ export class ModalConfirmComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  efetuarPagamento(){
-    this.modalControl = false;
-    this.fecharModalPagar.emit();
-    this.pagar.emit()
-    this.successAlert.emit();
+  confirmarPagarOuParcelar(){
+
+    if(this.message.includes("negociação")){
+      this.modalControl = false;
+      this.fecharModalPagar.emit();
+      this.negociar.emit()
+      this.successAlert.emit();
+    }
+    if(this.message.includes("pagamento")){
+      this.modalControl = false;
+      this.fecharModalPagar.emit();
+      this.pagar.emit()
+      this.successAlert.emit();
+    }
+    
   }
 
   closedModal() {
