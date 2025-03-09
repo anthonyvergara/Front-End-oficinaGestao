@@ -104,7 +104,6 @@ export class ModalPagarComponent implements OnInit {
     const pagamentos: Pagamento[] = [
       { valorPago: this.valorTotalAhPagar }
     ];
-
     this.pagamentoService.postPayOrdemServico(pagamentos, String(idOrdemServico)).subscribe(
       response => {
         console.log('Pagamentos salvos com sucesso:', response);

@@ -83,7 +83,13 @@ export class ModalComponent {
     this.getOrdemServicoById(this.id);
     this.sharedService.paymentCompleted$.subscribe(() => {
       this.getOrdemServicoById(this.id);
+      this.checkStatus();
     })
+  }
+
+  checkStatus(){  
+    this.status = this.orders.statusOrdemServico.tipoStatus
+    return this.status;
   }
 
   successAlert(){
