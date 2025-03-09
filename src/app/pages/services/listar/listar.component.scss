@@ -46,4 +46,51 @@ table tbody tr:hover {
 .modal-overlay.show {
   display: block;
 }
-  
+
+/* Estilizando a estrutura do collapse */
+.custom-collapse {
+  border-radius: 8px;
+  margin: 10px 0;
+  overflow: hidden;
+  flex: 1; /* Ajusta a largura dos itens proporcionalmente */
+  max-width: 48%; /* Limita a largura para caber na mesma linha */
+}
+
+.custom-header {
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  width: 200px;
+}
+
+.custom-header h5 {
+  margin: 0;
+}
+
+.custom-header:hover {
+}
+
+.custom-body {
+  color: #721c24;
+  padding: 15px;
+  position: absolute; /* Permite que o conteúdo "flutue" */
+  left: 0; /* Alinhamento inicial */
+  width: 100%; /* Ajuste para ocupar a largura necessária */
+  z-index: 10; /* Garante que esteja acima de outros elementos */
+  display: none; /* Escondido por padrão */
+}
+.custom-collapse-container {
+  display: flex;
+  gap: 10px; /* Espaçamento entre os colapsos */
+}
+
+.custom-body.show {
+  display: block; /* Exibe o conteúdo quando a classe for adicionada */
+}
+
+.hidden {
+  display: none;
+  gap: 10px; /* Espaçamento entre os colapsos */
+  position: relative; /* Para servir de referência ao conteúdo absoluto */
+}
+

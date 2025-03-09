@@ -30,12 +30,51 @@ export class ListarComponent implements OnInit {
 
   orders : OrdemServico[] = [];
 
+  isItem1Open = true;
+  isItem2Open = false;
+  isItem3Open = false;
+  isItem4Open = false;
+
   ngOnInit() {
     this.loadOrdemServico();
     this.sharedService.paymentCompleted$.subscribe(() => {
       this.loadOrdemServico();
     })
   }
+
+  toggleCollapse(item: string) {
+    // Fecha todos os itens
+    this.isItem1Open = false;
+    this.isItem2Open = false;
+    this.isItem3Open = false;
+    this.isItem4Open = false;
+  
+    // Abre o item desejado
+    if (item === 'item1') {
+      this.isItem1Open = true;
+    } else if (item === 'item2') {
+      this.isItem2Open = true;
+    } else if (item === 'item3') {
+      this.isItem3Open = true;
+    } else if (item === 'item4') {
+      this.isItem4Open = true;
+    }
+  
+    // Atualiza a classe 'show' conforme o estado dos itens
+    const element1 = document.querySelector('.custom-body.item1');
+    element1.classList.toggle('show', this.isItem1Open);
+  
+    const element2 = document.querySelector('.custom-body.item2');
+    element2.classList.toggle('show', this.isItem2Open);
+  
+    const element3 = document.querySelector('.custom-body.item3');
+    element3.classList.toggle('show', this.isItem3Open);
+  
+    const element4 = document.querySelector('.custom-body.item4');
+    element4.classList.toggle('show', this.isItem4Open);
+  }
+
+  
 
   loadOrdemServico(): void {
     this.ordemServico.getAllOrdemServico().subscribe(

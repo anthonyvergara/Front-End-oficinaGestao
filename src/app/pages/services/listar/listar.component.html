@@ -12,10 +12,136 @@
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
             <!-- Botões de controle de registros -->
-            <div class="btn-group" role="group" aria-label="Controlar registros">
-              <button type="button" class="btn btn-primary" (click)="setRecords(10)">ÚLTIMOS SERVIÇOS</button>
-              <button type="button" class="btn btn-secondary" (click)="setRecords(15)">AGENDADOS</button>
-              <button type="button" class="btn btn-danger" (click)="setRecords(80)">ATRASADOS</button>
+            <div class="custom-collapse-container">
+              <div class="custom-collapse">
+                <div class="custom-header btn btn-primary" (click)="toggleCollapse('item1')">
+                  ÚLTIMOS SERVIÇOS
+                </div>
+                <div class="custom-body item1" [ngClass]="{'hidden': !isItem1Open, 'show': isItem1Open}">
+                  <!-- Tabela de registros -->
+                  <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                      <thead class="thead-light">
+                        <tr>
+                          <th scope="col">
+                            <h4>Status</h4>
+                            <i class="fas fa-sort" (click)="sortTable('status')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Nome do Cliente</h4>
+                            <i class="fas fa-sort" (click)="sortTable('cliente.nome')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Valor Total</h4>
+                            <i class="fas fa-sort" (click)="sortTable('valorTotal')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Data de Criação</h4>
+                            <i class="fas fa-sort" (click)="sortTable('dataInicio')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Conclusão</h4>
+                            <i class="fas fa-sort" (click)="sortTable('completion')"></i>
+                          </th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- Exibição dos registros filtrados e controlados pelo número de itens -->
+                        <tr *ngFor="let order of getPagedClients() | slice: 0:recordsToShow; let i = index" (click)="openModal(order.id, order.statusOrdemServico.tipoStatus, order.valorTotal, order.cliente.nome)">
+                          <th scope="row" [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <div class="media align-items-center">
+                              <!--<a href="javascript:void(0)" class="avatar rounded-circle mr-3">
+                                <img alt="Image placeholder" src="../assets/img/theme/bootstrap.jpg">
+                              </a> -->
+                              <div class="media-body">
+                                <span class="mb-0 text-sm badge" [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'badge-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'badge-success' : 'badge-agendado'">{{ order.statusOrdemServico.tipoStatus }}</span>
+                              </div>
+                            </div>
+                          </th>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            {{ order.cliente.nome | uppercase }}
+                          </td>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <span class="badge badge-dot mr-4">
+                              <i [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'bg-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'bg-success' : 'badge-agendado'"></i> {{ order.valorTotal.toString() | currency:'GBP':'symbol':'1.2-2' }}
+                            </span>
+                          </td>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <div class="avatar-group">
+                              {{ order.dataInicio }}
+                            </div>
+                          </td>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <div class="d-flex align-items-center">
+                              <span class="mr-2">{{order.statusOrdemServico.tipoStatus == 'PAGO' ? '100%' : '30%'}}</span>
+                              <div>
+                                <div class="progress">
+                                  <div class="progress-bar"
+                                    [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'bg-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'bg-success' : 'badge-agendado'"
+                                    role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" [style.width]="order.statusOrdemServico.tipoStatus == 'PAGO' ? '100%' : '30%'"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="text-right" [ngClass]="i % 2 === 0 ? '' : 'table-dark'" (click)="handleButtonClick($event)">
+                            <div ngbDropdown placement="bottom-right" class="position-static">
+                              <a [ngClass]="i % 2 === 0 ? 'btn btn-icon-only text-dark' : 'btn btn-icon-only text-white'"  ngbDropdownToggle>
+                                <i class="ni ni-settings"></i>
+                              </a>
+                              <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                                <a class="dropdown-item" href="javascript:void(0)">Imprimir</a>
+                                <a class="dropdown-item" href="javascript:void(0)">Enviar cobrança</a>
+                                <a class="dropdown-item" href="javascript:void(0)">Excluir</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div id="modal-overlay" class="modal-overlay"></div>
+                    <modal-listar-ordemServico
+                        *ngIf="isModalOpen" 
+                        [id]="modalData.id"
+                        [nome]="modalData.nome"
+                        [status]="modalData.status"
+                        [valorTotal]="modalData.valorTotal"
+                        [valorDaEntrada]="modalData.valorEntrada"
+                        (close)="closeModal()">
+                    </modal-listar-ordemServico>
+
+                  </div>
+
+                  
+                </div>
+              </div>
+            
+              <div class="custom-collapse">
+                <div class="custom-header btn btn-info" (click)="toggleCollapse('item2')">
+                  AGENDADOS
+                </div>
+                <div class="custom-body item2" [ngClass]="{'hidden': !isItem2Open, 'show': isItem2Open}">
+                  <p>Aqui está o conteúdo do segundo item. Mais uma vez, qualquer HTML pode ser adicionado abc.</p>
+                </div>
+              </div>
+            
+              <div class="custom-collapse">
+                <div class="custom-header btn btn-success" (click)="toggleCollapse('item3')">
+                  ATRASADOS
+                </div>
+                <div class="custom-body item3" [ngClass]="{'hidden': !isItem3Open, 'show': isItem3Open}">
+                  <p>Aqui está o conteúdo do terceiro item. Mais uma vez, qualquer HTML pode ser adicionado def.</p>
+                </div>
+              </div>
+            
+              <div class="custom-collapse">
+                <div class="custom-header btn btn-warning" (click)="toggleCollapse('item4')">
+                  TODOS SERVIÇOS
+                </div>
+                <div class="custom-body item4" [ngClass]="{'hidden': !isItem4Open, 'show': isItem4Open}">
+                  <p>Aqui está o conteúdo do quarto item. Mais uma vez, qualquer HTML pode ser adicionado ghi.</p>
+                </div>
+              </div>
             </div>
 
             <!-- Campo de filtro de pesquisa (alinhado à direita) -->
@@ -30,97 +156,7 @@
           </div>
         </div>
 
-        <!-- Tabela de registros -->
-        <div class="table-responsive">
-          <table class="table align-items-center table-flush">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">
-                  <h4>Status</h4>
-                  <i class="fas fa-sort" (click)="sortTable('status')"></i>
-                </th>
-                <th scope="col">
-                  <h4>Nome do Cliente</h4>
-                  <i class="fas fa-sort" (click)="sortTable('cliente.nome')"></i>
-                </th>
-                <th scope="col">
-                  <h4>Valor Total</h4>
-                  <i class="fas fa-sort" (click)="sortTable('valorTotal')"></i>
-                </th>
-                <th scope="col">
-                  <h4>Data de Criação</h4>
-                  <i class="fas fa-sort" (click)="sortTable('dataInicio')"></i>
-                </th>
-                <th scope="col">
-                  <h4>Conclusão</h4>
-                  <i class="fas fa-sort" (click)="sortTable('completion')"></i>
-                </th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Exibição dos registros filtrados e controlados pelo número de itens -->
-              <tr @fadeIn *ngFor="let order of getPagedClients() | slice: 0:recordsToShow; let i = index" (click)="openModal(order.id, order.statusOrdemServico.tipoStatus, order.valorTotal, order.cliente.nome)">
-                <th scope="row" [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
-                  <div class="media align-items-center">
-                    <!--<a href="javascript:void(0)" class="avatar rounded-circle mr-3">
-                      <img alt="Image placeholder" src="../assets/img/theme/bootstrap.jpg">
-                    </a> -->
-                    <div class="media-body">
-                      <span class="mb-0 text-sm badge" [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'badge-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'badge-success' : 'badge-agendado'">{{ order.statusOrdemServico.tipoStatus }}</span>
-                    </div>
-                  </div>
-                </th>
-                <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
-                  {{ order.cliente.nome | uppercase }}
-                </td>
-                <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
-                  <span class="badge badge-dot mr-4">
-                    <i [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'bg-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'bg-success' : 'badge-agendado'"></i> {{ order.valorTotal.toString() | currency:'GBP':'symbol':'1.2-2' }}
-                  </span>
-                </td>
-                <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
-                  <div class="avatar-group">
-                    {{ order.dataInicio }}
-                  </div>
-                </td>
-                <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
-                  <div class="d-flex align-items-center">
-                    <span class="mr-2">{{order.statusOrdemServico.tipoStatus == 'PAGO' ? '100%' : '30%'}}</span>
-                    <div>
-                      <div class="progress">
-                        <div class="progress-bar"
-                          [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'bg-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'bg-success' : 'badge-agendado'"
-                          role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" [style.width]="order.statusOrdemServico.tipoStatus == 'PAGO' ? '100%' : '30%'"></div>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td class="text-right" [ngClass]="i % 2 === 0 ? '' : 'table-dark'" (click)="handleButtonClick($event)">
-                  <div ngbDropdown placement="bottom-right" class="position-static">
-                    <a [ngClass]="i % 2 === 0 ? 'btn btn-icon-only text-dark' : 'btn btn-icon-only text-white'"  ngbDropdownToggle>
-                      <i class="ni ni-settings"></i>
-                    </a>
-                    <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
-                      <a class="dropdown-item" href="javascript:void(0)">Imprimir</a>
-                      <a class="dropdown-item" href="javascript:void(0)">Enviar cobrança</a>
-                      <a class="dropdown-item" href="javascript:void(0)">Excluir</a>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div id="modal-overlay" class="modal-overlay"></div>
-          <modal-listar-ordemServico
-              *ngIf="isModalOpen" 
-              [id]="modalData.id"
-              [nome]="modalData.nome"
-              [status]="modalData.status"
-              [valorTotal]="modalData.valorTotal"
-              [valorDaEntrada]="modalData.valorEntrada"
-              (close)="closeModal()">
-          </modal-listar-ordemServico>
+        <div style="height: 400px;">
 
         </div>
 

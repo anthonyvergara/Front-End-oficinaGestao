@@ -21,6 +21,7 @@ import { ModalPagarComponent } from 'src/app/components/modal/modal-pagar/modal-
 import { ModalNegociarComponent } from 'src/app/components/modal/modal-negociar/modal-negociar.component';
 import { ModalConfirmComponent } from 'src/app/components/modal/modal-confirm/modal-confirm.component';
 
+
 import { ImpressaoComponent } from 'src/app/components/impressao/impressao/impressao.component';
 
 import { CriarOrdemComponent } from 'src/app/components/criar-ordem/criar-ordem.component';
