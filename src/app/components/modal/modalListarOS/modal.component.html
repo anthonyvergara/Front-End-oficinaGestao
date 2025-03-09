@@ -281,7 +281,8 @@
               [vat]="orders.vat"
               [nomeCliente]="nome"
               [ordemServico]="orders"
-              (successAlert)="successAlert()"
+              (successAlert)="successAlert($event)"
+              (dangerAlert)="dangerAlert($event)"
               (close)="closedModal()">
               </app-modal-pagar>
 

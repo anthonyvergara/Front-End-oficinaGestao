@@ -41,7 +41,8 @@ export class ModalPagarComponent implements OnInit {
 
   today : Date = new Date();
   
-  @Output() successAlert = new EventEmitter<void>(); 
+  @Output() successAlert = new EventEmitter<string>(); 
+  @Output() dangerAlert = new EventEmitter<string>(); 
   @Output() close = new EventEmitter<void>();  // Evento de fechamento do modal
 
   constructor(private pagamentoService: PagamentoService, private sharedService: SharedService, private statusOrdemService : StatusOrdemServicoService) { }
@@ -99,6 +100,14 @@ export class ModalPagarComponent implements OnInit {
     this.valorTotalAhPagar = this.valorParcialAhPagar;
   }
 
+  dangerAlertShow(){
+    console.log("oi")
+    this.dangerAlert.emit("Não foi possivel efetuar o pagamento!");
+  }
+  successAlertShow(){
+    this.successAlert.emit("Pagamento efetuado com sucesso!");
+  }
+
   pagar(){
     const idOrdemServico = this.ordemServico.id; // Substitua pelo ID real da ordem de serviço
     const pagamentos: Pagamento[] = [
@@ -106,26 +115,22 @@ export class ModalPagarComponent implements OnInit {
     ];
     this.pagamentoService.postPayOrdemServico(pagamentos, String(idOrdemServico)).subscribe(
       response => {
-        console.log('Pagamentos salvos com sucesso:', response);
         this.valorTotalAhPagar = 0;
         this.sharedService.notifyPaymentCompleted();
+        this.successAlertShow();
+        this.closedModal();
       },
       error => {
-        console.error('Erro ao salvar pagamentos:', error);
         this.showDangerAlert = true;
+        this.dangerAlertShow();
+        this.closedModal();
       }
     );
   };
 
-  successAlertShow(){
-    console.log("alert")
-    this.successAlert.emit();
-  }
-
   closedModal() {
     this.close.emit();  // Emite evento para o componente pai
     this.isModalOpen = false
-    console.log("emitiu")
   }
 
   closeModalConfirm(){
