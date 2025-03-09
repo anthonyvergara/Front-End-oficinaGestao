@@ -239,6 +239,21 @@ form .btn.btn-primary:hover {
     display: block;
   }
 
+.box2 .btn-pagar{
+    background-color: #3ecc6d;
+    color: white;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ddd
+}
+.box2 .btn.btn-pagar:hover {
+    background-color: #57c97d;
+    color: white;
+}
+
 @media (max-width:750px) {
     .container {
         padding: 10px;
