@@ -49,6 +49,7 @@
 .form-control{
 	font-size: 18px;
 	font-weight: bold;
+    color: #000;
 	width: 70px;
 	height: 28px;
 
@@ -139,13 +140,40 @@
     border: none;
     border-bottom: 1px solid #ddd;
     box-shadow: none;
-    height: 20px;
+    color: #000;
+    height: 40px;
     font-weight: 600;
     font-size: 14px;
     padding: 15px 0px;
     letter-spacing: 1.5px;
-    border-radius: 0
+    border-radius: 0;
+    opacity: 1 !important; /* Garante visibilidade */
+    visibility: visible !important; /* Garante visibilidade */
 }
+select.form-control {
+    background-color: #fff; /* Cor de fundo */
+    color: #000; /* Cor do texto */
+    border: 1px solid #ddd; /* Borda */
+    border-radius: 4px; /* Bordas arredondadas */
+    padding: 5px 10px; /* Espaçamento interno */
+    appearance: none; /* Remove o estilo padrão */
+    -webkit-appearance: none; /* Remove estilo no Safari */
+    -moz-appearance: none; /* Remove estilo no Firefox */
+    font-size: 14px; /* Tamanho do texto */
+    width: 100%; /* Ajusta a largura */
+    background-image: url('https://www.reshot.com/preview-assets/icons/EUCMLYADT9/arrow-chevron-down-EUCMLYADT9.svg'); /* Adicione sua seta personalizada */
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Posicione a seta no lado direito */
+    background-size: 10px; /* Tamanho da seta */
+}
+
+select {
+    appearance: none; /* Garante consistência */
+    -webkit-appearance: none; /* Compatibilidade com navegadores baseados em Webkit */
+    -moz-appearance: none; /* Compatibilidade com Firefox */
+    background-image: none; /* Remove setas padrão do select */
+}
+
 
 .inputWithIcon {
     position: relative

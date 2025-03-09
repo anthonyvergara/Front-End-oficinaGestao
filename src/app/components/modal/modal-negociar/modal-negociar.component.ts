@@ -90,6 +90,7 @@ export class ModalNegociarComponent implements OnInit {
     })
     this.saldoCalculado = true
     console.log(this.saldoAtrasado + "ATRASADAO")
+    console.log(this.selectedValue)
     return this.saldoAtrasado
   }
 
