@@ -350,6 +350,51 @@ export class ModalComponent {
 
   imprimir() {
     const printWindow = window.open('', '_blank');
+
+    let itemsHtml = '';
+    this.orders.detalheServico.forEach((servico) => {
+      // Formatando o valor para o formato moeda padrão dos EUA
+      const formattedAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(servico.valor);
+  
+      // Capitalizando a primeira letra da descrição
+      const capitalizedDescription = servico.descricao.charAt(0).toUpperCase() + servico.descricao.slice(1);
+  
+      // Adicionando os itens formatados ao HTML
+      itemsHtml += `
+          <tr>
+              <td class="description">${capitalizedDescription}</td>
+              <td class="hours text-center">${servico.quantidade}</td>
+              <td class="amount text-center">${formattedAmount}</td>
+          </tr>
+      `;
+    });
+
+    var today: Date = new Date();
+
+    // Array com os nomes dos meses
+    var monthNames = [
+        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    ];
+
+    // Obter o mês atual (getMonth retorna 0 para Janeiro, 1 para Fevereiro, etc.)
+    var month = monthNames[today.getMonth()];
+
+    // Obter o dia e o ano
+    var day = today.getDate();
+    var year = today.getFullYear();
+
+    // Adicionar zero à esquerda no dia, se necessário
+    if (day < 10) day = Number('0') + day;
+
+    // Montar a data no formato dd/MM/YYYY com o nome do mês
+    var formattedDateWithMonthName = `${day} de ${month} de ${year}`;
+
+    var vat = this.orders.vat
+    var vatValue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(this.orders.valorTotal * vat);
+    var valorTotal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(this.orders.valorTotal + (this.orders.valorTotal * vat));
+    var subTotal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(this.orders.valorTotal);
+  
     
     if (printWindow) {
         // Renderizar o template HTML com as informações
@@ -358,7 +403,7 @@ export class ModalComponent {
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Invoice with company info and description </title>
+    <title>Invoice № ${this.orders.invoiceNumber}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../../../assets/print/style.css">
@@ -424,7 +469,7 @@ export class ModalComponent {
   <div class="col-md-9 invoice-content">
     <div class="row invoice-header">
       <div class="col-6 invoice-title"><span>MOTO HACKNEY LIMITED</span></div>
-      <div class="col-6 invoice-order"><span class="invoice-number">Invoice 2308</span><span class="invoice-date">August 23, 2018</span></div>
+      <div class="col-6 invoice-order"><span class="invoice-number"></span><span class="invoice-date">${formattedDateWithMonthName}</span></div>
     </div>
     <div class="row">
       <div class="col-md-12">
@@ -432,41 +477,27 @@ export class ModalComponent {
           <thead>
             <tr>
               <th style="width:60%">Description</th>
-              <th class="hours" style="width:17%">Qty</th>
-              <th class="amount" style="width:15%">Amount</th>
+              <th class="hours text-center" style="width:17%">Qty</th>
+              <th class="amount text-center" style="width:15%">Amount</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="description">Web design (Etiam sagittis metus sit amet mauris gravida hendrerit)</td>
-              <td class="hours">60</td>
-              <td class="amount">£4,200.00</td>
-            </tr>
-            <tr>
-              <td class="description">Responsive design (Etiam sagittis metus sit amet mauris gravida hendrerit)</td>
-              <td class="hours">10</td>
-              <td class="amount">£1,500.00</td>
-            </tr>
-            <tr>
-              <td class="description">Logo design (Cras faucibus tincidunt elit id rhoncus.)</td>
-              <td class="hours">12</td>
-              <td class="amount">£1,700.00</td>
-            </tr>
+            ${itemsHtml}
           </tbody>
         </table>
         <table class="invoice-summary">
           <thead>
             <tr>
               <th>Subtotal</th>
-              <th>VAT (20%)</th>
+              <th>VAT (${vat}%)</th>
               <th class="total">Total</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="amount">£7,400,00</td>
-              <td class="amount">£1,480,00</td>
-              <td class="amount total-value">£5,920</td>
+              <td class="amount">${subTotal}</td>
+              <td class="amount">${vatValue}</td>
+              <td class="amount total-value">${valorTotal}</td>
             </tr>
           </tbody>
         </table>
