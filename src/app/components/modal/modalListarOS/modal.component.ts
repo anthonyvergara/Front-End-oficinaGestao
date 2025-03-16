@@ -7,6 +7,7 @@ import { Pagamento } from 'src/app/service/models/pagamento.model';
 import { Router } from '@angular/router';
 import { ImpressaoService } from 'src/app/service/impressao/impressao.service';
 import { SharedService } from 'src/app/service/shared/shared.service';
+import { DetalheServico } from 'src/app/service/models/detalheServico.model';
 
 @Component({
   selector: 'modal-listar-ordemServico',
@@ -313,10 +314,12 @@ export class ModalComponent {
     const grupo = this.groupedDetalheServico[grupoIndex];
     if (grupo) {
       const novoRegistro = {
+        id:0,
         descricao: '',
         quantidade: 1,
         valor: 0.00,
         milhagem: 0,
+        placa: grupo.placa,
         data: new Date().toLocaleDateString('pt-BR')  // Pode ser substituído com outra lógica para data
       };
       grupo.detalhes.push(novoRegistro);
@@ -326,6 +329,10 @@ export class ModalComponent {
   }
 
   calcularTotais() {
+    console.log("GRupo")
+    console.log(this.groupedDetalheServico)
+    console.log("GRUPO 2")
+    console.log(this.AtualizarOrdemServico())
     this.valorTotalDetalheServicoPorPlaca = {};
     
     this.groupedDetalheServico.forEach((grupo) => {
@@ -337,6 +344,38 @@ export class ModalComponent {
       this.valorTotalDetalheServicoPorPlaca[grupo.placa] = total;
     });
   }
+
+
+  AtualizarOrdemServico(): DetalheServico {
+    // Cria um array vazio onde você vai armazenar os detalhes extraídos
+    let detail: DetalheServico[] = [];
+  
+    // Itera sobre cada moto no array `groupedDetalheServico`
+    this.groupedDetalheServico.forEach(moto => {
+      // Itera sobre os detalhes de cada moto
+      moto.detalhes.forEach(detalhe => {
+        // Adiciona o detalhe extraído no array `detail`
+        detail.push({
+          id: detalhe.id, 
+          data: detalhe.data,
+          descricao: detalhe.descricao,
+          placa: detalhe.placa,
+          valor: detalhe.valor || 0,
+          milhagem: detalhe.milhagem || 0, // Adiciona outros campos que deseja
+          quantidade: detalhe.quantidade
+        });
+      });
+    });
+  
+    // Imprime o array de detalhes no console
+    console.log(detail);
+  
+    // Aqui você pode retornar o array 'detail' ou um outro valor que faça sentido
+    // Exemplo de retorno de um detalhe específico ou algum outro comportamento
+    return detail[0];  // Apenas como exemplo, retornando o primeiro item de 'detail'
+  }
+  
+  
 
   // Método para remover um registro de uma moto
   removerRegistro(grupoIndex: number, registroIndex: number) {
