@@ -149,7 +149,11 @@ export class ModalComponent {
   
   // Método para incluir uma nova moto
   incluirMoto() {
-    this.motos.push({ placa: '', descricao: '', milhagem: '', preco: '', registros: [], isCollapsed: true });
+    const novoGrupo = {
+      placa: 'NOVA_PLACA',  // A placa pode ser dinâmica ou deixada para o usuário preencher
+      detalhes: []
+    };
+    this.groupedDetalheServico.push(novoGrupo);
   }
 
   get vat():string{
@@ -257,18 +261,33 @@ export class ModalComponent {
   }
 
   // Método para remover uma moto
-  removerMoto(index: number) {
-    this.motos.splice(index, 1);
+  removerMoto(grupoIndex: number) {
+    this.groupedDetalheServico.splice(grupoIndex, 1);
   }
 
   // Método para incluir um novo registro para uma moto
-  incluirRegistro(motoIndex: number) {
-    this.motos[motoIndex].registros.push({ qtd: 0, descricao: '', preco: 0, milhagem: '', data: new Date().toLocaleDateString('pt-BR') });
+  incluirRegistro(grupoIndex: number) {
+    // Verifica se o grupo existe e adiciona um novo registro
+    const grupo = this.groupedDetalheServico[grupoIndex];
+    if (grupo) {
+      const novoRegistro = {
+        descricao: '',
+        quantidade: 1,
+        valor: 0,
+        milhagem: 0,
+        data: new Date().toLocaleDateString('pt-BR')  // Pode ser substituído com outra lógica para data
+      };
+      grupo.detalhes.push(novoRegistro);
+    }
   }
 
   // Método para remover um registro de uma moto
-  removerRegistro(motoIndex: number, registroIndex: number) {
-    this.motos[motoIndex].registros.splice(registroIndex, 1);
+  removerRegistro(grupoIndex: number, registroIndex: number) {
+    const grupo = this.groupedDetalheServico[grupoIndex];
+    if (grupo && grupo.detalhes && grupo.detalhes.length > 0) {
+      // Remove o registro do grupo pelo índice
+      grupo.detalhes.splice(registroIndex, 1);
+    }
   }
 
   // Calcular a soma total de uma moto (exemplo)

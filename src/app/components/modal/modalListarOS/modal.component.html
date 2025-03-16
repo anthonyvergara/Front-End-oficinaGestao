@@ -78,6 +78,11 @@
                 
                       <div *ngIf="detalheServicoCollapse[grupo.placa]" class="card-body">
                         <div class="form-row align-items-end">
+                          <div class="mt-2 col-1">
+                            <button class="btn btn-success btn-round " type="button" (click)="incluirRegistro(i)" ngbTooltip="Incluir Registro">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                          </div>
                           <div class="col col-2">
                             <label>Placa</label>
                             <input type="text" class="form-control" [value]="grupo.placa | uppercase" placeholder="Placa" readonly>
@@ -120,7 +125,7 @@
                               <input type="text" class="form-control" [value]="registro.milhagem | number:'1.0-0'" (input)="updateMilhagem(grupo, j, $event)">
                             </div>
                             <div class="col">
-                              <button class="btn btn-outline-danger btn-round" type="button" (click)="removerRegistro(i, j)">
+                              <button *ngIf="grupo.detalhes.length > 1" class="btn btn-outline-danger btn-round" type="button" (click)="removerRegistro(i, j)">
                                 <i class="fas fa-trash"></i>
                               </button>
                             </div>
