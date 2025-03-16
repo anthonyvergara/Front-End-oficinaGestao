@@ -118,7 +118,9 @@
                             </div>
                             <div class="col col-2">
                               <label>Preço</label>
-                              <input type="text" appCurrencyFormat class="form-control" [value]="registro.valor | currency:'GBP':'symbol':'1.2-2'" (input)="updateValor(grupo, j, $event)">
+                              <input type="text" class="form-control" 
+                              [value]="registro.valor | currency:'GBP':'symbol':'1.2-2'" 
+                              (input)="formatarValorEmTempoReal($event, grupo, j)">
                             </div>
                             <div class="col col-2">
                               <label>Milhagem</label>

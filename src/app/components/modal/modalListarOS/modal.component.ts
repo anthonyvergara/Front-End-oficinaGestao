@@ -249,13 +249,51 @@ export class ModalComponent {
   }
 
   // Método para atualizar o valor de um registro específico
-  updateValor(grupo: any, index: number, event: any) {
-    const novoValor = parseFloat(event.target.value.replace(/[^0-9.]/g, '')) || 0; // Remove caracteres inválidos e converte para número
+  updateValor(grupo: any, index: number, event: any): void {
+    const inputElement = event.target;
+    const novoValor = parseFloat(inputElement.value.replace(/[^0-9.]/g, '')) || 0;
+  
+    // Atualiza o valor no modelo
     grupo.detalhes[index].valor = novoValor;
   
-    // Recalcula os totais ao alterar o valor
+    // Recalcula os totais
     this.calcularTotais();
   }
+
+  formatarValorEmTempoReal(event: any, grupo: any, index: number): void {
+    const inputElement = event.target;
+  
+    // Remove caracteres não numéricos
+    let valor = inputElement.value.replace(/[^\d]/g, '');
+  
+    // Se o valor estiver vazio, define como "0"
+    if (valor === '') {
+      valor = '0';
+    }
+  
+    // Converte para número inteiro (em centavos) e formata
+    const numValue = parseInt(valor, 10);
+    const formattedValue = this.formatarComoMoeda(numValue);
+  
+    // Atualiza o valor formatado no campo de input
+    inputElement.value = formattedValue;
+  
+    // Atualiza o modelo com o valor em formato monetário (dividido por 100)
+    grupo.detalhes[index].valor = numValue / 100;
+  
+    // Recalcula os totais
+    this.calcularTotais();
+  }
+  
+  private formatarComoMoeda(value: number): string {
+    const finalValue = value / 100; // Converte para valor monetário
+    return '£ ' + finalValue.toLocaleString('en-GB', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+  
+  
   
 
   // Método para atualizar a milhagem de um registro específico
@@ -299,18 +337,6 @@ export class ModalComponent {
       this.valorTotalDetalheServicoPorPlaca[grupo.placa] = total;
     });
   }
-  
-  
-
-  // Método para atualizar o valor total quando o preço for alterado
-  updatingValor(grupo: any, index: number, event: any) {
-    const novoValor = parseFloat(event.target.value) || 0; // Converta para número, tratando NaN
-    grupo.detalhes[index].valor = novoValor;
-    this.calcularTotais();
-  }
-  
-  
-  
 
   // Método para remover um registro de uma moto
   removerRegistro(grupoIndex: number, registroIndex: number) {
