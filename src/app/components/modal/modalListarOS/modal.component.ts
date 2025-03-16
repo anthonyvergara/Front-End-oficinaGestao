@@ -249,10 +249,14 @@ export class ModalComponent {
   }
 
   // Método para atualizar o valor de um registro específico
-  updateValor(grupo: any, index: number, event: Event): void {
-    const input = event.target as HTMLInputElement;
-    grupo.detalhes[index].valor = input.value;
+  updateValor(grupo: any, index: number, event: any) {
+    const novoValor = parseFloat(event.target.value.replace(/[^0-9.]/g, '')) || 0; // Remove caracteres inválidos e converte para número
+    grupo.detalhes[index].valor = novoValor;
+  
+    // Recalcula os totais ao alterar o valor
+    this.calcularTotais();
   }
+  
 
   // Método para atualizar a milhagem de um registro específico
   updateMilhagem(grupo: any, index: number, event: Event): void {
@@ -273,13 +277,40 @@ export class ModalComponent {
       const novoRegistro = {
         descricao: '',
         quantidade: 1,
-        valor: 0,
+        valor: 0.00,
         milhagem: 0,
         data: new Date().toLocaleDateString('pt-BR')  // Pode ser substituído com outra lógica para data
       };
       grupo.detalhes.push(novoRegistro);
+
+      this.calcularTotais();
     }
   }
+
+  calcularTotais() {
+    this.valorTotalDetalheServicoPorPlaca = {};
+    
+    this.groupedDetalheServico.forEach((grupo) => {
+      const total = grupo.detalhes.reduce((acc, registro) => {
+        const valor = parseFloat(registro.valor) || 0; // Converta para número, tratando NaN
+        return acc + valor;
+      }, 0);
+      
+      this.valorTotalDetalheServicoPorPlaca[grupo.placa] = total;
+    });
+  }
+  
+  
+
+  // Método para atualizar o valor total quando o preço for alterado
+  updatingValor(grupo: any, index: number, event: any) {
+    const novoValor = parseFloat(event.target.value) || 0; // Converta para número, tratando NaN
+    grupo.detalhes[index].valor = novoValor;
+    this.calcularTotais();
+  }
+  
+  
+  
 
   // Método para remover um registro de uma moto
   removerRegistro(grupoIndex: number, registroIndex: number) {
@@ -287,6 +318,7 @@ export class ModalComponent {
     if (grupo && grupo.detalhes && grupo.detalhes.length > 0) {
       // Remove o registro do grupo pelo índice
       grupo.detalhes.splice(registroIndex, 1);
+      this.calcularTotais();
     }
   }
 
