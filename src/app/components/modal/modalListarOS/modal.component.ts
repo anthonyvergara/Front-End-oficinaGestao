@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { ImpressaoService } from 'src/app/service/impressao/impressao.service';
 import { SharedService } from 'src/app/service/shared/shared.service';
 import { DetalheServico } from 'src/app/service/models/detalheServico.model';
+import { DetalheServicoService } from 'src/app/service/detalheServico/detalhe-servico.service';
 
 @Component({
   selector: 'modal-listar-ordemServico',
@@ -80,7 +81,7 @@ export class ModalComponent {
   isModalNegociarOpen : boolean = false;
 
   constructor(private ordemServico : OrdemservicoService, private router: Router, private impressaoService : ImpressaoService, 
-    private sharedService : SharedService) {
+    private sharedService : SharedService, private detalheServicoService : DetalheServicoService) {
   }
 
   ngOnInit(): void {
@@ -329,10 +330,6 @@ export class ModalComponent {
   }
 
   calcularTotais() {
-    console.log("GRupo")
-    console.log(this.groupedDetalheServico)
-    console.log("GRUPO 2")
-    console.log(this.AtualizarOrdemServico())
     this.valorTotalDetalheServicoPorPlaca = {};
     
     this.groupedDetalheServico.forEach((grupo) => {
@@ -346,7 +343,7 @@ export class ModalComponent {
   }
 
 
-  AtualizarOrdemServico(): DetalheServico {
+  atualizarOrdemServico(): DetalheServico[] {
     // Cria um array vazio onde você vai armazenar os detalhes extraídos
     let detail: DetalheServico[] = [];
   
@@ -357,7 +354,7 @@ export class ModalComponent {
         // Adiciona o detalhe extraído no array `detail`
         detail.push({
           id: detalhe.id, 
-          data: detalhe.data,
+          data: null,
           descricao: detalhe.descricao,
           placa: detalhe.placa,
           valor: detalhe.valor || 0,
@@ -372,9 +369,21 @@ export class ModalComponent {
   
     // Aqui você pode retornar o array 'detail' ou um outro valor que faça sentido
     // Exemplo de retorno de um detalhe específico ou algum outro comportamento
-    return detail[0];  // Apenas como exemplo, retornando o primeiro item de 'detail'
+    return detail;  // Apenas como exemplo, retornando o primeiro item de 'detail'
   }
   
+  updateDetalheServico() : void{
+    console.log("id Ordem: "+  this.orders.id)
+    this.detalheServicoService.putDetalheServico(this.orders.id, this.atualizarOrdemServico()).subscribe(
+      response => {
+        console.log('Ordem de serviço atualizada com sucesso!', response);
+        //this.sharedService.notifyPaymentCompleted();
+      },
+      error => {
+        console.error('Erro ao atualizar ordem de serviço', error);
+      }
+    )
+  }
   
 
   // Método para remover um registro de uma moto
