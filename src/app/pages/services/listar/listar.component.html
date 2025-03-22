@@ -55,8 +55,17 @@
                                 <img alt="Image placeholder" src="../assets/img/theme/bootstrap.jpg">
                               </a> -->
                               <div class="media-body">
-                                <span class="mb-0 text-sm badge" [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'badge-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'badge-success' : 'badge-agendado'">{{ order.statusOrdemServico.tipoStatus }}</span>
+                                <span class="mb-0 text-sm badge"
+                                  [ngClass]="{
+                                    'font-white': i % 2 !== 0,
+                                    'badge-danger': order.statusOrdemServico.tipoStatus == 'ATRASADO',
+                                    'badge-success': order.statusOrdemServico.tipoStatus == 'PAGO',
+                                    'badge-agendado': order.statusOrdemServico.tipoStatus != 'ATRASADO' && order.statusOrdemServico.tipoStatus != 'PAGO'
+                                  }">
+                                  {{ order.statusOrdemServico.tipoStatus }}
+                                </span>
                               </div>
+                              
                             </div>
                           </th>
                           <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
@@ -129,7 +138,7 @@
                             <span *ngIf="page === -1">...</span>
                           </a>
                         </li>
-                        <li class="page-item" [class.disabled]="currentPageUltimas === totalPages()">
+                        <li class="page-item" [class.disabled]="currentPageUltimas === totalPagesUltimas()">
                           <a class="page-link" href="javascript:void(0)" (click)="nextPage('ULTIMAS')">
                             <i class="fas fa-angle-right"></i>
                             <span class="sr-only">Next</span>
@@ -144,7 +153,7 @@
               </div>
             
               <div class="custom-collapse">
-                <div class="custom-header btn btn-info" (click)="toggleCollapse('item2')">
+                <div class="custom-header btn badge-agendado" style="color: white;" (click)="toggleCollapse('item2')">
                   AGENDADOS
                 </div>
                 <div class="custom-body item2" [ngClass]="{'hidden': !isItem2Open, 'show': isItem2Open}">
@@ -184,7 +193,15 @@
                                 <img alt="Image placeholder" src="../assets/img/theme/bootstrap.jpg">
                               </a> -->
                               <div class="media-body">
-                                <span class="mb-0 text-sm badge" [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'badge-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'badge-success' : 'badge-agendado'">{{ order.statusOrdemServico.tipoStatus }}</span>
+                                <span class="mb-0 text-sm badge"
+                                  [ngClass]="{
+                                    'font-white': i % 2 !== 0,
+                                    'badge-danger': order.statusOrdemServico.tipoStatus == 'ATRASADO',
+                                    'badge-success': order.statusOrdemServico.tipoStatus == 'PAGO',
+                                    'badge-agendado': order.statusOrdemServico.tipoStatus != 'ATRASADO' && order.statusOrdemServico.tipoStatus != 'PAGO'
+                                  }">
+                                  {{ order.statusOrdemServico.tipoStatus }}
+                                </span>
                               </div>
                             </div>
                           </th>
@@ -258,7 +275,7 @@
                             <span *ngIf="page === -1">...</span>
                           </a>
                         </li>
-                        <li class="page-item" [class.disabled]="currentPageAgendados === totalPages()">
+                        <li class="page-item" [class.disabled]="currentPageAgendados === totalPagesAgendados()">
                           <a class="page-link" href="javascript:void(0)" (click)="nextPage('AGENDADO')">
                             <i class="fas fa-angle-right"></i>
                             <span class="sr-only">Next</span>
@@ -271,7 +288,7 @@
               </div>
             
               <div class="custom-collapse">
-                <div class="custom-header btn btn-success" (click)="toggleCollapse('item3')">
+                <div class="custom-header btn btn-danger" (click)="toggleCollapse('item3')">
                   ATRASADOS
                 </div>
                 <div class="custom-body item3" [ngClass]="{'hidden': !isItem3Open, 'show': isItem3Open}">
@@ -311,7 +328,15 @@
                                 <img alt="Image placeholder" src="../assets/img/theme/bootstrap.jpg">
                               </a> -->
                               <div class="media-body">
-                                <span class="mb-0 text-sm badge" [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'badge-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'badge-success' : 'badge-agendado'">{{ order.statusOrdemServico.tipoStatus }}</span>
+                                <span class="mb-0 text-sm badge"
+                                  [ngClass]="{
+                                    'font-white': i % 2 !== 0,
+                                    'badge-danger': order.statusOrdemServico.tipoStatus == 'ATRASADO',
+                                    'badge-success': order.statusOrdemServico.tipoStatus == 'PAGO',
+                                    'badge-agendado': order.statusOrdemServico.tipoStatus != 'ATRASADO' && order.statusOrdemServico.tipoStatus != 'PAGO'
+                                  }">
+                                  {{ order.statusOrdemServico.tipoStatus }}
+                                </span>
                               </div>
                             </div>
                           </th>
@@ -385,7 +410,7 @@
                             <span *ngIf="page === -1">...</span>
                           </a>
                         </li>
-                        <li class="page-item" [class.disabled]="currentPageAtrasados === totalPages()">
+                        <li class="page-item" [class.disabled]="currentPageAtrasados === totalPagesAtrasados()">
                           <a class="page-link" href="javascript:void(0)" (click)="nextPage('ATRASADO')">
                             <i class="fas fa-angle-right"></i>
                             <span class="sr-only">Next</span>
@@ -438,7 +463,15 @@
                                 <img alt="Image placeholder" src="../assets/img/theme/bootstrap.jpg">
                               </a> -->
                               <div class="media-body">
-                                <span class="mb-0 text-sm badge" [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'badge-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'badge-success' : 'badge-agendado'">{{ order.statusOrdemServico.tipoStatus }}</span>
+                                <span class="mb-0 text-sm badge"
+                                  [ngClass]="{
+                                    'font-white': i % 2 !== 0,
+                                    'badge-danger': order.statusOrdemServico.tipoStatus == 'ATRASADO',
+                                    'badge-success': order.statusOrdemServico.tipoStatus == 'PAGO',
+                                    'badge-agendado': order.statusOrdemServico.tipoStatus != 'ATRASADO' && order.statusOrdemServico.tipoStatus != 'PAGO'
+                                  }">
+                                  {{ order.statusOrdemServico.tipoStatus }}
+                                </span>
                               </div>
                             </div>
                           </th>

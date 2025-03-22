@@ -205,15 +205,15 @@ export class ListarComponent implements OnInit {
 
     switch(tipo){
       case 'AGENDADO': 
-        if (page < 1 || page > this.totalPages()) return;
+        if (page < 1 || page > this.totalPagesAgendados()) return;
         this.currentPageAgendados = page;
         break;
       case 'ATRASADO' : 
-        if (page < 1 || page > this.totalPages()) return;
+        if (page < 1 || page > this.totalPagesAtrasados()) return;
         this.currentPageAtrasados = page;
         break;
       case 'ULTIMAS' : 
-        if (page < 1 || page > this.totalPages()) return;
+        if (page < 1 || page > this.totalPagesUltimas()) return;
         this.currentPageUltimas = page;
         break;
       default:
@@ -227,17 +227,17 @@ export class ListarComponent implements OnInit {
 
     switch(tipo){
       case 'AGENDADO': 
-        if (this.currentPageAgendados < this.totalPages()) {
+        if (this.currentPageAgendados < this.totalPagesAgendados()) {
           this.currentPageAgendados++;
         }
         break;
       case 'ATRASADO' : 
-        if (this.currentPageAtrasados < this.totalPages()) {
+        if (this.currentPageAtrasados < this.totalPagesAtrasados()) {
           this.currentPageAtrasados++;
         }
         break;
       case 'ULTIMAS' : 
-        if (this.currentPageUltimas < this.totalPages()) {
+        if (this.currentPageUltimas < this.totalPagesUltimas()) {
           this.currentPageUltimas++;
         }
         break;
