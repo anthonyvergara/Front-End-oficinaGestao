@@ -129,53 +129,187 @@ export class ListarComponent implements OnInit {
     // Adicione a lógica que você deseja executar ao clicar no botão
   }
 
-  recordsToShow = 10;  // Número de registros a serem exibidos
+  recordsToShow = 5;  // Número de registros a serem exibidos
   searchQuery = '';   // Para buscar pelo nome do cliente
 
   currentPage = 1;  // Página atual
   itemsPerPage = 5; // Número de itens por página (no seu caso, 1 cliente por página)
+  itemsPerPageTodos = 10
+  
+  currentPageAgendados = 1
+  currentPageAtrasados = 1
+  currentPageUltimas = 1
 
   get filteredOrders() {
-    return this.orders.filter(order =>
-      (order.cliente.nome.toLowerCase().includes(this.searchQuery.toLowerCase()))
-    );
+    return this.orders
+    .filter(order =>
+      (order.cliente.nome.toLowerCase().includes(this.searchQuery.toLowerCase())
+      ))
+  }
+
+  get filteredOrdersByAgendados() {
+    return this.orders
+    .filter(order =>
+      (order.cliente.nome.toLowerCase().includes(this.searchQuery.toLowerCase()) && order.statusOrdemServico.tipoStatus == "AGENDADO"
+      ))
+  }
+
+  get filteredOrdersByAtrasados() {
+    return this.orders
+    .filter(order =>
+      (order.cliente.nome.toLowerCase().includes(this.searchQuery.toLowerCase()) && order.statusOrdemServico.tipoStatus == "ATRASADO"
+      ))
   }
   
+  get filteredOrdersByUltimas() {
+    return this.orders
+    .filter(order =>
+      order.cliente.nome.toLowerCase().includes(this.searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      const dateA = new Date(a.dataInicio); // Converte a string para objeto Date
+      const dateB = new Date(b.dataInicio); // Converte a string para objeto Date
+      return dateB.getTime() - dateA.getTime(); // Ordena pela data mais recente
+    });
+  }
 
   setRecords(records: number) {
     this.recordsToShow = records;
   }
 
-  getPagedClients() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+  getPagedUltimasOrdens(){
+    const startIndex = (this.currentPageUltimas - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredOrdersByUltimas.slice(startIndex, endIndex);
+  }
+
+  getPagedAgendados(){
+    const startIndex = (this.currentPageAgendados - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredOrdersByAgendados.slice(startIndex, endIndex);
+  }
+
+  getPagedAtrasados(){
+    const startIndex = (this.currentPageAtrasados - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredOrdersByAtrasados.slice(startIndex, endIndex);
+  }
+
+  getPagedClients() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPageTodos;
+    const endIndex = startIndex + this.itemsPerPageTodos;
     return this.filteredOrders.slice(startIndex, endIndex);
   }
 
-  goToPage(page: number) {
-    if (page < 1 || page > this.totalPages()) return;
-    this.currentPage = page;
-  }
-  
-  nextPage() {
-    if (this.currentPage < this.totalPages()) {
-      this.currentPage++;
+  goToPage(page: number, tipo : string) {
+
+    switch(tipo){
+      case 'AGENDADO': 
+        if (page < 1 || page > this.totalPages()) return;
+        this.currentPageAgendados = page;
+        break;
+      case 'ATRASADO' : 
+        if (page < 1 || page > this.totalPages()) return;
+        this.currentPageAtrasados = page;
+        break;
+      case 'ULTIMAS' : 
+        if (page < 1 || page > this.totalPages()) return;
+        this.currentPageUltimas = page;
+        break;
+      default:
+        if (page < 1 || page > this.totalPages()) return;
+        this.currentPage = page;
+        break;
     }
   }
   
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
+  nextPage(tipo : string) {
+
+    switch(tipo){
+      case 'AGENDADO': 
+        if (this.currentPageAgendados < this.totalPages()) {
+          this.currentPageAgendados++;
+        }
+        break;
+      case 'ATRASADO' : 
+        if (this.currentPageAtrasados < this.totalPages()) {
+          this.currentPageAtrasados++;
+        }
+        break;
+      case 'ULTIMAS' : 
+        if (this.currentPageUltimas < this.totalPages()) {
+          this.currentPageUltimas++;
+        }
+        break;
+      default:
+        if (this.currentPage < this.totalPages()) {
+          this.currentPage++;
+        }
+        break;
     }
+  }
+  
+  previousPage(tipo : string) {
+    switch(tipo){
+      case 'AGENDADO': 
+        if (this.currentPageAgendados > 1) {
+          this.currentPageAgendados--;
+        }
+        break;
+      case 'ATRASADO' : 
+        if (this.currentPageAtrasados > 1) {
+          this.currentPageAtrasados--;
+        }
+        break;
+      case 'ULTIMAS' : 
+        if (this.currentPageUltimas > 1) {
+          this.currentPageUltimas--;
+        }
+        break;
+      default:
+        if (this.currentPage > 1) {
+          this.currentPage--;
+        }
+        break;
+    }
+    
   }
   
   totalPages(): number {
-    return Math.ceil(this.filteredOrders.length / this.itemsPerPage);
+    return Math.ceil(this.filteredOrders.length / this.itemsPerPageTodos);
+  }
+
+  totalPagesAgendados(): number {
+    return Math.ceil(this.filteredOrdersByAgendados.length / this.itemsPerPage);
+  }
+
+  totalPagesAtrasados(): number {
+    return Math.ceil(this.filteredOrdersByAtrasados.length / this.itemsPerPage);
+  }
+
+  totalPagesUltimas(): number {
+    return Math.ceil(this.filteredOrdersByUltimas.length / this.itemsPerPage);
   }
 
 
-  getPaginationPages(): number[] {
-    const totalPages = this.totalPages();
+  getPaginationPages(tipo : string): number[] {
+    var totalPages = 0
+
+    switch(tipo){
+      case 'AGENDADO': 
+        totalPages = this.totalPagesAgendados();
+        break;
+      case 'ATRASADO' : 
+        totalPages = this.totalPagesAtrasados();
+        break;
+      case 'ULTIMAS' : 
+        totalPages = this.totalPagesUltimas();
+        break;
+      default:
+        totalPages = this.totalPages();
+        break;
+    }
+
     const pages = [];
   
     if (totalPages <= 4) {

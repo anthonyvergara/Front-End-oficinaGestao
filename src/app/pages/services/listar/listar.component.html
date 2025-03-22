@@ -48,7 +48,7 @@
                       </thead>
                       <tbody>
                         <!-- Exibição dos registros filtrados e controlados pelo número de itens -->
-                        <tr *ngFor="let order of getPagedClients() | slice: 0:recordsToShow; let i = index" (click)="openModal(order.id, order.statusOrdemServico.tipoStatus, order.valorTotal, order.cliente.nome)">
+                        <tr *ngFor="let order of getPagedUltimasOrdens() | slice: 0:recordsToShow; let i = index" (click)="openModal(order.id, order.statusOrdemServico.tipoStatus, order.valorTotal, order.cliente.nome)">
                           <th scope="row" [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
                             <div class="media align-items-center">
                               <!--<a href="javascript:void(0)" class="avatar rounded-circle mr-3">
@@ -112,7 +112,34 @@
 
                   </div>
 
-                  
+                  <div class="card-footer py-4">
+                    <nav aria-label="...">
+                      <ul class="pagination justify-content-end mb-0">
+                        <li class="page-item"[class.disabled]="currentPageUltimas === 1">
+                          <a class="page-link" href="javascript:void(0)" (click)="previousPage('ULTIMAS')">
+                            <i class="fas fa-angle-left"></i>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                        </li>
+                        <li class="page-item" *ngFor="let page of getPaginationPages('ULTIMAS')" 
+                        [class.active]="page === currentPageUltimas"
+                        [class.disabled]="page === -1">
+                          <a class="page-link" href="javascript:void(0)" (click)="page !== -1 ? goToPage(page,'ULTIMAS') : null">
+                            <span *ngIf="page !== -1">{{ page }}</span>
+                            <span *ngIf="page === -1">...</span>
+                          </a>
+                        </li>
+                        <li class="page-item" [class.disabled]="currentPageUltimas === totalPages()">
+                          <a class="page-link" href="javascript:void(0)" (click)="nextPage('ULTIMAS')">
+                            <i class="fas fa-angle-right"></i>
+                            <span class="sr-only">Next</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+
+
                 </div>
               </div>
             
@@ -121,7 +148,125 @@
                   AGENDADOS
                 </div>
                 <div class="custom-body item2" [ngClass]="{'hidden': !isItem2Open, 'show': isItem2Open}">
-                  <p>Aqui está o conteúdo do segundo item. Mais uma vez, qualquer HTML pode ser adicionado abc.</p>
+                  <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                      <thead class="thead-light">
+                        <tr>
+                          <th scope="col">
+                            <h4>Status</h4>
+                            <i class="fas fa-sort" (click)="sortTable('status')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Nome do Cliente</h4>
+                            <i class="fas fa-sort" (click)="sortTable('cliente.nome')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Valor Total</h4>
+                            <i class="fas fa-sort" (click)="sortTable('valorTotal')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Data de Criação</h4>
+                            <i class="fas fa-sort" (click)="sortTable('dataInicio')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Conclusão</h4>
+                            <i class="fas fa-sort" (click)="sortTable('completion')"></i>
+                          </th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- Exibição dos registros filtrados e controlados pelo número de itens -->
+                        <tr *ngFor="let order of getPagedAgendados() | slice: 0:recordsToShow; let i = index" (click)="openModal(order.id, order.statusOrdemServico.tipoStatus, order.valorTotal, order.cliente.nome)">
+                          <th scope="row" [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <div class="media align-items-center">
+                              <!--<a href="javascript:void(0)" class="avatar rounded-circle mr-3">
+                                <img alt="Image placeholder" src="../assets/img/theme/bootstrap.jpg">
+                              </a> -->
+                              <div class="media-body">
+                                <span class="mb-0 text-sm badge" [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'badge-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'badge-success' : 'badge-agendado'">{{ order.statusOrdemServico.tipoStatus }}</span>
+                              </div>
+                            </div>
+                          </th>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            {{ order.cliente.nome | uppercase }}
+                          </td>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <span class="badge badge-dot mr-4">
+                              <i [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'bg-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'bg-success' : 'badge-agendado'"></i> {{ order.valorTotal.toString() | currency:'GBP':'symbol':'1.2-2' }}
+                            </span>
+                          </td>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <div class="avatar-group">
+                              {{ order.dataInicio }}
+                            </div>
+                          </td>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <div class="d-flex align-items-center">
+                              <span class="mr-2">{{order.statusOrdemServico.tipoStatus == 'PAGO' ? '100%' : '30%'}}</span>
+                              <div>
+                                <div class="progress">
+                                  <div class="progress-bar"
+                                    [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'bg-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'bg-success' : 'badge-agendado'"
+                                    role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" [style.width]="order.statusOrdemServico.tipoStatus == 'PAGO' ? '100%' : '30%'"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="text-right" [ngClass]="i % 2 === 0 ? '' : 'table-dark'" (click)="handleButtonClick($event)">
+                            <div ngbDropdown placement="bottom-right" class="position-static">
+                              <a [ngClass]="i % 2 === 0 ? 'btn btn-icon-only text-dark' : 'btn btn-icon-only text-white'"  ngbDropdownToggle>
+                                <i class="ni ni-settings"></i>
+                              </a>
+                              <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                                <a class="dropdown-item" href="javascript:void(0)">Imprimir</a>
+                                <a class="dropdown-item" href="javascript:void(0)">Enviar cobrança</a>
+                                <a class="dropdown-item" href="javascript:void(0)">Excluir</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div id="modal-overlay" class="modal-overlay"></div>
+                    <modal-listar-ordemServico
+                        *ngIf="isModalOpen" 
+                        [id]="modalData.id"
+                        [nome]="modalData.nome"
+                        [status]="modalData.status"
+                        [valorTotal]="modalData.valorTotal"
+                        [valorDaEntrada]="modalData.valorEntrada"
+                        (close)="closeModal()">
+                    </modal-listar-ordemServico>
+
+                  </div>
+
+                  <div class="card-footer py-4">
+                    <nav aria-label="...">
+                      <ul class="pagination justify-content-end mb-0">
+                        <li class="page-item"[class.disabled]="currentPageAgendados === 1">
+                          <a class="page-link" href="javascript:void(0)" (click)="previousPage('AGENDADO')">
+                            <i class="fas fa-angle-left"></i>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                        </li>
+                        <li class="page-item" *ngFor="let page of getPaginationPages('AGENDADO')" 
+                        [class.active]="page === currentPageAgendados"
+                        [class.disabled]="page === -1">
+                          <a class="page-link" href="javascript:void(0)" (click)="page !== -1 ? goToPage(page,'AGENDADO') : null">
+                            <span *ngIf="page !== -1">{{ page }}</span>
+                            <span *ngIf="page === -1">...</span>
+                          </a>
+                        </li>
+                        <li class="page-item" [class.disabled]="currentPageAgendados === totalPages()">
+                          <a class="page-link" href="javascript:void(0)" (click)="nextPage('AGENDADO')">
+                            <i class="fas fa-angle-right"></i>
+                            <span class="sr-only">Next</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
                 </div>
               </div>
             
@@ -130,7 +275,125 @@
                   ATRASADOS
                 </div>
                 <div class="custom-body item3" [ngClass]="{'hidden': !isItem3Open, 'show': isItem3Open}">
-                  <p>Aqui está o conteúdo do terceiro item. Mais uma vez, qualquer HTML pode ser adicionado def.</p>
+                  <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                      <thead class="thead-light">
+                        <tr>
+                          <th scope="col">
+                            <h4>Status</h4>
+                            <i class="fas fa-sort" (click)="sortTable('status')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Nome do Cliente</h4>
+                            <i class="fas fa-sort" (click)="sortTable('cliente.nome')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Valor Total</h4>
+                            <i class="fas fa-sort" (click)="sortTable('valorTotal')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Data de Criação</h4>
+                            <i class="fas fa-sort" (click)="sortTable('dataInicio')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Conclusão</h4>
+                            <i class="fas fa-sort" (click)="sortTable('completion')"></i>
+                          </th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- Exibição dos registros filtrados e controlados pelo número de itens -->
+                        <tr *ngFor="let order of getPagedAtrasados() | slice: 0:recordsToShow; let i = index" (click)="openModal(order.id, order.statusOrdemServico.tipoStatus, order.valorTotal, order.cliente.nome)">
+                          <th scope="row" [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <div class="media align-items-center">
+                              <!--<a href="javascript:void(0)" class="avatar rounded-circle mr-3">
+                                <img alt="Image placeholder" src="../assets/img/theme/bootstrap.jpg">
+                              </a> -->
+                              <div class="media-body">
+                                <span class="mb-0 text-sm badge" [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'badge-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'badge-success' : 'badge-agendado'">{{ order.statusOrdemServico.tipoStatus }}</span>
+                              </div>
+                            </div>
+                          </th>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            {{ order.cliente.nome | uppercase }}
+                          </td>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <span class="badge badge-dot mr-4">
+                              <i [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'bg-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'bg-success' : 'badge-agendado'"></i> {{ order.valorTotal.toString() | currency:'GBP':'symbol':'1.2-2' }}
+                            </span>
+                          </td>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <div class="avatar-group">
+                              {{ order.dataInicio }}
+                            </div>
+                          </td>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <div class="d-flex align-items-center">
+                              <span class="mr-2">{{order.statusOrdemServico.tipoStatus == 'PAGO' ? '100%' : '30%'}}</span>
+                              <div>
+                                <div class="progress">
+                                  <div class="progress-bar"
+                                    [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'bg-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'bg-success' : 'badge-agendado'"
+                                    role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" [style.width]="order.statusOrdemServico.tipoStatus == 'PAGO' ? '100%' : '30%'"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="text-right" [ngClass]="i % 2 === 0 ? '' : 'table-dark'" (click)="handleButtonClick($event)">
+                            <div ngbDropdown placement="bottom-right" class="position-static">
+                              <a [ngClass]="i % 2 === 0 ? 'btn btn-icon-only text-dark' : 'btn btn-icon-only text-white'"  ngbDropdownToggle>
+                                <i class="ni ni-settings"></i>
+                              </a>
+                              <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                                <a class="dropdown-item" href="javascript:void(0)">Imprimir</a>
+                                <a class="dropdown-item" href="javascript:void(0)">Enviar cobrança</a>
+                                <a class="dropdown-item" href="javascript:void(0)">Excluir</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div id="modal-overlay" class="modal-overlay"></div>
+                    <modal-listar-ordemServico
+                        *ngIf="isModalOpen" 
+                        [id]="modalData.id"
+                        [nome]="modalData.nome"
+                        [status]="modalData.status"
+                        [valorTotal]="modalData.valorTotal"
+                        [valorDaEntrada]="modalData.valorEntrada"
+                        (close)="closeModal()">
+                    </modal-listar-ordemServico>
+
+                  </div>
+
+                  <div class="card-footer py-4">
+                    <nav aria-label="...">
+                      <ul class="pagination justify-content-end mb-0">
+                        <li class="page-item"[class.disabled]="currentPageAtrasados === 1">
+                          <a class="page-link" href="javascript:void(0)" (click)="previousPage('ATRASADO')">
+                            <i class="fas fa-angle-left"></i>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                        </li>
+                        <li class="page-item" *ngFor="let page of getPaginationPages('ATRASADO')" 
+                        [class.active]="page === currentPageAtrasados"
+                        [class.disabled]="page === -1">
+                          <a class="page-link" href="javascript:void(0)" (click)="page !== -1 ? goToPage(page,'ATRASADO') : null">
+                            <span *ngIf="page !== -1">{{ page }}</span>
+                            <span *ngIf="page === -1">...</span>
+                          </a>
+                        </li>
+                        <li class="page-item" [class.disabled]="currentPageAtrasados === totalPages()">
+                          <a class="page-link" href="javascript:void(0)" (click)="nextPage('ATRASADO')">
+                            <i class="fas fa-angle-right"></i>
+                            <span class="sr-only">Next</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
                 </div>
               </div>
             
@@ -139,7 +402,125 @@
                   TODOS SERVIÇOS
                 </div>
                 <div class="custom-body item4" [ngClass]="{'hidden': !isItem4Open, 'show': isItem4Open}">
-                  <p>Aqui está o conteúdo do quarto item. Mais uma vez, qualquer HTML pode ser adicionado ghi.</p>
+                  <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                      <thead class="thead-light">
+                        <tr>
+                          <th scope="col">
+                            <h4>Status</h4>
+                            <i class="fas fa-sort" (click)="sortTable('status')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Nome do Cliente</h4>
+                            <i class="fas fa-sort" (click)="sortTable('cliente.nome')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Valor Total</h4>
+                            <i class="fas fa-sort" (click)="sortTable('valorTotal')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Data de Criação</h4>
+                            <i class="fas fa-sort" (click)="sortTable('dataInicio')"></i>
+                          </th>
+                          <th scope="col">
+                            <h4>Conclusão</h4>
+                            <i class="fas fa-sort" (click)="sortTable('completion')"></i>
+                          </th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- Exibição dos registros filtrados e controlados pelo número de itens -->
+                        <tr *ngFor="let order of getPagedClients() | slice: 0:10; let i = index" (click)="openModal(order.id, order.statusOrdemServico.tipoStatus, order.valorTotal, order.cliente.nome)">
+                          <th scope="row" [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <div class="media align-items-center">
+                              <!--<a href="javascript:void(0)" class="avatar rounded-circle mr-3">
+                                <img alt="Image placeholder" src="../assets/img/theme/bootstrap.jpg">
+                              </a> -->
+                              <div class="media-body">
+                                <span class="mb-0 text-sm badge" [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'badge-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'badge-success' : 'badge-agendado'">{{ order.statusOrdemServico.tipoStatus }}</span>
+                              </div>
+                            </div>
+                          </th>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            {{ order.cliente.nome | uppercase }}
+                          </td>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <span class="badge badge-dot mr-4">
+                              <i [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'bg-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'bg-success' : 'badge-agendado'"></i> {{ order.valorTotal.toString() | currency:'GBP':'symbol':'1.2-2' }}
+                            </span>
+                          </td>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <div class="avatar-group">
+                              {{ order.dataInicio }}
+                            </div>
+                          </td>
+                          <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
+                            <div class="d-flex align-items-center">
+                              <span class="mr-2">{{order.statusOrdemServico.tipoStatus == 'PAGO' ? '100%' : '30%'}}</span>
+                              <div>
+                                <div class="progress">
+                                  <div class="progress-bar"
+                                    [ngClass]="order.statusOrdemServico.tipoStatus == 'ATRASADO' ? 'bg-danger' : order.statusOrdemServico.tipoStatus == 'PAGO' ? 'bg-success' : 'badge-agendado'"
+                                    role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" [style.width]="order.statusOrdemServico.tipoStatus == 'PAGO' ? '100%' : '30%'"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="text-right" [ngClass]="i % 2 === 0 ? '' : 'table-dark'" (click)="handleButtonClick($event)">
+                            <div ngbDropdown placement="bottom-right" class="position-static">
+                              <a [ngClass]="i % 2 === 0 ? 'btn btn-icon-only text-dark' : 'btn btn-icon-only text-white'"  ngbDropdownToggle>
+                                <i class="ni ni-settings"></i>
+                              </a>
+                              <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                                <a class="dropdown-item" href="javascript:void(0)">Imprimir</a>
+                                <a class="dropdown-item" href="javascript:void(0)">Enviar cobrança</a>
+                                <a class="dropdown-item" href="javascript:void(0)">Excluir</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div id="modal-overlay" class="modal-overlay"></div>
+                    <modal-listar-ordemServico
+                        *ngIf="isModalOpen" 
+                        [id]="modalData.id"
+                        [nome]="modalData.nome"
+                        [status]="modalData.status"
+                        [valorTotal]="modalData.valorTotal"
+                        [valorDaEntrada]="modalData.valorEntrada"
+                        (close)="closeModal()">
+                    </modal-listar-ordemServico>
+
+                  </div>
+
+                  <div class="card-footer py-4">
+                    <nav aria-label="...">
+                      <ul class="pagination justify-content-end mb-0">
+                        <li class="page-item"[class.disabled]="currentPage === 1">
+                          <a class="page-link" href="javascript:void(0)" (click)="previousPage('')">
+                            <i class="fas fa-angle-left"></i>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                        </li>
+                        <li class="page-item" *ngFor="let page of getPaginationPages('')" 
+                        [class.active]="page === currentPage"
+                        [class.disabled]="page === -1">
+                          <a class="page-link" href="javascript:void(0)" (click)="page !== -1 ? goToPage(page,'') : null">
+                            <span *ngIf="page !== -1">{{ page }}</span>
+                            <span *ngIf="page === -1">...</span>
+                          </a>
+                        </li>
+                        <li class="page-item" [class.disabled]="currentPage === totalPages()">
+                          <a class="page-link" href="javascript:void(0)" (click)="nextPage('')">
+                            <i class="fas fa-angle-right"></i>
+                            <span class="sr-only">Next</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
                 </div>
               </div>
             </div>
@@ -160,32 +541,6 @@
 
         </div>
 
-        <div class="card-footer py-4">
-          <nav aria-label="...">
-            <ul class="pagination justify-content-end mb-0">
-              <li class="page-item"[class.disabled]="currentPage === 1">
-                <a class="page-link" href="javascript:void(0)" (click)="previousPage()">
-                  <i class="fas fa-angle-left"></i>
-                  <span class="sr-only">Previous</span>
-                </a>
-              </li>
-              <li class="page-item" *ngFor="let page of getPaginationPages()" 
-              [class.active]="page === currentPage"
-              [class.disabled]="page === -1">
-                <a class="page-link" href="javascript:void(0)" (click)="page !== -1 ? goToPage(page) : null">
-                  <span *ngIf="page !== -1">{{ page }}</span>
-                  <span *ngIf="page === -1">...</span>
-                </a>
-              </li>
-              <li class="page-item" [class.disabled]="currentPage === totalPages()">
-                <a class="page-link" href="javascript:void(0)" (click)="nextPage()">
-                  <i class="fas fa-angle-right"></i>
-                  <span class="sr-only">Next</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
       </div>
     </div>
   </div>
