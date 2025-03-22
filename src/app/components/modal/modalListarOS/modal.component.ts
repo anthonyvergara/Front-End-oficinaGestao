@@ -65,7 +65,7 @@ export class ModalComponent {
   valorTotalGeral : number = 0;
   dataUltimoPagamento: any = "14/09/2024";
 
-  botaoSalvar = false;
+  newRegisters = 0;
 
   showSuccessAlert : boolean = false
   showDangerAlert : boolean = false
@@ -177,9 +177,8 @@ export class ModalComponent {
   }
 
   verificarReadonly(registro: any): boolean {
-    var checkRegisterDate = this.compareDate(registro.data)
-
-    return checkRegisterDate;  // Exemplo: data passada
+    // Defina aqui a condição em que o campo será readonly
+    return registro.data < new Date().toISOString();  // Exemplo: data passada
   }
 
   successAlert(message : string){
@@ -241,10 +240,6 @@ export class ModalComponent {
       detalhes: []
     };
     this.groupedDetalheServico.push(novoGrupo);
-  }
-
-  habilitarCampos(){
-    this.botaoSalvar = !this.botaoSalvar;
   }
 
   get vat():string{
@@ -409,6 +404,7 @@ export class ModalComponent {
 
   // Método para incluir um novo registro para uma moto
   incluirRegistro(grupoIndex: number) {
+    this.newRegisters++;
     // Verifica se o grupo existe e adiciona um novo registro
     const grupo = this.groupedDetalheServico[grupoIndex];
     if (grupo) {
@@ -476,7 +472,7 @@ export class ModalComponent {
   
   updateDetalheServico() : void{
     console.log("id Ordem: "+  this.orders.id)
-    this.botaoSalvar = !this.botaoSalvar;
+    this.newRegisters = 0;
     
     this.detalheServicoService.putDetalheServico(this.orders.id, this.atualizarOrdemServico()).subscribe(
       response => {
@@ -492,6 +488,7 @@ export class ModalComponent {
 
   // Método para remover um registro de uma moto
   removerRegistro(grupoIndex: number, registroIndex: number) {
+    this.newRegisters--;
     const grupo = this.groupedDetalheServico[grupoIndex];
     if (grupo && grupo.detalhes && grupo.detalhes.length > 0) {
       // Remove o registro do grupo pelo índice

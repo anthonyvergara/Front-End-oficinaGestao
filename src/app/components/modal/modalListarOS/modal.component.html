@@ -52,11 +52,8 @@
 
                 <div class="form-row align-items-end mt-3">
                   <div class="col">
-                    <button class="btn btn-primary btn-round bg-default" type="button" (click)="incluirMoto()" placement="right" ngbTooltip="Incluir Moto">
+                    <button *ngIf="orders.statusOrdemServico.tipoStatus != 'PAGO'" class="btn btn-primary btn-round bg-default" type="button" (click)="incluirMoto()" placement="right" ngbTooltip="Incluir Moto">
                       <i class="fas fa-motorcycle"></i> +
-                    </button>
-                    <button type="button" class="btn btn-secondary" (click)="habilitarCampos()">Editar
-                      <i class="fas fa-edit"></i>
                     </button>
                   </div>
                 </div>
@@ -74,7 +71,7 @@
                         <span *ngIf="!detalheServicoCollapse[grupo.placa]" class="ml-auto" style="margin-right: 30px;">
                           <h3 style="color: white;">TOTAL: {{ valorTotalDetalheServicoPorPlaca[grupo.placa] | currency:'GBP':'symbol':'1.2-2' }}</h3>
                         </span>
-                        <button class="btn btn-outline btn-lg" type="button" (click)="removerMoto(i)">
+                        <button *ngIf="groupedDetalheServico.length > 1" class="btn btn-outline btn-lg" type="button" (click)="removerMoto(i)">
                           <i class="fas fa-trash" style="font-size: 18px;"></i>
                         </button>
                       </div>
@@ -82,7 +79,7 @@
                       <div *ngIf="detalheServicoCollapse[grupo.placa]" class="card-body">
                         <div class="form-row align-items-end">
                           <div class="mt-2 col-1">
-                            <button class="btn btn-success btn-round " type="button" (click)="incluirRegistro(i)" ngbTooltip="Incluir Registro">
+                            <button *ngIf="orders.statusOrdemServico.tipoStatus != 'PAGO'" class="btn btn-success btn-round " type="button" (click)="incluirRegistro(i)" ngbTooltip="Incluir Registro">
                                 <i class="fas fa-plus"></i>
                             </button>
                           </div>
@@ -131,7 +128,7 @@
                               <input type="text" class="form-control" [value]="registro.milhagem | number:'1.0-0'" (input)="updateMilhagem(grupo, j, $event)" [readOnly]="compareDate(registro.data)">
                             </div>
                             <div class="col">
-                              <button *ngIf="grupo.detalhes.length > 1 && compareDate(registro.data) == false" class="btn btn-outline-danger btn-round" type="button" (click)="removerRegistro(i, j)" [readOnly]="compareDate(registro.data)">
+                              <button *ngIf="grupo.detalhes.length > 1 && compareDate(registro.data) == false && orders.statusOrdemServico.tipoStatus != 'PAGO'" class="btn btn-outline-danger btn-round" type="button" (click)="removerRegistro(i, j)" [readOnly]="compareDate(registro.data)">
                                 <i class="fas fa-trash"></i>
                               </button>
                             </div>
@@ -270,7 +267,7 @@
       
           <!-- Botões -->
           <div class="d-flex">
-            <button *ngIf="botaoSalvar" type="button" class="btn btn-success" (click)="updateDetalheServico()">Salvar</button>
+            <button *ngIf="newRegisters>0" type="button" class="btn btn-success" (click)="updateDetalheServico()" @fadeIn>Salvar</button>
             <!-- <button type="button" class="btn btn-danger">Excluir</button> -->
             <button type="button" class="btn btn-secondary ml-2" (click)="closeModal()">Fechar</button>
           </div>
