@@ -99,6 +99,7 @@
                             <input type="text" class="form-control" (input)="updateObservacao(i, $event)" placeholder="Observação">
                           </div>
                           <div class="col col-2 input-group">
+                            <label>Data Ordem Serviço</label>
                             <div class="input-group-prepend">
                               <span class="input-group-text">
                                 <i class="ni ni-calendar-grid-58"></i>
@@ -113,24 +114,24 @@
                           <div class="form-row align-items-end mt-2">
                             <div class="col col-1">
                               <label>QTD</label>
-                              <input type="number" class="form-control" [value]="registro.quantidade" (input)="updateQuantidade(grupo, j, $event)">
+                              <input type="number" class="form-control" [value]="registro.quantidade" (input)="updateQuantidade(grupo, j, $event)" [readOnly]="compareDate(registro.data)">
                             </div>
                             <div class="col col-6">
                               <label>Descrição</label><label class="ml-9" style="font-size: 12px;">Data: {{registro.data}}</label>
-                              <input type="text" class="form-control" [value]="registro.descricao" (input)="updateDescricao(grupo, j, $event)">
+                              <input type="text" class="form-control" [value]="registro.descricao" (input)="updateDescricao(grupo, j, $event)" [readOnly]="compareDate(registro.data)">
                             </div>
                             <div class="col col-2">
                               <label>Preço</label>
                               <input type="text" class="form-control" 
                               [value]="registro.valor | currency:'GBP':'symbol':'1.2-2'" 
-                              (input)="formatarValorEmTempoReal($event, grupo, j)">
+                              (input)="formatarValorEmTempoReal($event, grupo, j)" [readOnly]="compareDate(registro.data)">
                             </div>
                             <div class="col col-2">
                               <label>Milhagem</label>
-                              <input type="text" class="form-control" [value]="registro.milhagem | number:'1.0-0'" (input)="updateMilhagem(grupo, j, $event)">
+                              <input type="text" class="form-control" [value]="registro.milhagem | number:'1.0-0'" (input)="updateMilhagem(grupo, j, $event)" [readOnly]="compareDate(registro.data)">
                             </div>
                             <div class="col">
-                              <button *ngIf="grupo.detalhes.length > 1 && compareDate(registro.data) == false" class="btn btn-outline-danger btn-round" type="button" (click)="removerRegistro(i, j)">
+                              <button *ngIf="grupo.detalhes.length > 1 && compareDate(registro.data) == false" class="btn btn-outline-danger btn-round" type="button" (click)="removerRegistro(i, j)" [readOnly]="compareDate(registro.data)">
                                 <i class="fas fa-trash"></i>
                               </button>
                             </div>

@@ -176,6 +176,12 @@ export class ModalComponent {
     return false
   }
 
+  verificarReadonly(registro: any): boolean {
+    var checkRegisterDate = this.compareDate(registro.data)
+
+    return checkRegisterDate;  // Exemplo: data passada
+  }
+
   successAlert(message : string){
     console.log("modal-component")
     this.messageAlert = message
