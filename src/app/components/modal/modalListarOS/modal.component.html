@@ -55,6 +55,9 @@
                     <button class="btn btn-primary btn-round bg-default" type="button" (click)="incluirMoto()" placement="right" ngbTooltip="Incluir Moto">
                       <i class="fas fa-motorcycle"></i> +
                     </button>
+                    <button type="button" class="btn btn-secondary" (click)="habilitarCampos()">Editar
+                      <i class="fas fa-edit"></i>
+                    </button>
                   </div>
                 </div>
 
@@ -85,7 +88,7 @@
                           </div>
                           <div class="col col-2">
                             <label>Placa</label>
-                            <input type="text" class="form-control" [value]="grupo.placa | uppercase" placeholder="Placa" readonly>
+                            <input type="text" class="form-control" [value]="grupo.placa | uppercase" placeholder="Placa" (input)="capturarPlaca($event, grupo)">
                           </div>
                           <div class="col col-3">
                             <label>Motorista</label>
@@ -101,7 +104,7 @@
                                 <i class="ni ni-calendar-grid-58"></i>
                               </span>
                             </div>
-                            <input type="text" class="form-control text-center" [value]="grupo.detalhes[0].data" readonly style="background-color: #172b4d; color: #f4f5f7; font-style: bold;">
+                            <input type="text" class="form-control text-center" [value]="getDate()" readonly style="background-color: #172b4d; color: #f4f5f7; font-style: bold;">
                           </div>
                         </div>
                 
@@ -127,7 +130,7 @@
                               <input type="text" class="form-control" [value]="registro.milhagem | number:'1.0-0'" (input)="updateMilhagem(grupo, j, $event)">
                             </div>
                             <div class="col">
-                              <button *ngIf="grupo.detalhes.length > 1" class="btn btn-outline-danger btn-round" type="button" (click)="removerRegistro(i, j)">
+                              <button *ngIf="grupo.detalhes.length > 1 && compareDate(registro.data) == false" class="btn btn-outline-danger btn-round" type="button" (click)="removerRegistro(i, j)">
                                 <i class="fas fa-trash"></i>
                               </button>
                             </div>
@@ -201,7 +204,7 @@
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase mb-0" style="color: white; font-style: bold;">VALOR TOTAL</h5>
-                      <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ valorTotal.toString() | currency:'GBP':'symbol':'1.2-2' }}</span>
+                      <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ orders.valorTotal| currency:'GBP':'symbol':'1.2-2' }}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-secondary rounded-circle shadow">
@@ -266,8 +269,8 @@
       
           <!-- Botões -->
           <div class="d-flex">
-            <button type="button" class="btn btn-success" (click)="updateDetalheServico()">Salvar</button>
-            <button type="button" class="btn btn-danger">Excluir</button>
+            <button *ngIf="botaoSalvar" type="button" class="btn btn-success" (click)="updateDetalheServico()">Salvar</button>
+            <!-- <button type="button" class="btn btn-danger">Excluir</button> -->
             <button type="button" class="btn btn-secondary ml-2" (click)="closeModal()">Fechar</button>
           </div>
         </div>

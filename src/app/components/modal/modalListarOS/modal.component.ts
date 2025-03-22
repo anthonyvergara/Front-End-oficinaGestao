@@ -65,6 +65,8 @@ export class ModalComponent {
   valorTotalGeral : number = 0;
   dataUltimoPagamento: any = "14/09/2024";
 
+  botaoSalvar = false;
+
   showSuccessAlert : boolean = false
   showDangerAlert : boolean = false
 
@@ -90,11 +92,88 @@ export class ModalComponent {
       this.getOrdemServicoById(this.id);
       this.checkStatus();
     })
+    console.log(this.id)
   }
 
   checkStatus(){  
     this.status = this.orders.statusOrdemServico.tipoStatus
     return this.status;
+  }
+
+  extractTime(data: string){
+    // Divide a string para separar a data da hora
+    const [, time] = data.split(' ');
+
+    // Retorna a hora, minuto e segundo
+    return time;
+  }
+
+  convertToDateFormat(dateString: string): string {
+    // Remove caracteres indesejados, como vírgulas
+    dateString = dateString.replace(',', '');
+
+    // Divide a string para separar a data da hora
+    const [datePart] = dateString.split(' ');
+
+    // Divide a data para pegar o dia, mês e ano
+    const [day, month, year] = datePart.split('/');
+
+    // Retorna a data no formato yyyy-mm-dd
+    return `${year}-${month}-${day}`;
+  }
+
+  convertToDate(dateString: string): Date {
+    return new Date(dateString);
+  }
+
+  subtractDates(dateObj1: Date, dateObj2: Date): number {
+    // Calculando a diferença em milissegundos
+    const differenceInMillis = dateObj2.getTime() - dateObj1.getTime();
+  
+    // Convertendo para dias
+    const differenceInDays = differenceInMillis / (1000 * 3600 * 24); // Convertendo milissegundos para dias
+  
+    return Math.abs(differenceInDays)
+  }
+
+  compareDate(data : string): boolean{
+
+    if(data == null){
+      return false
+    }
+
+    var today = new Date();
+    var formattedDateToday = today.toLocaleString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+    var timeToday = this.extractTime(formattedDateToday)
+    var timeServico = this.extractTime(data)
+    var dataHoje = this.convertToDateFormat(formattedDateToday)
+    var dataServico = this.convertToDateFormat(data)
+
+    const dateToday = this.convertToDate(dataHoje)
+    const dateRegister = this.convertToDate(dataServico)
+
+    
+    if(dateToday > dateRegister){
+      if(this.subtractDates(dateRegister, dateToday) == 1){
+        if(timeToday < timeServico){
+          return false
+        }else{
+          return true
+        }
+      }
+      if(this.subtractDates(dateRegister, dateToday) > 1){
+        return true
+      }
+    }
+    return false
   }
 
   successAlert(message : string){
@@ -120,7 +199,7 @@ export class ModalComponent {
   }
 
   saldoDevedor() : number{
-    return this.valorTotal - this.valorTotalPago();
+    return this.orders.valorTotal - this.valorTotalPago();
   }
 
   autoCloseAlert() {
@@ -158,6 +237,10 @@ export class ModalComponent {
     this.groupedDetalheServico.push(novoGrupo);
   }
 
+  habilitarCampos(){
+    this.botaoSalvar = !this.botaoSalvar;
+  }
+
   get vat():string{
     return this.orders.vat === 0 ? null : this.orders.vat.toString();
   }
@@ -192,9 +275,9 @@ export class ModalComponent {
       (ordemServico) => {
         this.orders = ordemServico;
 
-        this.orders.detalheServico.forEach(detalheOs => {
-          detalheOs.data = this.formatDate(detalheOs.data);
-        });
+        // this.orders.detalheServico.forEach(detalheOs => {
+        //   detalheOs.data = this.formatDate(detalheOs.data);
+        // });
 
         /*
         this.orders.detalheServico.forEach(detalhe => {
@@ -262,6 +345,13 @@ export class ModalComponent {
     this.calcularTotais();
   }
 
+  capturarPlaca(event : any, grupo: any, index: number){
+    const inputElement = event.target;
+    // Remove caracteres não numéricos
+    let placa = inputElement.value;
+
+  }
+
   formatarValorEmTempoReal(event: any, grupo: any, index: number): void {
     const inputElement = event.target;
   
@@ -296,7 +386,9 @@ export class ModalComponent {
   }
   
   
-  
+  getDate() : string{
+    return this.formatDate(this.orders.dataInicio);
+  }
 
   // Método para atualizar a milhagem de um registro específico
   updateMilhagem(grupo: any, index: number, event: Event): void {
@@ -321,7 +413,7 @@ export class ModalComponent {
         valor: 0.00,
         milhagem: 0,
         placa: grupo.placa,
-        data: new Date().toLocaleDateString('pt-BR')  // Pode ser substituído com outra lógica para data
+        data: null  // Pode ser substituído com outra lógica para data
       };
       grupo.detalhes.push(novoRegistro);
 
@@ -346,15 +438,18 @@ export class ModalComponent {
   atualizarOrdemServico(): DetalheServico[] {
     // Cria um array vazio onde você vai armazenar os detalhes extraídos
     let detail: DetalheServico[] = [];
-  
+    
+    console.log("Ira iterar")
+    console.log(this.groupedDetalheServico)
     // Itera sobre cada moto no array `groupedDetalheServico`
     this.groupedDetalheServico.forEach(moto => {
       // Itera sobre os detalhes de cada moto
       moto.detalhes.forEach(detalhe => {
         // Adiciona o detalhe extraído no array `detail`
+        console.log(detalhe.data)
         detail.push({
           id: detalhe.id, 
-          data: null,
+          data: detalhe.data,
           descricao: detalhe.descricao,
           placa: detalhe.placa,
           valor: detalhe.valor || 0,
@@ -365,6 +460,7 @@ export class ModalComponent {
     });
   
     // Imprime o array de detalhes no console
+    console.log("Iterado final")
     console.log(detail);
   
     // Aqui você pode retornar o array 'detail' ou um outro valor que faça sentido
@@ -374,10 +470,12 @@ export class ModalComponent {
   
   updateDetalheServico() : void{
     console.log("id Ordem: "+  this.orders.id)
+    this.botaoSalvar = !this.botaoSalvar;
+    
     this.detalheServicoService.putDetalheServico(this.orders.id, this.atualizarOrdemServico()).subscribe(
       response => {
         console.log('Ordem de serviço atualizada com sucesso!', response);
-        //this.sharedService.notifyPaymentCompleted();
+        this.sharedService.notifyPaymentCompleted();
       },
       error => {
         console.error('Erro ao atualizar ordem de serviço', error);
@@ -394,6 +492,8 @@ export class ModalComponent {
       grupo.detalhes.splice(registroIndex, 1);
       this.calcularTotais();
     }
+    console.log("Remvoveu")
+    console.log(this.groupedDetalheServico)
   }
 
   // Calcular a soma total de uma moto (exemplo)
