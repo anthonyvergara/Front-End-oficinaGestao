@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
 
-  apiBaseUrl: 'http://localhost:8080/oficina', 
+  apiBaseUrl: 'https://rest-api-oficinagestao.onrender.com', 
 
   //STATUS ORDEM SERVICO
   urlGetStatusOrdemServicoById: "/status/",
