@@ -7,6 +7,6 @@ frontend:
         deploy:
             - npm install
     subdomain: argon-dashboard-angular
-name: argon-dashboard-angular
+name: project-test
 region: us-east-1
 yamlVersion: 2
