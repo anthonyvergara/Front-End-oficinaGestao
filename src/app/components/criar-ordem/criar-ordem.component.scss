@@ -56,4 +56,25 @@
     box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
 }
   
-
+/* seu-componente.component.css */
+.sugestoes {
+    position: absolute;  /* Faz com que a lista de sugestões apareça abaixo do input */
+    background-color: white;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Adiciona sombra para destacar */
+  }
+  
+  .list-group-item {
+    cursor: pointer;
+    padding: 10px;
+  }
+  
+  .list-group-item:hover {
+    background-color: #f0f0f0;  /* Destaca a sugestão quando o mouse passa em cima */
+  }
+  
+  

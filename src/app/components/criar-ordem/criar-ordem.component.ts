@@ -1,8 +1,9 @@
-import { Component, OnInit, QueryList, ViewChildren, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { NgForm } from '@angular/forms';
+import { ClientesService } from 'src/app/service/clientes/clientes.service';
 
 @Component({
   selector: 'app-criar-ordem',
@@ -48,6 +49,8 @@ export class CriarOrdemComponent implements OnInit {
   valorEntrada: number = null;
   ultimoPagamento: string = '';
 
+  clienteId : string = null
+
   periodoPagamento: string;
 
   parcelas: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // Opções de parcelamento de 1 a 10
@@ -56,8 +59,12 @@ export class CriarOrdemComponent implements OnInit {
 
   showSuccessAlert: boolean = false;
   showDangerAlert: boolean = false;
+
+  sugestoes: any[] = [];
   
-  constructor(private ordemServicoService: OrdemservicoService) { }
+  constructor(private ordemServicoService: OrdemservicoService, private clienteService : ClientesService,
+    private el: ElementRef
+  ) { }
 
   ngOnInit() {
     const hoje = new Date();
@@ -125,6 +132,33 @@ export class CriarOrdemComponent implements OnInit {
     
   }
 
+  onNomeClienteChange() {
+    if (this.nomeCliente.length > 2) { // Evita chamadas para menos de 3 caracteres
+      this.clienteService.getClienteByNameContains(this.nomeCliente).subscribe(clientes => {
+        this.sugestoes = clientes;
+      });
+    } else {
+      this.sugestoes = [];
+    }
+  }
+  selecionarSugestao(sugestao: any) {
+    // Preenche o campo com o nome selecionado
+    this.nomeCliente = sugestao.nome;
+    this.clienteId = sugestao.id;
+    // Limpa as sugestões após a seleção
+    this.sugestoes = [];
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+
+    // Verifique se o clique foi fora do input ou da lista de sugestões
+    if (!target.closest('.sugestoes') && !target.closest('.input-nome-cliente')) {
+      this.sugestoes = []; // Limpa as sugestões
+    }
+  }
+
   submitForm(form: NgForm) {
     if (form.valid) {
       this.onSubmit(form); // Chama o método onSubmit() para processar os dados
@@ -139,7 +173,7 @@ export class CriarOrdemComponent implements OnInit {
     // Enviar os dados para o backend
     console.log('Enviando dados para o backend:'); // Verifique os dados
 
-    this.ordemServicoService.postOrdemServico(this.criarOrdemServico()).subscribe(
+    this.ordemServicoService.postOrdemServico(this.criarOrdemServico(),this.clienteId).subscribe(
       response => {
         console.log('Ordem de serviço cadastrada com sucesso!', response);
         this.showSuccessAlert = true;
@@ -198,7 +232,7 @@ export class CriarOrdemComponent implements OnInit {
   incluirRegistro(motoIndex: number) {
     // Adiciona um registro vazio à moto correspondente
     this.motos[motoIndex].registros.push({
-      qtd: null,
+      qtd: 1,
       descricao: '',
       preco: null,
       data: '',
