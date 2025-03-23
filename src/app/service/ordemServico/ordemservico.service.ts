@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { OrdemServico } from '../models/ordemServico.model';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class OrdemservicoService {
 
-  private apiGetOrdemServicoByIdCliente = 'http://localhost:8080/oficina/ordemServico/cliente/';// 2 representa o id da oficina
-  private apiUrlPostOrdemServico = 'http://localhost:8080/oficina/ordemServico/cliente/457/oficina/2';
-  private apiUrlGetAllOrdemServico = "http://localhost:8080/oficina/ordemServico/oficina/2";
-  private apiUrlGetOrdemServicoById = "http://localhost:8080/oficina/ordemServico/";
+  private apiGetOrdemServicoByIdCliente = `${environment.apiBaseUrl}${environment.apiGetOrdemServicoByIdCliente}` // 2 representa o id da oficina
+  private apiUrlGetAllOrdemServico = `${environment.apiBaseUrl}${environment.apiUrlGetAllOrdemServico}`
+  private apiUrlGetOrdemServicoById = `${environment.apiBaseUrl}${environment.apiUrlGetOrdemServicoById}`
 
   private apiUrlCriarOrdemServico = (idCLiente : string) => 
-    `http://localhost:8080/oficina/ordemServico/cliente/${idCLiente}/oficina/2`
+    `${environment.apiBaseUrl}${environment.apiUrlCriarOrdemServico}/${idCLiente}/oficina/2`
 
   constructor(private http: HttpClient) { }
 

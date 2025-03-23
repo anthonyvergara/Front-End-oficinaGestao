@@ -1,3 +1,29 @@
 export const environment = {
-  production: true
+  production: true,
+
+  apiBaseUrl: 'https://rest-api-oficinagestao.onrender.com', 
+
+  //STATUS ORDEM SERVICO
+  urlGetStatusOrdemServicoById: "/status/",
+
+  // PAGAMENTO
+  apiUrlPostPayOrdemServico: 'pagamento/ordemServico/',
+
+  // DETALHE SERVICO
+  urlPutDetalheServico: '/detalheServico/',
+
+  // CLIENTES
+  apiUrlListClient : '/cliente',
+  apiUrlSaveClient : '/cliente/2',
+  apiUrlGetClienteByIdOrdemServico : "/cliente/ordemServico/",
+  apiUrlFindByNameContains : "/cliente/",
+
+  // ORDEM DE SERVIÇO
+  apiGetOrdemServicoByIdCliente: '/ordemServico/cliente/',
+  apiUrlGetAllOrdemServico: "/ordemServico/oficina/2",
+  apiUrlGetOrdemServicoById: "/ordemServico/",
+  apiUrlCriarOrdemServico: '/ordemServico/cliente',
+
+  // PARCELAMENTO
+  urlPutParcelamento: '/parcelamento/ordemServico'
 };

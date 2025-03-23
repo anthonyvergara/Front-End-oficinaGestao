@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { Observable } from 'rxjs';
 export class ParcelamentoService {
 
   private urlPutParcelamento = (ordemServicoId: number, numParcelas: number) => 
-    `http://localhost:8080/oficina/parcelamento/ordemServico/${ordemServicoId}/parcela/${numParcelas}`;
+    `${environment.apiBaseUrl}${environment.urlPutParcelamento}/${ordemServicoId}/parcela/${numParcelas}`;
 
   constructor(private http: HttpClient) { }
 

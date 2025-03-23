@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Cliente } from '../models/cliente.model';  // Importando a interface Cliente
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientesService {
 
-  private apiUrlListClient = 'http://localhost:8080/oficina/cliente';  // URL da sua API
-  private apiUrlSaveClient = 'http://localhost:8080/oficina/cliente/2' // 2 representa o id da oficina
-  private apiUrlGetClienteByIdOrdemServico = "http://localhost:8080/oficina/cliente/ordemServico/";
-  private apiUrlFindByNameContains = "http://localhost:8080/oficina/cliente/"
+  private apiUrlListClient = `${environment.apiBaseUrl}${environment.apiUrlListClient}`  // URL da sua API
+  private apiUrlSaveClient = `${environment.apiBaseUrl}${environment.apiUrlSaveClient}`// 2 representa o id da oficina
+  private apiUrlGetClienteByIdOrdemServico = `${environment.apiBaseUrl}${environment.apiUrlGetClienteByIdOrdemServico}`
+  private apiUrlFindByNameContains = `${environment.apiBaseUrl}${environment.apiUrlFindByNameContains}`
 
   constructor(private http: HttpClient) { }
 
