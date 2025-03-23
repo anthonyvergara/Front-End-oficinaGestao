@@ -145,6 +145,12 @@ export class ListarComponent implements OnInit {
     .filter(order =>
       (order.cliente.nome.toLowerCase().includes(this.searchQuery.toLowerCase())
       ))
+      .sort((a, b) => {
+        // Ordena alfabeticamente pelo nome do cliente
+        const nomeA = a.cliente.nome.toLowerCase();
+        const nomeB = b.cliente.nome.toLowerCase();
+        return nomeA.localeCompare(nomeB); // Compara os nomes em ordem alfabética
+      });
   }
 
   get filteredOrdersByAgendados() {
@@ -152,6 +158,26 @@ export class ListarComponent implements OnInit {
     .filter(order =>
       (order.cliente.nome.toLowerCase().includes(this.searchQuery.toLowerCase()) && order.statusOrdemServico.tipoStatus == "AGENDADO"
       ))
+      .sort((a, b) => {
+        // Verifica se as datas existem e estão no formato esperado
+        if (!a.dataInicio || !b.dataInicio) {
+          return 0;
+        }
+  
+        // Divide a string de data e monta o objeto Date manualmente
+        const parseDate = (dateString) => {
+          const [datePart, timePart] = dateString.split(' '); // Separa data e hora
+          const [day, month, year] = datePart.split('/').map(Number); // Converte para números
+          const [hours, minutes, seconds] = timePart.split(':').map(Number); // Converte para números
+          return new Date(year, month - 1, day, hours, minutes, seconds); // Cria o objeto Date
+        };
+  
+        const dateA = parseDate(a.dataInicio);
+        const dateB = parseDate(b.dataInicio);
+  
+        // Ordena pela data mais recente
+        return dateB.getTime() - dateA.getTime();
+      });
   }
 
   get filteredOrdersByAtrasados() {
@@ -159,19 +185,55 @@ export class ListarComponent implements OnInit {
     .filter(order =>
       (order.cliente.nome.toLowerCase().includes(this.searchQuery.toLowerCase()) && order.statusOrdemServico.tipoStatus == "ATRASADO"
       ))
+      .sort((a, b) => {
+        // Verifica se as datas existem e estão no formato esperado
+        if (!a.dataInicio || !b.dataInicio) {
+          return 0;
+        }
+  
+        // Divide a string de data e monta o objeto Date manualmente
+        const parseDate = (dateString) => {
+          const [datePart, timePart] = dateString.split(' '); // Separa data e hora
+          const [day, month, year] = datePart.split('/').map(Number); // Converte para números
+          const [hours, minutes, seconds] = timePart.split(':').map(Number); // Converte para números
+          return new Date(year, month - 1, day, hours, minutes, seconds); // Cria o objeto Date
+        };
+  
+        const dateA = parseDate(a.dataInicio);
+        const dateB = parseDate(b.dataInicio);
+  
+        // Ordena pela data mais recente
+        return dateB.getTime() - dateA.getTime();
+      });
   }
   
   get filteredOrdersByUltimas() {
     return this.orders
-    .filter(order =>
-      order.cliente.nome.toLowerCase().includes(this.searchQuery.toLowerCase())
-    )
-    .sort((a, b) => {
-      const dateA = new Date(a.dataInicio); // Converte a string para objeto Date
-      const dateB = new Date(b.dataInicio); // Converte a string para objeto Date
-      return dateB.getTime() - dateA.getTime(); // Ordena pela data mais recente
-    });
+      .filter(order =>
+        order.cliente.nome.toLowerCase().includes(this.searchQuery.toLowerCase())
+      )
+      .sort((a, b) => {
+        // Verifica se as datas existem e estão no formato esperado
+        if (!a.dataInicio || !b.dataInicio) {
+          return 0;
+        }
+  
+        // Divide a string de data e monta o objeto Date manualmente
+        const parseDate = (dateString) => {
+          const [datePart, timePart] = dateString.split(' '); // Separa data e hora
+          const [day, month, year] = datePart.split('/').map(Number); // Converte para números
+          const [hours, minutes, seconds] = timePart.split(':').map(Number); // Converte para números
+          return new Date(year, month - 1, day, hours, minutes, seconds); // Cria o objeto Date
+        };
+  
+        const dateA = parseDate(a.dataInicio);
+        const dateB = parseDate(b.dataInicio);
+  
+        // Ordena pela data mais recente
+        return dateB.getTime() - dateA.getTime();
+      });
   }
+  
 
   setRecords(records: number) {
     this.recordsToShow = records;
