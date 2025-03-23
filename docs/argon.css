@@ -22,6 +22,7 @@
     --purple: #8965e0;
     --pink: #f3a4b5;
     --red: #f5365c;
+    --dark-blue: #0284c7;
     --orange: #fb6340;
     --yellow: #ffd600;
     --green: #2dce89;
@@ -15073,6 +15074,10 @@ button.bg-lighter:focus
 {
     background: linear-gradient(87deg, #f5365c 0, #f56036 100%) !important;
 }
+.bg-gradient-darkblue
+{
+    background: linear-gradient(87deg, #0284c7 0, #f56036 100%) !important;
+}
 
 .bg-gradient-light
 {
@@ -15428,6 +15433,10 @@ button.section-darker:focus
 .bg-gradient-danger
 {
     background: linear-gradient(87deg, #f5365c 0, #f56036 100%) !important;
+}
+.bg-gradient-darkblue
+{
+    background: linear-gradient(87deg, #0284c7 0, #f56036 100%) !important;
 }
 
 .bg-gradient-light
