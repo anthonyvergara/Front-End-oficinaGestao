@@ -1,13 +1,13 @@
 export const environment = {
   production: true,
 
-  apiBaseUrl: 'http://69.62.122.104:8080', 
+  apiBaseUrl: 'https://apiofc.datasweb.com/', 
 
   //STATUS ORDEM SERVICO
   urlGetStatusOrdemServicoById: "/status/",
 
   // PAGAMENTO
-  apiUrlPostPayOrdemServico: 'pagamento/ordemServico/',
+  apiUrlPostPayOrdemServico: '/pagamento/ordemServico/',
 
   // DETALHE SERVICO
   urlPutDetalheServico: '/detalheServico/',
