@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
 
-  apiBaseUrl: 'https://apiofc.datasweb.com/', 
+  apiBaseUrl: 'https://apiofc.datasweb.com', 
 
   //STATUS ORDEM SERVICO
   urlGetStatusOrdemServicoById: "/status/",
