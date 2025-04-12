@@ -28,6 +28,7 @@
                 <div class="col col-6" [ngClass]="nomeCliente.length == 0 ? 'has-danger' : 'has-success' ">
                   <input 
                     type="text" 
+                    appUppercase
                     class="form-control border-style input-nome-cliente" 
                     [ngClass]="nomeCliente.length == 0 ? 'is-invalid' : 'is-valid'" 
                     placeholder="Nome do Cliente" 
@@ -60,7 +61,7 @@
             <div class="form-row align-items-end mt-3">
                 <div class="col">
                     <button class="btn btn-primary btn-round bg-default" type="button" (click)="incluirMoto()">
-                        <i class="fas fa-motorcycle"></i> +
+                        <i class="fas fa-motorcycle"></i> Adicionar Moto
                     </button>
                 </div>
             </div>
@@ -89,27 +90,27 @@
                         </div>
                         <div class="card-body" [ngClass]="{'collapse': moto.isCollapsed}">
                             <div class="form-row align-items-end">
-                                <div class="mt-2 col-1">
+                                <div class="mt-2 col-2">
                                     <button class="btn btn-success btn-round" type="button" (click)="incluirRegistro(i)">
-                                        <i class="fas fa-plus"></i>
+                                        <i class="">Adicionar Serviço</i>
                                     </button>
                                 </div>
                                 <div class="col col-2" [ngClass]="moto.placa.length == 0 ? 'has-danger' : 'has-success' ">
-                                    <input type="text" class="form-control" [(ngModel)]="moto.placa" [ngClass]="moto.placa.length == 0 ? 'is-invalid' : 'is-valid' " placeholder="Placa" (keypress)="checkRegistroEnter($event, i, null)" [name]="'placa' + i">
+                                    <input type="text" appUppercase class="form-control" [(ngModel)]="moto.placa" [ngClass]="moto.placa.length == 0 ? 'is-invalid' : 'is-valid' " placeholder="Placa" (keypress)="checkRegistroEnter($event, i, null)" [name]="'placa' + i">
                                 </div>
                                 <!--
                                 <div class="col col-1">
                                     <input type="number" class="form-control" [(ngModel)]="moto.qtd" placeholder="QTD" [name]="'qtd' + i">
                                 </div>-->   
                                 <div class="col col-3">
-                                    <input type="text" class="form-control" [(ngModel)]="moto.descricao" placeholder="Nome Motorista" (keypress)="checkRegistroEnter($event, i, null)" [name]="'descricao' + i">
+                                    <input type="text" appUppercase class="form-control" [(ngModel)]="moto.descricao" placeholder="Nome Motorista" (keypress)="checkRegistroEnter($event, i, null)" [name]="'descricao' + i">
                                 </div>
                                 <!--
                                 <div class="col col-2">
                                     <input type="text" class="form-control" [(ngModel)]="moto.preco" placeholder="Preço" [name]="'preco' + i">
                                 </div>-->
                                 <div class="col col-3">
-                                    <input type="text" class="form-control" [(ngModel)]="moto.milhagem" placeholder="Observação" (keypress)="checkRegistroEnter($event, i, null)" [name]="'milhagem' + i">
+                                    <input type="text" appUppercase class="form-control" [(ngModel)]="moto.milhagem" placeholder="Observação" (keypress)="checkRegistroEnter($event, i, null)" [name]="'milhagem' + i">
                                 </div>
                                 <div class="col col-2 input-group">
                                     <div _ngcontent-c8="" class="input-group-prepend">
@@ -120,6 +121,18 @@
                                     <input type="text" class="form-control text-center" [name]="'data' + i" [value]="dataAtualBR" readonly style="background-color: #172b4d; color: #f4f5f7; font-style: bold;">
                                 </div>
                             </div>
+
+                            <!-- <div class="mt-2 d-flex align-items-center justify-content-between border border-white px-3" style="border: 1px;border-color: white;">
+                              <div>
+                                <h3 class="ml--3 text-default border-bottom border-dark p-2 m-0">SERVIÇOS EFETUADOS</h3>
+                              </div>
+                              <div>
+                                <button class="btn btn-success btn-round" type="button" (click)="incluirRegistro(i)">
+                                  <i class="fas fa-plus"></i> Adicionar serviço
+                                </button>
+                              </div>
+                            </div> -->
+                            
                             
                             <div class="mt-2" *ngIf="!moto.isCollapsed">
                                 <div *ngFor="let registro of moto.registros; let j = index" class="form-row align-items-end mt-2" @fadeBox>
@@ -127,7 +140,7 @@
                                         <input type="number" class="form-control" [(ngModel)]="registro.qtd" placeholder="QTD" [name]="'qtd' + i + '-' + j">
                                     </div>
                                     <div class="col col-6" [ngClass]="registro.descricao.length == 0 ? 'has-danger' : 'has-success' ">
-                                        <input type="text" #descricaoInput class="form-control" [ngClass]="registro.descricao.length == 0 ? 'is-invalid' : 'is-valid' " [(ngModel)]="registro.descricao" placeholder="Descrição" [name]="'descricao' + i + '-' + j">
+                                        <input type="text" appUppercase #descricaoInput class="form-control" [ngClass]="registro.descricao.length == 0 ? 'is-invalid' : 'is-valid' " [(ngModel)]="registro.descricao" placeholder="Descrição" [name]="'descricao' + i + '-' + j">
                                     </div>
                                     <div class="col col-2" [ngClass]="registro.preco <= 0 ? 'has-danger' : 'has-success' ">
                                         <input required="" type="text" [ngClass]="registro.preco <= 0 ? 'is-invalid' : 'is-valid' "  appCurrencyFormat class="form-control" [(ngModel)]="registro.preco" (ngModelChange)="onPrecoChange()" placeholder="Preço" (keypress)="checkRegistroEnter($event, i, j)" [name]="'preco' + i + '-' + j">

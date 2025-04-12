@@ -29,6 +29,7 @@ import { CriarOrdemComponent } from 'src/app/components/criar-ordem/criar-ordem.
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CurrencyFormatDirective } from '../../pages/maps/currency-input.directive';
+import { UppercaseDirective } from 'src/app/directives/uppercase.directive';
 
 // import { ToastrModule } from 'ngx-toastr';
 
@@ -48,6 +49,7 @@ import { CurrencyFormatDirective } from '../../pages/maps/currency-input.directi
     IconsComponent,
     MapsComponent,
     CurrencyFormatDirective,
+    UppercaseDirective,
     ListarComponent,
     CriarComponent,
     ModalComponent,
