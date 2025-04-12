@@ -1,13 +1,13 @@
 export const environment = {
   production: true,
 
-  apiBaseUrl: 'https://rest-api-oficinagestao.onrender.com', 
+  apiBaseUrl: 'https://apiofc.datasweb.com/oficina', 
 
   //STATUS ORDEM SERVICO
   urlGetStatusOrdemServicoById: "/status/",
 
   // PAGAMENTO
-  apiUrlPostPayOrdemServico: 'pagamento/ordemServico/',
+  apiUrlPostPayOrdemServico: '/pagamento/ordemServico/',
 
   // DETALHE SERVICO
   urlPutDetalheServico: '/detalheServico/',
