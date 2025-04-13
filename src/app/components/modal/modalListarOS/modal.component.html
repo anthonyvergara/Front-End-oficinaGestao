@@ -1,4 +1,4 @@
-<div class="modal fade show" tabindex="-1" role="dialog" style="display: block;" (click)="onBackgroundClick($event)" @fadeIn>
+<div class="modal fade show" tabindex="-1" role="dialog" style="display: block;" (click)="onBackgroundClick($event)">
   <div *ngIf="showDangerAlert" class="alert alert-danger alert-dismissible fade show showAlert text-center" role="alert" @fadeIn>
     <span class="alert-inner--icon"><i class="fa fa-thumbs-down"></i></span>
     <span class="alert-inner--text"><strong> Ops!</strong> {{messageAlert}}</span>
@@ -52,8 +52,8 @@
 
                 <div class="form-row align-items-end mt-3">
                   <div class="col">
-                    <button *ngIf="orders.statusOrdemServico.tipoStatus != 'PAGO'" class="btn btn-primary btn-round bg-default" type="button" (click)="incluirMoto()" placement="right" ngbTooltip="Incluir Moto">
-                      <i class="fas fa-motorcycle"></i> +
+                    <button *ngIf="orders.statusOrdemServico.tipoStatus != 'PAGO'" class="btn btn-primary btn-round bg-default" type="button" (click)="incluirMoto()">
+                      <i class="fas fa-motorcycle"></i>Adicionar Moto
                     </button>
                   </div>
                 </div>
@@ -78,9 +78,9 @@
                 
                       <div *ngIf="detalheServicoCollapse[grupo.placa]" class="card-body">
                         <div class="form-row align-items-end">
-                          <div class="mt-2 col-1">
-                            <button *ngIf="orders.statusOrdemServico.tipoStatus != 'PAGO'" class="btn btn-success btn-round " type="button" (click)="incluirRegistro(i)" ngbTooltip="Incluir Registro">
-                                <i class="fas fa-plus"></i>
+                          <div class="mt-2 col-2">
+                            <button *ngIf="orders.statusOrdemServico.tipoStatus != 'PAGO'" class="btn text-nowrap btn-success btn-round " type="button" (click)="incluirRegistro(i)">
+                                <i class="">Adicionar Serviço</i>
                             </button>
                           </div>
                           <div class="col col-2">

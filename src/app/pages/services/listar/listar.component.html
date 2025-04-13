@@ -17,7 +17,7 @@
                 <div class="custom-header btn btn-primary" (click)="toggleCollapse('item1')">
                   ÚLTIMOS SERVIÇOS
                 </div>
-                <div class="custom-body item1" [ngClass]="{'hidden': !isItem1Open, 'show': isItem1Open}">
+                <div class="custom-body item1" [ngClass]="{'hidden': !isItem1Open, 'show': isItem1Open}"  @fadeIn>
                   <!-- Tabela de registros -->
                   <div class="table-responsive">
                     <table class="table align-items-center table-flush">
