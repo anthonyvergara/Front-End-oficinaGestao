@@ -29,15 +29,21 @@
                                         </div>
                                         <hr class="my-4">
                                         <h4>Histórico de Pagamentos</h4>
-                                        <ul class="list-group list-group-flush" *ngIf="objectKeys(listParcelasEmAtrasoEPagas).length == 0 ">
+                                        <ul class="list-group list-group-flush" *ngIf="objectKeys(listPagamentos).length === 0 ">
                                             <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                                 <span class="text-secondary">Sem histórico de pagamento.</span>
                                             </li>
                                         </ul>
-                                        <ul *ngFor="let invoiceNumber of objectKeys(listParcelasEmAtrasoEPagas)" class="list-group list-group-flush">
-                                            <li *ngFor="let parcelas of listParcelasEmAtrasoEPagas[invoiceNumber]" class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 class="mb-0"><i [ngClass]="parcelas.statusParcela == 'PAGO' ? 'ni ni-like-2 icon-success' : parcelas.statusParcela == 'AGENDADO' ? 'fa fa-exclamation icon-alert' : 'ni ni-fat-remove icon-danger' "></i> {{formatDate(parcelas.dataVencimento)}}</h4>
-                                                <span class="text-secondary"> {{parcelas.valorParcela | currency:'GBP':'symbol':'1.2-2'}} {{parcelas.statusParcela}}</span>
+                                        <ul *ngFor="let invoiceNumber of objectKeys(listPagamentos)" class="list-group list-group-flush">
+                                            <li *ngFor="let pagamentos of listPagamentos[invoiceNumber]" class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                                <h4 class="mb-0"><i class="ni ni-like-2 icon-success"></i> 
+                                                  {{formatDate(pagamentos.dataPagamento)}}</h4>
+                                                <span class="text-secondary"> 
+                                                  {{pagamentos.valorPago | currency:'GBP':'symbol':'1.2-2'}} 
+                                                </span>
+                                                <span>
+                                                  "PAGO"
+                                                </span>
                                             </li>
                                         </ul>
                                     </div>

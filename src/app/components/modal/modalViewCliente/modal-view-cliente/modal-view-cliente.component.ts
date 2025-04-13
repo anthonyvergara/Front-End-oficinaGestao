@@ -3,6 +3,7 @@ import { trigger, style, transition, animate } from '@angular/animations';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { Parcela } from 'src/app/service/models/parcela.model';
+import { Pagamento } from 'src/app/service/models/pagamento.model';
 
 @Component({
   selector: 'modal-view-cliente',
@@ -39,6 +40,9 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
   listOrdemServico : OrdemServico[] = [];
 
   listParcelasEmAtrasoEPagas : { [key : number] : Parcela[] } = {};
+
+  listParcelasPagas : { [key : number] : Parcela[] } = {};
+  listPagamentos : {[invoice : number] : Pagamento[] } = {};
 
   endereco: string = null;
 
@@ -88,7 +92,7 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
     this.ordemServico.getOrdemServicoByIdCliente(idCliente).subscribe(
       (ordem) => {
         this.listOrdemServico = ordem;
-
+        this.getPagamentos();
         this.listOrdemServico.forEach(ordens => {
           if(ordens.parcela.length > 0 && ordens.parcela.length != null){
 
@@ -101,6 +105,8 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
             })
 
             this.listParcelasEmAtrasoEPagas[ordens.invoiceNumber] = parcelas.sort((a,b) => a.dataVencimento.localeCompare(b.dataVencimento));
+            this.parcelasPagas();
+            
           }
         })
 
@@ -118,6 +124,41 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
     } else {
       this.endereco = ''; // Se não houver rua ou número, endereço ficará vazio
     }
+  }
+
+  getPagamentos() {
+    this.listPagamentos = {}; // limpa antes de popular
+    this.listOrdemServico.forEach(os => {
+      const idOrdemServico = os.invoiceNumber; // ou os.idOrdemServico, conforme o seu modelo
+      if (!this.listPagamentos[idOrdemServico]) {
+        this.listPagamentos[idOrdemServico] = [];
+      }
+
+      if(os.quantidadeParcelas == 0){
+        var pagamento : Pagamento = {
+          id : 0,
+          valorPago : os.valorTotal,
+          dataPagamento : os.dataInicio.split(' ')[0]
+        }
+        this.listPagamentos[idOrdemServico].push(pagamento);
+        return;
+      }
+      os.pagamento?.forEach(p => {
+        p.dataPagamento = p.dataPagamento.split(' ')[0];
+        this.listPagamentos[idOrdemServico].push(p);
+      });
+    });
+  }
+  
+  
+
+  parcelasPagas(){
+    this.listParcelasPagas = {};
+
+    this.listOrdemServico.forEach(os => {
+      const pagos = os.parcela?.filter(p => p.statusParcela == 'PAGO') || [];
+      this.listParcelasPagas[os.invoiceNumber] = pagos;
+    })
   }
 
   closeModal() {
