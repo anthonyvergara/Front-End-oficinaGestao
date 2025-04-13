@@ -108,7 +108,6 @@ export class ListarComponent implements OnInit {
         })
       }
     }
-    console.log("valorEntrada: ", valorEntrada); // Exibe o valor encontrado
 
     this.modalData = {
       id,

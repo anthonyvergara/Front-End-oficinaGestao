@@ -3,7 +3,7 @@
       <div class="modal-content" (click)="$event.stopPropagation()">
         <div class="modal-header">
           <h1 class="modal-title ml-4">{{nome | uppercase}}</h1>
-          <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+          <button type="button" class="close" aria-label="Close" (click)="closeMyModal()">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -117,7 +117,7 @@
                                         <div class="card">
                                             <div class="card-body" style="background-color: #f4f5f7;">
                                                 <h3 class="d-flex align-items-center mb-3">ORDENS DE SERVIÇO</h3><hr>
-                                                <div *ngFor="let ordem of listOrdemServico; let i = index" class="card card-ordem-primary" [ngClass]="i % 2 == 0 ? 'card-ordem-color' : '' " style="position: relative;">
+                                                <div *ngFor="let ordem of listOrdemServico; let i = index" (click)="openModal(ordem.id, ordem.statusOrdemServico.tipoStatus, ordem.valorTotal, ordem.cliente.nome)" class="card card-ordem-primary" [ngClass]="i % 2 == 0 ? 'card-ordem-color' : '' " style="position: relative;">
                                                     <div class="mt-3 ml-2">
                                                         <p>Invoice Number: {{ordem.invoiceNumber}}</p>
                                                     </div>
@@ -188,12 +188,23 @@
             <div class="d-flex">
               <button *ngIf="saldoDevedor > 0" type="button" class="btn btn-success">Pagar</button>
               <button type="button" class="btn btn-danger">Excluir</button>
-              <button type="button" class="btn btn-secondary ml-2" (click)="closeModal()">Fechar</button>
+              <button type="button" class="btn btn-secondary ml-2" (click)="closeMyModal()">Fechar</button>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <div id="modal-overlay" class="modal-overlay"></div>
+  <modal-listar-ordemServico
+      *ngIf="modarViewOs" 
+      [id]="modalData.id"
+      [nome]="modalData.nome"
+      [status]="modalData.status"
+      [valorTotal]="modalData.valorTotal"
+      [valorDaEntrada]="modalData.valorEntrada"
+      (close)="closeModal()">
+  </modal-listar-ordemServico>
   
   

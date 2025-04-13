@@ -49,6 +49,9 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
   showSuccessAlert: boolean = false;
   showDangerAlert: boolean = false;
 
+  modarViewOs = false;
+  modalData: any;
+
   constructor(private ordemServico : OrdemservicoService) { }
 
   ngOnInit(): void {
@@ -150,6 +153,32 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
     });
   }
   
+  openModal(id: number, status: string, valorTotal: number, nome: string) {
+    //console.log('Modal aberto com:', { status, clientName, totalValue, creationDate });
+    
+
+    document.getElementById('modal-overlay')?.classList.add('show');
+
+    const ordemEncontrada = this.listOrdemServico.find(ordem => ordem.id == id);
+
+    let valorEntrada = 0; // Inicializa com null ou qualquer valor padrão
+    if (ordemEncontrada) {
+      if(ordemEncontrada.pagamento != null){
+        ordemEncontrada.pagamento.forEach(pagamento => {
+          valorEntrada += pagamento.valorPago;
+        })
+      }
+    }
+    this.modalData = {
+      id,
+      nome,
+      status,
+      valorTotal,
+      valorEntrada
+    };
+
+    this.modarViewOs = true;
+  }
   
 
   parcelasPagas(){
@@ -162,8 +191,13 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
   }
 
   closeModal() {
-    this.close.emit(); // Emite o evento para o componente pai
+    this.modarViewOs = false; // Emite o evento para o componente pai
     //document.getElementById('modal-overlay')?.classList.remove('show');
+  }
+
+  closeMyModal(){
+    this.close.emit();
+    this.modarViewOs = false;
   }
 
   onBackgroundClick(event: MouseEvent) {
