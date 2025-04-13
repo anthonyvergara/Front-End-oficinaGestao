@@ -77,7 +77,7 @@
                         <span *ngIf="!detalheServicoCollapse[grupo.placa]" class="ml-auto" style="margin-right: 30px;">
                           <h3 style="color: white;">TOTAL: {{ valorTotalDetalheServicoPorPlaca[grupo.placa] | currency:'GBP':'symbol':'1.2-2' }}</h3>
                         </span>
-                        <button *ngIf="groupedDetalheServico.length > 1" class="btn btn-outline btn-lg" type="button" (click)="removerMoto(i)">
+                        <button *ngIf="groupedDetalheServico.length > 1 && orders.statusOrdemServico.tipoStatus != 'PAGO'" class="btn btn-outline btn-lg" type="button" (click)="removerMoto(i)">
                           <i class="fas fa-trash" style="font-size: 18px;"></i>
                         </button>
                       </div>
@@ -265,7 +265,7 @@
         <div class="ml-auto d-flex flex-column align-items-end">
           <!-- Linha com a label e o botão de copiar ao lado -->
           <div class="d-flex align-items-center mb-2" *ngIf="dataUltimoPagamento != null">
-            <label class="text-sm mb-0" for="observacao">Último pagamento feito {{dataUltimoPagamento}}</label>
+            <label class="text-sm mb-0" for="observacao">{{ultimoPagamento()}}</label>
             <button class="btn btn-icon btn-outline-danger btn-sm ml-2" type="button" placement="top" ngbTooltip="Histórico de pagamentos">
               <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
             </button>

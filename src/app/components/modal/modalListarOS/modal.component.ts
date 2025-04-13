@@ -124,6 +124,39 @@ export class ModalComponent {
     return `${year}-${month}-${day}`;
   }
 
+  ultimoPagamento() : string{
+    var messagePagamento = "Ultimo pagamento feito "
+    var messageSemPagamento =  "Nenhum pagamento foi realizado."
+    if(this.orders.quantidadeParcelas == 0){
+      const somenteData = this.orders.dataInicio.split(' ')[0];
+      return messagePagamento += somenteData
+    }
+
+    if(this.orders.pagamento.length > 0){
+      const pagamentos = this.orders.pagamento;
+      const ultimo = pagamentos
+          .slice()
+          .sort((a, b) => {
+            const dataA = this.parseDataPagamento(a.dataPagamento);
+            const dataB = this.parseDataPagamento(b.dataPagamento);
+            return dataB.getTime() - dataA.getTime(); // mais recente primeiro
+          })[0];
+
+      const somenteData = ultimo.dataPagamento.split(' ')[0];
+      return messagePagamento+= somenteData
+    }
+
+    return messageSemPagamento
+  }
+
+  parseDataPagamento(dataStr: string): Date {
+    const [data, hora] = dataStr.split(' ');
+    const [dia, mes, ano] = data.split('/').map(Number);
+    const [horaStr, minuto, segundo] = hora.split(':').map(Number);
+    return new Date(ano, mes - 1, dia, horaStr, minuto, segundo);
+  }
+  
+
   convertToDate(dateString: string): Date {
     return new Date(dateString);
   }
