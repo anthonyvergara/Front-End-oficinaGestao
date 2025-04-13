@@ -201,7 +201,7 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
   }
 
   onBackgroundClick(event: MouseEvent) {
-    this.closeModal();
+    this.closeMyModal();
   }
 
   submitForm() {
