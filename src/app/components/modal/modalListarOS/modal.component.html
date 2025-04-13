@@ -79,7 +79,7 @@
                       <div *ngIf="detalheServicoCollapse[grupo.placa]" class="card-body">
                         <div class="form-row align-items-end">
                           <div class="mt-2 col-2">
-                            <button *ngIf="orders.statusOrdemServico.tipoStatus != 'PAGO'" class="btn text-nowrap btn-success btn-round " type="button" (click)="incluirRegistro(i)">
+                            <button [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'" class="btn text-nowrap btn-success btn-round " type="button" (click)="incluirRegistro(i)">
                                 <i class="">Adicionar Serviço</i>
                             </button>
                           </div>
