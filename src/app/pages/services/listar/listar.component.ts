@@ -94,7 +94,7 @@ export class ListarComponent implements OnInit {
 
   openModal(id: number, status: string, valorTotal: number, nome: string) {
     //console.log('Modal aberto com:', { status, clientName, totalValue, creationDate });
-    this.isModalOpen = true;
+    
 
     document.getElementById('modal-overlay')?.classList.add('show');
 
@@ -117,6 +117,8 @@ export class ListarComponent implements OnInit {
       valorTotal,
       valorEntrada
     };
+
+    this.isModalOpen = true;
   }
 
   closeModal() {

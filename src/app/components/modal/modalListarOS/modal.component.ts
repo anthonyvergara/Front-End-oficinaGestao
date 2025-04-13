@@ -82,6 +82,8 @@ export class ModalComponent {
 
   isModalNegociarOpen : boolean = false;
 
+  dadosCarregados: boolean = false;
+
   constructor(private ordemServico : OrdemservicoService, private router: Router, private impressaoService : ImpressaoService, 
     private sharedService : SharedService, private detalheServicoService : DetalheServicoService) {
   }
@@ -298,9 +300,12 @@ export class ModalComponent {
             this.detalheServicoCollapse[grupo.placa] = true;
           });
         };
+
+        this.dadosCarregados = true;
       },
       (error) => {
         console.error("Erro ao encontrar ordem de serviço" + error);
+        this.dadosCarregados = false;
       }
     )
   }
