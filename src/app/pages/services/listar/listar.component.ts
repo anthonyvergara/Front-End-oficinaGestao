@@ -35,7 +35,7 @@ export class ListarComponent implements OnInit {
   isItem3Open = false;
   isItem4Open = false;
 
-  selectedMenu: string = '';
+  selectedMenu: string = 'ULTIMOS';
 
   ngOnInit() {
     this.loadOrdemServico();
