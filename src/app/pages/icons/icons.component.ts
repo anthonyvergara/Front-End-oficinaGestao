@@ -4,6 +4,7 @@ import { ClientesService } from '../../service/clientes/clientes.service';
 import { Cliente } from '../../service/models/cliente.model';  // Importando a interface Cliente
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
+import { SharedService } from 'src/app/service/shared/shared.service';
 
 @Component({
   selector: 'app-icons',
@@ -34,7 +35,7 @@ export class IconsComponent implements OnInit {
 
   modalData: any;
 
-  constructor(private clientesService: ClientesService, private ordemServicoService : OrdemservicoService) { }
+  constructor(private clientesService: ClientesService, private ordemServicoService : OrdemservicoService, private sharedService: SharedService) { }
 
   currentPage = 1;  // Página atual
   itemsPerPage = 5; // Número de itens por página (no seu caso, 1 cliente por página)
@@ -42,6 +43,9 @@ export class IconsComponent implements OnInit {
 
   ngOnInit() {
     this.loadClientes();  // Carregar os dados da API
+    this.sharedService.clientCreated$.subscribe(() => {
+      this.loadClientes();
+    })
   }
 
   openModalViewCliente(id: number, nome: string, email: string, telefone: number){

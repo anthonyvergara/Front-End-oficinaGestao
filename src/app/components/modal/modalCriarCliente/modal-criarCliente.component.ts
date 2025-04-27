@@ -2,8 +2,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { ClientesService } from '../../../service/clientes/clientes.service';
 import { Cliente } from '../../../service/models/cliente.model';
-import { Telefone } from 'src/app/service/models/telefone.model';
 import { NgForm } from '@angular/forms';
+import { SharedService } from 'src/app/service/shared/shared.service';
 
 @Component({
   selector: 'modal-criar-cliente',
@@ -28,7 +28,9 @@ export class ModalCriarClienteComponent {
   showSuccessAlert: boolean = false;
   showDangerAlert: boolean = false;
 
-  constructor(private clientesService: ClientesService) { }
+  messageAlert: string = ''
+
+  constructor(private clientesService: ClientesService, private sharedService: SharedService) { }
 
   newCliente: Cliente = {
     id: 0,  // Este ID será gerado automaticamente pelo backend
@@ -40,8 +42,7 @@ export class ModalCriarClienteComponent {
     numeroPassaporte: 0,
     numeroRg: 0,
     telefone: [
-      { id_telefone: 0, tipo: 'CELULAR', country: 'BR', ddd: 44, numero: null },
-      { id_telefone: 0, tipo: 'CELULAR', country: 'BR', ddd: 44, numero: null }
+      { id_telefone: 0, tipo: 'CELULAR', country: 'BR', ddd: null, numero: null }
     ],
     endereco: [
       { id_endereco: 0, rua: '', numero: null, postcode: '', cidade: '' }
@@ -61,14 +62,34 @@ export class ModalCriarClienteComponent {
     if (form.valid) {
       this.onSubmit(form); // Chama o método onSubmit() para processar os dados
     } else {
-      console.log('Formulário inválido');
+      this.messageAlert = " Preencha todos os campos obrigatórios!"
+      this.showDangerAlert = true;
     }
+  }
+
+  getDefaultClient(){
+     return {
+      id: 0,  // Este ID será gerado automaticamente pelo backend
+      nome: '',
+      sobrenome: '',
+      dataNascimento: '',
+      email: '',
+      numeroDrive: 0,
+      numeroPassaporte: 0,
+      numeroRg: 0,
+      telefone: [
+        { id_telefone: 0, tipo: 'CELULAR', country: 'BR', ddd: null, numero: null }
+      ],
+      endereco: [
+        { id_endereco: 0, rua: '', numero: null, postcode: '', cidade: '' }
+      ],
+    };
   }
 
   criarCliente(): Cliente{
 
    // Usando filter para criar um novo array com os itens válidos
-  this.newCliente.telefone = this.newCliente.telefone.filter(telefone => telefone.numero != null && telefone.numero != 0);
+  this.newCliente.telefone = this.newCliente.telefone.filter(telefone => telefone.numero != null && telefone.numero != 0 && telefone.ddd != 0);
 
 
     return this.newCliente;
@@ -81,17 +102,19 @@ export class ModalCriarClienteComponent {
     this.clientesService.criarCliente(this.criarCliente()).subscribe(
       (response) => {
         console.log('Cliente criado com sucesso!', response);
+        this.messageAlert = " Cliente cadastrado com sucesso!"
         this.showSuccessAlert = true;
+        this.sharedService.notifyClientCreated();
         this.autoCloseAlert();
-        form.reset();
       },
       (error) => {
-        console.error('Erro ao criar cliente:', error);
+        this.messageAlert = " Não foi possivel cadastrar o cliente!"
         this.showDangerAlert = true;
+        console.error('Erro ao criar cliente:', error);
         this.autoCloseAlert();
       }
     );
-    
+    this.newCliente = this.getDefaultClient();
   }
     
   formatarData() {

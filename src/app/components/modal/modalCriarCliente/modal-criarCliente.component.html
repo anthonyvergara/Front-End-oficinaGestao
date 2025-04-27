@@ -3,11 +3,11 @@
   <div class="modal-dialog modal-xl" role="document">
     <div *ngIf="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert" @fadeIn>
       <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
-      <span class="alert-inner--text"><strong> Sucesso!</strong> Cliente cadastrado com sucesso!</span>
+      <span class="alert-inner--text"><strong> Sucesso!</strong>{{messageAlert}}</span>
     </div>
     <div *ngIf="showDangerAlert" class="alert alert-danger alert-dismissible fade show" role="alert" @fadeIn>
       <span class="alert-inner--icon"><i class="fa fa-thumbs-down"></i></span>
-      <span class="alert-inner--text"><strong> Ops!</strong> Não foi possivel cadastrar o cliente!</span>
+      <span class="alert-inner--text"><strong> Ops!</strong>{{messageAlert}}</span>
     </div>
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
@@ -29,9 +29,9 @@
                 style="max-width: 180px;">
             </div>
             <!-- Botão para mudar imagem -->
-              <div class="d-flex justify-content-center">
+              <!-- <div class="d-flex justify-content-center">
                 <a href="javascript:void(0)" class="btn btn-md btn-info">Imagem perfil</a>
-              </div>
+              </div> -->
           </div>
 
           <!-- Coluna dos campos de formulário -->
@@ -40,45 +40,79 @@
               <div class="form-row">
                 <div class="col-md-8 mb-2">
                   <label>Nome do Cliente</label>
-                  <input type="text" class="form-control" placeholder="Nome completo do Cliente" [(ngModel)]="newCliente.nome" name="nome">
+                  <input 
+                  type="text" 
+                  class="form-control" 
+                  appUppercase
+                  placeholder="Nome completo do Cliente" 
+                  [ngClass]="newCliente.nome.length == 0 ? 'is-invalid' : 'is-valid'" 
+                  [(ngModel)]="newCliente.nome" 
+                  name="nome"
+                  required>
                 </div>
                 <div class="col-md-4 mb-2">
                   <label>Data de Nascimento</label>
-                  <input type="text" class="form-control" placeholder="dd/MM/yyyy" [(ngModel)]="newCliente.dataNascimento" name="dataNascimento" (input)="formatarData()">
+                  <input type="text" maxlength="10" 
+                  appUppercase
+                  [ngClass]="newCliente.dataNascimento.length == 0 ? 'is-invalid' : 'is-valid'" 
+                  class="form-control" 
+                  placeholder="dd/MM/yyyy" 
+                  [(ngModel)]="newCliente.dataNascimento" 
+                  name="dataNascimento" 
+                  (input)="formatarData()"
+                  required>
                 </div>
               </div>
 
               <div class="form-row">
                 <div class="col-md-6 mb-2">
                   <label>E-mail</label>
-                  <input type="text" class="form-control" placeholder="seuemail@gmail.com" [(ngModel)]="newCliente.email" name="email">
+                  <input appUppercase type="text" class="form-control" placeholder="seuemail@gmail.com" [(ngModel)]="newCliente.email" name="email">
                 </div>
-                <div class="col-md-3 mb-2">
-                  <label>Telefone 1</label>
-                  <input type="text" class="form-control" placeholder="Digite o telefone" [(ngModel)]="newCliente.telefone[0].numero" name="telefone1">
+                <div class="col-md-1 mb-2">
+                  <label>DDD</label>
+                  <input type="text" 
+                  class="form-control" 
+                  placeholder="DDD" 
+                  [ngClass]="newCliente.telefone[0].ddd == null ? 'is-invalid' : 'is-valid'" 
+                  [(ngModel)]="newCliente.telefone[0].ddd" 
+                  name="ddd" 
+                  required>
                 </div>
-                <div class="col-md-3 mb-2">
-                  <label>Telefone 2</label>
-                  <input type="text" class="form-control" placeholder="Digite o telefone" [(ngModel)]="newCliente?.telefone?.[1].numero" name="telefone2">
+                <div class="col-md-4 mb-2">
+                  <label>Telefone</label>
+                  <input type="text"
+                  class="form-control" 
+                  placeholder="Digite o telefone" 
+                  [ngClass]="newCliente.telefone[0].numero == null ? 'is-invalid' : 'is-valid'" 
+                  [(ngModel)]="newCliente?.telefone?.[0].numero" 
+                  name="telefone2"
+                  required>
                 </div>
               </div>
               <h2 class="mt-4 mb-4">ENDEREÇO</h2>
               <div class="form-row">
                 <div class="col-md-4 mb-2">
                   <label>Rua</label>
-                  <input type="text" class="form-control" placeholder="Nome da Rua" [(ngModel)]="newCliente.endereco[0].rua" name="rua">
+                  <input appUppercase 
+                  [ngClass]="newCliente.endereco[0].rua.length == 0 ? 'is-invalid' : 'is-valid'" 
+                  type="text" class="form-control" placeholder="Nome da Rua" [(ngModel)]="newCliente.endereco[0].rua" name="rua">
                 </div>
                 <div class="col-md-2 mb-2">
                   <label>Número</label>
-                  <input type="text" class="form-control" placeholder="Número" [(ngModel)]="newCliente.endereco[0].numero" name="numero">
+                  <input type="text" 
+                  [ngClass]="newCliente.endereco[0].numero == null ? 'is-invalid' : 'is-valid'" 
+                  class="form-control" placeholder="Número" [(ngModel)]="newCliente.endereco[0].numero" name="numero">
                 </div>
                 <div class="col-md-3 mb-2">
                   <label>Postcode</label>
-                  <input type="text" class="form-control" placeholder="Postcode" [(ngModel)]="newCliente.endereco[0].postcode" name="postcode">
+                  <input appUppercase 
+                  [ngClass]="newCliente.endereco[0].postcode.length == 0 ? 'is-invalid' : 'is-valid'" 
+                  type="text" class="form-control" placeholder="Postcode" [(ngModel)]="newCliente.endereco[0].postcode" name="postcode">
                 </div>
                 <div class="col-md-3 mb-2">
                   <label>Cidade</label>
-                  <input type="text" class="form-control" placeholder="Nome da Cidade" [(ngModel)]="newCliente.endereco[0].cidade" name="cidade">
+                  <input appUppercase type="text" class="form-control" placeholder="Nome da Cidade" [(ngModel)]="newCliente.endereco[0].cidade" name="cidade">
                 </div>
               </div>
               
