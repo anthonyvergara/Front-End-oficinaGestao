@@ -14,8 +14,13 @@
             <!-- Botões de controle de registros -->
             <div class="custom-collapse-container">
               <div class="custom-collapse">
-                <div class="custom-header btn btn-primary" (click)="toggleCollapse('item1')">
+                <div class="custom-header btn btn-primary"
+                (click)="toggleCollapse('item1');selectedMenu = 'ULTIMOS'">
                   ÚLTIMOS SERVIÇOS
+                </div>
+                <div class="custom-header-underline underline-primary"
+                [ngClass]="{'active': selectedMenu === 'ULTIMOS'}"
+                >
                 </div>
                 <div class="custom-body item1" [ngClass]="{'hidden': !isItem1Open, 'show': isItem1Open}"  @fadeIn>
                   <!-- Tabela de registros -->
@@ -153,8 +158,13 @@
               </div>
             
               <div class="custom-collapse">
-                <div class="custom-header btn badge-agendado" style="color: white;" (click)="toggleCollapse('item2')">
+                <div class="custom-header btn badge-agendado" 
+                style="color: white;" (click)="toggleCollapse('item2'); selectedMenu = 'AGENDADOS'">
                   AGENDADOS
+                </div>
+                <div class="custom-header-underline underline-alert"
+                [ngClass]="{'active': selectedMenu === 'AGENDADOS'}"
+                >
                 </div>
                 <div class="custom-body item2" [ngClass]="{'hidden': !isItem2Open, 'show': isItem2Open}">
                   <div class="table-responsive">
@@ -288,8 +298,13 @@
               </div>
             
               <div class="custom-collapse">
-                <div class="custom-header btn btn-danger" (click)="toggleCollapse('item3')">
+                <div class="custom-header btn btn-danger"
+                (click)="toggleCollapse('item3');selectedMenu = 'ATRASADOS'">
                   ATRASADOS
+                </div>
+                <div class="custom-header-underline underline-danger"
+                [ngClass]="{'active': selectedMenu === 'ATRASADOS'}"
+                >
                 </div>
                 <div class="custom-body item3" [ngClass]="{'hidden': !isItem3Open, 'show': isItem3Open}">
                   <div class="table-responsive">
@@ -423,8 +438,13 @@
               </div>
             
               <div class="custom-collapse">
-                <div class="custom-header btn btn-darkblue" (click)="toggleCollapse('item4')">
+                <div class="custom-header btn btn-darkblue"
+                (click)="toggleCollapse('item4');selectedMenu = 'TODOS'">
                   TODOS SERVIÇOS
+                </div>
+                <div class="custom-header-underline underline-darkblue"
+                [ngClass]="{'active': selectedMenu === 'TODOS'}"
+                >
                 </div>
                 <div class="custom-body item4" [ngClass]="{'hidden': !isItem4Open, 'show': isItem4Open}">
                   <div class="table-responsive">

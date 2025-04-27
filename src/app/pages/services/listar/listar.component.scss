@@ -96,3 +96,44 @@ table tbody tr:hover {
   position: relative; /* Para servir de referência ao conteúdo absoluto */
 }
 
+.custom-header-underline {
+  position: relative;
+  padding-bottom: 10px; /* Cria um espaço para o sublinhado */
+}
+
+.custom-header-underline.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; /* Deixa o sublinhado logo abaixo do botão */
+  left: 0;
+  width: 100%; /* Faz o sublinhado ocupar toda a largura do botão */
+  height: 6px; /* Espessura do sublinhado */
+  animation: underline-slide 0.3s ease forwards;
+}
+
+.underline-primary.active::after{
+  background-color: #5e72e4;
+}
+
+.underline-alert.active::after{
+  background-color: #ffc107;
+}
+
+.underline-danger.active::after{
+  background-color: #f5365c;
+}
+
+.underline-darkblue.active::after{
+  background-color: #0284c7; /* Cor do sublinhado */
+}
+
+@keyframes underline-slide {
+  from {
+    width: 0;
+  }
+  to {
+    width: 96%;
+  }
+}
+
+

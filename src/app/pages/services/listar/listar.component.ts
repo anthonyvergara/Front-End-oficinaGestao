@@ -35,6 +35,8 @@ export class ListarComponent implements OnInit {
   isItem3Open = false;
   isItem4Open = false;
 
+  selectedMenu: string = '';
+
   ngOnInit() {
     this.loadOrdemServico();
     this.sharedService.paymentCompleted$.subscribe(() => {
