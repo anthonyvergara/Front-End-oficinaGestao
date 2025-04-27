@@ -21,7 +21,7 @@ import { Pagamento } from 'src/app/service/models/pagamento.model';
     ])
   ]
 })
-export class ModalViewClienteComponent implements OnInit, OnChanges {
+export class ModalViewClienteComponent implements OnInit {
 
   @Output() close = new EventEmitter<void>();
 
@@ -58,17 +58,18 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
     this.findOrdemServicoCliente(this.id);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // Verifica se os valores de rua ou numero mudaram e faz a concatenação
-    if (changes['nome']) {
-      this.nome = this.capitalizeName(this.nome);
-    }
-    console.log("id cliente: "+this.id);
+  //TIRAR MAIUSCULA E FORMATAR PARA SOMENTE INICIAIS MAIUSCULAS
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   // Verifica se os valores de rua ou numero mudaram e faz a concatenação
+  //   if (changes['nome']) {
+  //     this.nome = this.capitalizeName(this.nome);
+  //   }
+  //   console.log("id cliente: "+this.id);
     
-    if (changes['rua'] || changes['numero']) {
-      this.atualizarEndereco();
-    }
-  }
+  //   if (changes['rua'] || changes['numero']) {
+  //     this.atualizarEndereco();
+  //   }
+  // }
 
   objectKeys(obj : any) : number[] {
     return Object.keys(obj).map(key => parseInt(key));
