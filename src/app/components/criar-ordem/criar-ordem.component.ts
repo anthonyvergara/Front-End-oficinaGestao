@@ -44,14 +44,16 @@ export class CriarOrdemComponent implements OnInit {
   observacao: string = '';
   pagamentoTipo: string;
   quantidadeParcelas: number | null = null;
-  dataPrimeiraParcela: string | null = null;
   valorTotalGeral: number = 0;
   valorEntrada: number = null;
-  ultimoPagamento: string = '';
 
-  clienteId : string = null
+  isModalClientOpen = false;
+
+  clienteId: string = null;
 
   periodoPagamento: string;
+
+  findSugestao: boolean = false;
 
   parcelas: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // Opções de parcelamento de 1 a 10
 
@@ -61,7 +63,7 @@ export class CriarOrdemComponent implements OnInit {
   showDangerAlert: boolean = false;
 
   sugestoes: any[] = [];
-  
+
   constructor(private ordemServicoService: OrdemservicoService, private clienteService : ClientesService,
     private el: ElementRef
   ) { }
@@ -125,19 +127,18 @@ export class CriarOrdemComponent implements OnInit {
       ,
       cliente: undefined
     };
-  
     console.log(ordemServico);
 
     return ordemServico;
-    
   }
 
   onNomeClienteChange() {
-    if (this.nomeCliente.length > 2) { // Evita chamadas para menos de 3 caracteres
+    if (this.nomeCliente.length > 1) { // Evita chamadas para menos de 3 caracteres
       this.clienteService.getClienteByNameContains(this.nomeCliente).subscribe(clientes => {
         this.sugestoes = clientes;
       });
     } else {
+      this.findSugestao = false;
       this.sugestoes = [];
     }
   }
@@ -146,7 +147,18 @@ export class CriarOrdemComponent implements OnInit {
     this.nomeCliente = sugestao.nome;
     this.clienteId = sugestao.id;
     // Limpa as sugestões após a seleção
+    this.findSugestao = true;
     this.sugestoes = [];
+  }
+
+  createClient() {
+    this.isModalClientOpen = true;
+    document.getElementById('modal-overlay')?.classList.add('show');
+  }
+
+  closeModalClient() {
+    this.isModalClientOpen = false;
+    document.getElementById('modal-overlay')?.classList.remove('show');
   }
 
   @HostListener('document:click', ['$event'])
@@ -264,7 +276,7 @@ export class CriarOrdemComponent implements OnInit {
     });
     return soma / 100; // Retorna a soma total em formato de unidade
 }
-  
+
 
   removerRegistro(motoIndex: number, registroIndex: number) {
     this.motos[motoIndex].registros.splice(registroIndex, 1); // Remove o registro pelo índice
@@ -274,7 +286,7 @@ export class CriarOrdemComponent implements OnInit {
   removerMoto(motoIndex: number) {
     const totalMoto = this.calcularSoma(this.motos[motoIndex]);
     this.valorTotalGeral -= totalMoto; // Subtrai o total da moto do valor total geral
-    
+
     this.motos.splice(motoIndex, 1); // Remove a moto pelo índice
   }
 

@@ -21,24 +21,31 @@
                       <i class="fas fa-file-alt"></i>
                     </span>
                   </div>
-                    
+
                     <input disabled type="text" class="form-control text-center" placeholder="N.Invoice" [(ngModel)]="nInvoice" name="nInvoice">
                 </div>
                 <!-- seu-componente.component.html -->
-                <div class="col col-6" [ngClass]="nomeCliente.length == 0 ? 'has-danger' : 'has-success' ">
-                  <input 
-                    type="text" 
+                <div class="col col-6 input-group" >
+                  <input
+                    type="text"
                     appUppercase
-                    class="form-control border-style input-nome-cliente" 
-                    [ngClass]="nomeCliente.length == 0 ? 'is-invalid' : 'is-valid'" 
-                    placeholder="Nome do Cliente" 
+                    class="form-control border-style input-nome-cliente"
+                    [ngClass]="nomeCliente.length > 0 && findSugestao == true ? 'is-valid' : 'is-invalid'"
+                    placeholder="Nome do Cliente"
                     [(ngModel)]="nomeCliente"
                     name="nomeCliente"
                     (ngModelChange)="onNomeClienteChange()" />
+                  <div _ngcontent-c8="" *ngIf="nomeCliente.length > 1 && sugestoes.length == 0 && findSugestao == false" class="input-group-prepend">
+                      <span _ngcontent-c8="" style="cursor: pointer;"
+                            class="input-group-text pulse-effect"
+                            (click)="createClient()">
+                        <i class="ni ni-single-02"></i>
+                      </span>
+                  </div>
                 </div>
 
                 <!-- Exibição das sugestões -->
-                
+
 
                 <div class="col col-2">
                     <input type="text" class="form-control border-style" placeholder="VAT" [(ngModel)]="vat" name="vat">
@@ -51,13 +58,13 @@
             </div>
             <div *ngIf="sugestoes.length > 0" class="sugestoes">
               <ul class="list-group">
-                <li *ngFor="let sugestao of sugestoes" class="list-group-item" 
+                <li *ngFor="let sugestao of sugestoes" class="list-group-item"
                     (click)="selecionarSugestao(sugestao)">
                   {{ sugestao.nome }}
                 </li>
               </ul>
             </div>
-    
+
             <div class="form-row align-items-end mt-3">
                 <div class="col">
                     <button class="btn btn-primary btn-round bg-default" type="button" (click)="incluirMoto()">
@@ -65,7 +72,7 @@
                     </button>
                 </div>
             </div>
-    
+
             <div id="collapseMenu" class="mt-3">
                 <div *ngFor="let moto of motos; let i = index" @fadeBox>
                     <div class="card mt-2" [attr.id]="'moto' + moto.id" style="background-color: #f4f5f7;">
@@ -81,12 +88,12 @@
                           </span>
                           <!-- [ngClass]="i % 2 === 0 ? 'bg-default' : 'bg-info'" -->
                              <!-- <span>Nova Moto {{ moto.id }</span>}-->
-                            
+
 
                             <button class="btn btn-danger" type="button" (click)="removerMoto(i)">
                               <i class="fas fa-trash"></i>
                             </button>
-                            
+
                         </div>
                         <div class="card-body" [ngClass]="{'collapse': moto.isCollapsed}">
                             <div class="form-row align-items-end">
@@ -96,27 +103,27 @@
                                     </button>
                                 </div>
                                 <div class="col col-2" [ngClass]="moto.placa.length == 0 ? '' : 'has-success' ">
-                                  <label>Placa</label> 
+                                  <label>Placa</label>
                                   <input type="text" appUppercase class="form-control" [(ngModel)]="moto.placa" [ngClass]="moto.placa.length == 0 ? 'is-invalid' : 'is-valid' " placeholder="Placa" (keypress)="checkRegistroEnter($event, i, null)" [name]="'placa' + i">
                                 </div>
                                 <!--
                                 <div class="col col-1">
                                     <input type="number" class="form-control" [(ngModel)]="moto.qtd" placeholder="QTD" [name]="'qtd' + i">
-                                </div>-->   
+                                </div>-->
                                 <div class="col col-3">
-                                  <label>Motorista</label>  
+                                  <label>Motorista</label>
                                   <input type="text" appUppercase class="form-control" [(ngModel)]="moto.descricao" placeholder="Nome Motorista" (keypress)="checkRegistroEnter($event, i, null)" [name]="'descricao' + i">
                                 </div>
                                 <!--
                                 <div class="col col-2">
                                     <input type="text" class="form-control" [(ngModel)]="moto.preco" placeholder="Preço" [name]="'preco' + i">
                                 </div>-->
-                                
+
                                 <div class="col col-3">
-                                  <label>Observação</label>  
+                                  <label>Observação</label>
                                   <input type="text" appUppercase class="form-control" [(ngModel)]="moto.milhagem" placeholder="Observação" (keypress)="checkRegistroEnter($event, i, null)" [name]="'milhagem' + i">
                                 </div>
-                                
+
                                 <div class="col col-2 input-group">
                                   <label>Data Ordem Serviço</label>
                                     <div _ngcontent-c8="" class="input-group-prepend">
@@ -124,7 +131,8 @@
                                           <i class="ni ni-calendar-grid-58"></i>
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control text-center" [name]="'data' + i" [value]="dataAtualBR" readonly style="background-color: #172b4d; color: #f4f5f7; font-style: bold;">
+                                    <input type="text" class="form-control text-center"
+                                           [name]="'data' + i" [value]="dataAtualBR" readonly style="background-color: #172b4d; color: #f4f5f7; font-style: bold;">
                                 </div>
                             </div>
 
@@ -138,8 +146,8 @@
                                 </button>
                               </div>
                             </div> -->
-                            
-                            
+
+
                             <div class="mt-2" *ngIf="!moto.isCollapsed">
                                 <div *ngFor="let registro of moto.registros; let j = index" class="form-row align-items-end mt-2" @fadeBox>
                                     <div class="col col-1">
@@ -160,7 +168,7 @@
                                     </div>-->
                                     <div class="col">
                                         <button class="btn btn-danger btn-round" type="button" (click)="removerRegistro(i, j)">
-                                          <i class="fas fa-trash"></i> 
+                                          <i class="fas fa-trash"></i>
                                           </button>
                                     </div>
                                 </div>
@@ -172,12 +180,12 @@
                     </div>
                 </div>
             </div>
-    
+
             <div class="form-group mt-4">
                 <label for="observacao">Observação:</label>
                 <textarea class="form-control border-style" id="observacao" rows="3" [(ngModel)]="observacao" [ngModelOptions]="{standalone: true}"></textarea>
             </div>
-    
+
             <div class="form-row align-items-end">
                 <div class="col col-3">
                     <label for="observacao">Forma de Pagamento</label>
@@ -188,11 +196,11 @@
                 </div>
                 <div class="parcelas-container col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
                   <label for="quantidadeParcelas">Parcelas</label>
-                  <select 
-                    class="form-control border-style" 
-                    id="quantidadeParcelas" 
+                  <select
+                    class="form-control border-style"
+                    id="quantidadeParcelas"
                     [(ngModel)]="quantidadeParcelas"
-                    *ngIf="pagamentoTipo === 'Pagamento Parcelado'" 
+                    *ngIf="pagamentoTipo === 'Pagamento Parcelado'"
                     (change)="onQuantidadeParcelasChange()">
                     <option *ngFor="let parcela of parcelas; let i = index" [value]="i + 1">
                       {{i + 1}} Parcelas - {{(this.valorTotalGeral - this.valorEntrada) / (i + 1) | currency:'GBP':'symbol':'1.2-2'}}
@@ -201,8 +209,8 @@
                 </div>
                 <div class="col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
                     <label for="observacao">Perido entre Pagamentos</label>
-                    <select class="form-control border-style" id="pagamentoPeriodoSelect" 
-                      [(ngModel)]="periodoPagamento" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" 
+                    <select class="form-control border-style" id="pagamentoPeriodoSelect"
+                      [(ngModel)]="periodoPagamento" *ngIf="pagamentoTipo === 'Pagamento Parcelado'"
                       (change)="onPeriodoPagamentoChange($event.target.value)">
                       <option value="SEMANAL">Pagamento Semanal</option>
                       <option value="MENSAL">Pagamento Mensal</option>
@@ -213,7 +221,7 @@
                     <input type="text" class="form-control border-style" placeholder="Valor Entrada" [(ngModel)]="valorEntrada" (input)="onValorEntradaChange()">
                 </div>
             </div>
-    
+
             <div class="form-row mt-3 mb-4 d-flex align-items-end justify-content-between">
               <!-- Card Valor Total -->
               <div class="col-auto">
@@ -237,7 +245,7 @@
                   </div>
                 </div>
               </div>
-            
+
               <!-- Card Valor Devido -->
               <div class="col-auto" *ngIf="valorEntrada !== null && valorEntrada !== undefined && valorEntrada > 0 && valorTotalGeral > 0" @fadeIn>
                 <div style="width: 14rem;">
@@ -260,7 +268,7 @@
                   </div>
                 </div>
               </div>
-            
+
               <!-- Botões Criar Ordem e Imprimir alinhados à direita -->
               <div class="col-auto ml-auto d-flex align-items-center">
                 <button class="btn btn-default" type="button" (click)="submitForm(form)">
@@ -270,18 +278,23 @@
                   <i class="fa fa-print" style="font-size:20px"></i>
                 </button>
               </div>
-            </div>              
+            </div>
         </form>
 
 
-        
+
 
     </div>
     <!-- Botão flutuante para incluir moto -->
     <button class="btn btn-primary float-right incluir-moto-btn" (click)="incluirMoto()">
       <i class="fas fa-motorcycle"></i>
     </button>
-      
-      
+
+    <div id="modal-overlay" class="modal-overlay"></div>
+    <modal-criar-cliente
+      *ngIf="isModalClientOpen"
+      (close)="closeModalClient()">
+    </modal-criar-cliente>
+
     </div>
   </div>

@@ -29,7 +29,7 @@
     border: 1px solid #cad1d7;
     border-radius: 0.375rem;
     box-shadow: none;
-    
+
 }
 
 .bt-imprimir {
@@ -55,7 +55,7 @@
     outline: 0;
     box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
 }
-  
+
 /* seu-componente.component.css */
 .sugestoes {
     position: absolute;  /* Faz com que a lista de sugestões apareça abaixo do input */
@@ -67,14 +67,55 @@
     z-index: 1000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Adiciona sombra para destacar */
   }
-  
+
   .list-group-item {
     cursor: pointer;
     padding: 10px;
   }
-  
+
   .list-group-item:hover {
     background-color: #f0f0f0;  /* Destaca a sugestão quando o mouse passa em cima */
   }
-  
-  
+
+/* Estilo para o fundo desfocado */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+  backdrop-filter: blur(5px); /* Aplica o desfoque */
+  z-index: 1040; /* Garante que o overlay fique atrás do modal */
+  display: none; /* Inicialmente escondido */
+}
+
+/* Quando o modal estiver aberto, a classe "show" será adicionada ao overlay */
+.modal-overlay.show {
+  display: block;
+}
+
+.pulse-effect {
+  animation: pulseColorSize 1.5s infinite;
+}
+
+@keyframes pulseColorSize {
+  0% {
+    transform: scale(1);
+    background-color: #f0f0f0;
+    color: #333;
+  }
+  50% {
+    transform: scale(1.2);
+    background-color: #f17474;
+    color: #000;
+  }
+  100% {
+    transform: scale(1);
+    background-color: #f0f0f0;
+    color: #333;
+  }
+}
+
+
+
