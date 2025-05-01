@@ -66,6 +66,11 @@ export class ModalComponent {
   dataUltimoPagamento: any = "14/09/2024";
 
   newRegisters = 0;
+  originalPlaca: string = '';
+  originalMotorista: string = '';
+  originalObservacao: string = '';
+
+  changeInput: boolean = false;
 
   showSuccessAlert : boolean = false
   showDangerAlert : boolean = false
@@ -84,7 +89,7 @@ export class ModalComponent {
 
   dadosCarregados: boolean = false;
 
-  constructor(private ordemServico : OrdemservicoService, private router: Router, private impressaoService : ImpressaoService, 
+  constructor(private ordemServico : OrdemservicoService, private router: Router, private impressaoService : ImpressaoService,
     private sharedService : SharedService, private detalheServicoService : DetalheServicoService) {
   }
 
@@ -97,7 +102,7 @@ export class ModalComponent {
     console.log(this.id)
   }
 
-  checkStatus(){  
+  checkStatus(){
     this.status = this.orders.statusOrdemServico.tipoStatus
     return this.status;
   }
@@ -155,7 +160,7 @@ export class ModalComponent {
     const [horaStr, minuto, segundo] = hora.split(':').map(Number);
     return new Date(ano, mes - 1, dia, horaStr, minuto, segundo);
   }
-  
+
 
   convertToDate(dateString: string): Date {
     return new Date(dateString);
@@ -164,10 +169,10 @@ export class ModalComponent {
   subtractDates(dateObj1: Date, dateObj2: Date): number {
     // Calculando a diferença em milissegundos
     const differenceInMillis = dateObj2.getTime() - dateObj1.getTime();
-  
+
     // Convertendo para dias
     const differenceInDays = differenceInMillis / (1000 * 3600 * 24); // Convertendo milissegundos para dias
-  
+
     return Math.abs(differenceInDays)
   }
 
@@ -195,7 +200,7 @@ export class ModalComponent {
     const dateToday = this.convertToDate(dataHoje)
     const dateRegister = this.convertToDate(dataServico)
 
-    
+
     if(dateToday > dateRegister){
       if(this.subtractDates(dateRegister, dateToday) == 1){
         if(timeToday < timeServico){
@@ -230,7 +235,7 @@ export class ModalComponent {
 
   valorTotalPago() : number {
     var valorTotalDePagamentos = 0
-    
+
     this.orders.pagamento.forEach(pagamento => {
       valorTotalDePagamentos += pagamento.valorPago
     });
@@ -267,7 +272,7 @@ export class ModalComponent {
   onBackgroundClick(event: MouseEvent) {
     this.closeModal();
   }
-  
+
   // Método para incluir uma nova moto
   incluirMoto() {
     const novoGrupo = {
@@ -298,7 +303,7 @@ export class ModalComponent {
       groups[placa].push(detalhe);
       return groups;
     }, {});
-    
+
     // Converte o objeto de grupos em um array
     return Object.keys(grouped).map(placa => ({
       placa: placa,
@@ -334,6 +339,9 @@ export class ModalComponent {
           });
         };
 
+        this.originalMotorista = this.groupedDetalheServico[0].detalhes[0].nomeMotorista;
+        this.originalObservacao = this.groupedDetalheServico[0].detalhes[0].observacao;
+
         this.dadosCarregados = true;
       },
       (error) => {
@@ -349,15 +357,29 @@ export class ModalComponent {
   }
 
    // Método para atualizar o motorista
-   updateMotorista(index: number, event: Event): void {
+   updateMotorista(grupo: any, event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.groupedDetalheServico[index].motorista = input.value;
+    console.log("input", input.value);
+    if (input.value != this.originalMotorista) {
+      this.changeInput = true;
+    }else{
+      this.changeInput = false;
+    }
+
+    grupo.detalhes[0].nomeMotorista = input.value;
   }
 
   // Método para atualizar a observação
-  updateObservacao(index: number, event: Event): void {
+  updateObservacao(grupo: any, event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.groupedDetalheServico[index].observacao = input.value;
+
+    if (input.value != this.originalObservacao) {
+      this.changeInput = true;
+    }else{
+      this.changeInput = false;
+    }
+
+    grupo.detalhes[0].observacao = input.value;
   }
 
   // Método para atualizar a quantidade de um registro específico
@@ -376,10 +398,10 @@ export class ModalComponent {
   updateValor(grupo: any, index: number, event: any): void {
     const inputElement = event.target;
     const novoValor = parseFloat(inputElement.value.replace(/[^0-9.]/g, '')) || 0;
-  
+
     // Atualiza o valor no modelo
     grupo.detalhes[index].valor = novoValor;
-  
+
     // Recalcula os totais
     this.calcularTotais();
   }
@@ -393,29 +415,29 @@ export class ModalComponent {
 
   formatarValorEmTempoReal(event: any, grupo: any, index: number): void {
     const inputElement = event.target;
-  
+
     // Remove caracteres não numéricos
     let valor = inputElement.value.replace(/[^\d]/g, '');
-  
+
     // Se o valor estiver vazio, define como "0"
     if (valor === '') {
       valor = '0';
     }
-  
+
     // Converte para número inteiro (em centavos) e formata
     const numValue = parseInt(valor, 10);
     const formattedValue = this.formatarComoMoeda(numValue);
-  
+
     // Atualiza o valor formatado no campo de input
     inputElement.value = formattedValue;
-  
+
     // Atualiza o modelo com o valor em formato monetário (dividido por 100)
     grupo.detalhes[index].valor = numValue / 100;
-  
+
     // Recalcula os totais
     this.calcularTotais();
   }
-  
+
   private formatarComoMoeda(value: number): string {
     const finalValue = value / 100; // Converte para valor monetário
     return '£ ' + finalValue.toLocaleString('en-GB', {
@@ -423,8 +445,8 @@ export class ModalComponent {
       maximumFractionDigits: 2,
     });
   }
-  
-  
+
+
   getDate() : string{
     return this.formatDate(this.orders.dataInicio);
   }
@@ -453,6 +475,8 @@ export class ModalComponent {
         valor: 0.00,
         milhagem: 0,
         placa: grupo.placa,
+        observacao: '',
+        nomeMotorista: '',
         data: null  // Pode ser substituído com outra lógica para data
       };
       grupo.detalhes.push(novoRegistro);
@@ -463,13 +487,13 @@ export class ModalComponent {
 
   calcularTotais() {
     this.valorTotalDetalheServicoPorPlaca = {};
-    
+
     this.groupedDetalheServico.forEach((grupo) => {
       const total = grupo.detalhes.reduce((acc, registro) => {
         const valor = parseFloat(registro.valor) || 0; // Converta para número, tratando NaN
         return acc + valor;
       }, 0);
-      
+
       this.valorTotalDetalheServicoPorPlaca[grupo.placa] = total;
     });
   }
@@ -478,7 +502,7 @@ export class ModalComponent {
   atualizarOrdemServico(): DetalheServico[] {
     // Cria um array vazio onde você vai armazenar os detalhes extraídos
     let detail: DetalheServico[] = [];
-    
+
     console.log("Ira iterar")
     console.log(this.groupedDetalheServico)
     // Itera sobre cada moto no array `groupedDetalheServico`
@@ -488,30 +512,32 @@ export class ModalComponent {
         // Adiciona o detalhe extraído no array `detail`
         console.log(detalhe.data)
         detail.push({
-          id: detalhe.id, 
+          id: detalhe.id,
           data: detalhe.data,
           descricao: detalhe.descricao,
           placa: detalhe.placa,
           valor: detalhe.valor || 0,
           milhagem: detalhe.milhagem || 0, // Adiciona outros campos que deseja
-          quantidade: detalhe.quantidade
+          quantidade: detalhe.quantidade,
+          observacao: detalhe.observacao,
+          nomeMotorista: detalhe.nomeMotorista,
         });
       });
     });
-  
+
     // Imprime o array de detalhes no console
     console.log("Iterado final")
     console.log(detail);
-  
+
     // Aqui você pode retornar o array 'detail' ou um outro valor que faça sentido
     // Exemplo de retorno de um detalhe específico ou algum outro comportamento
     return detail;  // Apenas como exemplo, retornando o primeiro item de 'detail'
   }
-  
+
   updateDetalheServico() : void{
     console.log("id Ordem: "+  this.orders.id)
     this.newRegisters = 0;
-    
+
     this.detalheServicoService.putDetalheServico(this.orders.id, this.atualizarOrdemServico()).subscribe(
       response => {
         console.log('Ordem de serviço atualizada com sucesso!', response);
@@ -522,7 +548,7 @@ export class ModalComponent {
       }
     )
   }
-  
+
 
   // Método para remover um registro de uma moto
   removerRegistro(grupoIndex: number, registroIndex: number) {
@@ -621,10 +647,10 @@ export class ModalComponent {
     this.orders.detalheServico.forEach((servico) => {
       // Formatando o valor para o formato moeda padrão dos EUA
       const formattedAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(servico.valor);
-  
+
       // Capitalizando a primeira letra da descrição
       const capitalizedDescription = servico.descricao.charAt(0).toUpperCase() + servico.descricao.slice(1);
-  
+
       // Adicionando os itens formatados ao HTML
       itemsHtml += `
           <tr>
@@ -660,8 +686,8 @@ export class ModalComponent {
     var vatValue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(this.orders.valorTotal * vat);
     var valorTotal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(this.orders.valorTotal + (this.orders.valorTotal * vat));
     var subTotal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(this.orders.valorTotal);
-  
-    
+
+
     if (printWindow) {
         // Renderizar o template HTML com as informações
         printWindow.document.write(`
@@ -697,7 +723,7 @@ export class ModalComponent {
       -->
       <div class="invoice-company-info">
         <div class="summary">
-         <!-- <span class="title">MOTO HACKNEY LIMITED</span>-->    
+         <!-- <span class="title">MOTO HACKNEY LIMITED</span>-->
           <p><strong>Company N:</strong> 10689065</p>
           <p><strong>VAT Reg N:</strong> 336345208</p>
           <span class="title mt-5">ADDRESS</span>
@@ -802,7 +828,7 @@ export class ModalComponent {
 </html>
         `);
         printWindow.document.close(); // Necessário para carregar o conteúdo
-        
+
     }
 }
 

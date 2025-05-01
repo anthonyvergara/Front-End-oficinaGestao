@@ -111,6 +111,8 @@ export class CriarOrdemComponent implements OnInit {
           descricao: registro.descricao || null, // Descrição do registro (pode ser null)
           quantidade: registro.qtd || 1, // Quantidade (zero caso não esteja preenchido)
           milhagem: registro.milhagem || null, // Milhagem do registro
+          observacao: moto.observacao,
+          nomeMotorista: moto.nomeMotorista,
           data: null, // Usando a data atual
           valor: parseFloat(registro.preco.replace(/[^\d]/g, "")) / 100 || 0 // Preço do registro em formato monetário (dividido por 100)
         }));
@@ -234,6 +236,8 @@ export class CriarOrdemComponent implements OnInit {
       descricao: '',
       preco: null,
       milhagem: '',
+      observacao: '',
+      nomeMotorista: '',
       data: '',
       registros: [], // Inicializa um array para os registros
       isCollapsed: false // Inicializa como colapsado
@@ -248,7 +252,9 @@ export class CriarOrdemComponent implements OnInit {
       descricao: '',
       preco: null,
       data: '',
-      milhagem: null
+      milhagem: null,
+      nomeMotorista: '',
+      observacao: '',
     });
     this.atualizarValorTotalGeral();
   }

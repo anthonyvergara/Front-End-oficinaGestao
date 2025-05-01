@@ -4,6 +4,8 @@ export interface DetalheServico{
     descricao: string;
     quantidade: number;
     milhagem: number;
+    observacao: string;
+    nomeMotorista: string;
     data: string;
     valor: number;
 }
