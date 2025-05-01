@@ -4,12 +4,15 @@
 
 .bg-border-pago{
 border-color: #2dce89;
+  color: green;
 }
 .bg-border-agendado{
 border-color: rgb(255, 193, 7);
+  color: rgb(255, 193, 7);
 }
 .bg-border-atrasado{
 border-color: #f5365c;
+  color: red;
 }
 .block-cursor{
     cursor: not-allowed;
@@ -34,7 +37,7 @@ border-color: #f5365c;
   100% {
     transform: rotate(360deg);
   }
-} 
+}
 
 .modal-bellow-overlay {
     position: fixed;
@@ -47,8 +50,13 @@ border-color: #f5365c;
     z-index: 1040; /* Garante que o overlay fique atrás do modal */
     display: none; /* Inicialmente escondido */
   }
-  
+
   /* Quando o modal estiver aberto, a classe "show" será adicionada ao overlay */
   .modal-bellow-overlay.show {
     display: block;
   }
+
+input:disabled, input[readonly] {
+  background: rgb(255, 255, 255) !important;
+  cursor: not-allowed !important;
+}

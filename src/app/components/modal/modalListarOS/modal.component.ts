@@ -72,6 +72,9 @@ export class ModalComponent {
 
   changeInput: boolean = false;
 
+  observacaoFieldChange: boolean = false;
+  originalObservacaoOrdemServico: string = '';
+
   showSuccessAlert : boolean = false
   showDangerAlert : boolean = false
 
@@ -341,7 +344,7 @@ export class ModalComponent {
 
         this.originalMotorista = this.groupedDetalheServico[0].detalhes[0].nomeMotorista;
         this.originalObservacao = this.groupedDetalheServico[0].detalhes[0].observacao;
-
+        this.originalObservacaoOrdemServico = this.orders.observacao;
         this.dadosCarregados = true;
       },
       (error) => {
@@ -367,6 +370,15 @@ export class ModalComponent {
     }
 
     grupo.detalhes[0].nomeMotorista = input.value;
+  }
+
+  updateFieldObservacaoOrdemServico(event: Event): void {
+    const textArea = event.target as HTMLTextAreaElement;
+    if(this.originalObservacaoOrdemServico != textArea.value) {
+      this.observacaoFieldChange = true
+    }else{
+      this.observacaoFieldChange = false;
+    }
   }
 
   // Método para atualizar a observação
@@ -536,17 +548,51 @@ export class ModalComponent {
 
   updateDetalheServico() : void{
     console.log("id Ordem: "+  this.orders.id)
-    this.newRegisters = 0;
 
-    this.detalheServicoService.putDetalheServico(this.orders.id, this.atualizarOrdemServico()).subscribe(
-      response => {
-        console.log('Ordem de serviço atualizada com sucesso!', response);
-        this.sharedService.notifyPaymentCompleted();
-      },
-      error => {
-        console.error('Erro ao atualizar ordem de serviço', error);
-      }
-    )
+    if (this.observacaoFieldChange == true){
+
+      const ordemServico: OrdemServico = {
+        id: this.orders.id,
+        invoiceNumber: null,
+        vat: null,
+        dataInicio: null,
+        valorTotal: null,
+        tipoPagamento: null,
+        observacao: this.orders.observacao,
+        quantidadeParcelas: null,
+        detalheServico: null,
+        pagamento: null,
+        statusOrdemServico: null,
+        parcela: null,
+        cliente: null
+      };
+
+      this.ordemServico.updateFieldOrdemServico(ordemServico,String(this.orders.cliente.id), "2").subscribe(
+        response => {
+          console.log('Ordem de serviço atualizada com sucesso!', response);
+          this.sharedService.notifyPaymentCompleted();
+        },
+        error => {
+          console.error('Erro ao atualizar ordem de serviço', error);
+        }
+      );
+    }
+
+    else{
+      this.detalheServicoService.putDetalheServico(this.orders.id, this.atualizarOrdemServico()).subscribe(
+        response => {
+          console.log('Ordem de serviço atualizada com sucesso!', response);
+          this.sharedService.notifyPaymentCompleted();
+        },
+        error => {
+          console.error('Erro ao atualizar ordem de serviço', error);
+        }
+      );
+    }
+
+    this.newRegisters = 0;
+    this.changeInput = false;
+    this.observacaoFieldChange = false;
   }
 
 

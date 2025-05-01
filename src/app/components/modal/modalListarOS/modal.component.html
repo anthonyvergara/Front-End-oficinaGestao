@@ -52,7 +52,7 @@
                     <input [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'" type="text" class="form-control border-style" placeholder="VAT" [(ngModel)]="vat" name="vat">
                   </div>
                   <div class="col">
-                    <input disabled type="text" class="form-control text-center text-white" placeholder="Status" [(ngModel)]="orders.statusOrdemServico.tipoStatus" name="status" [ngClass]="saldoDevedor() <= 0 ? 'bg-border-pago bg-success' : orders.statusOrdemServico.tipoStatus == 'AGENDADO' ? 'bg-border-agendado bg-agendado' : 'bg-border-atrasado bg-danger' ">
+                    <input disabled type="text" class="form-control text-center" placeholder="Status" [(ngModel)]="orders.statusOrdemServico.tipoStatus" name="status" [ngClass]="saldoDevedor() <= 0 ? 'bg-border-pago bg-success' : orders.statusOrdemServico.tipoStatus == 'AGENDADO' ? 'bg-border-agendado bg-agendado' : 'bg-border-atrasado bg-danger' ">
                   </div>
                 </div>
 
@@ -91,15 +91,15 @@
                           </div>
                           <div class="col col-2">
                             <label>Placa</label>
-                            <input type="text" class="form-control" [value]="grupo.placa" placeholder="Placa" (input)="capturarPlaca($event, grupo)" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
+                            <input type="text" class="form-control" [readOnly]="compareDate(grupo.detalhes[0].data)" [value]="grupo.placa" placeholder="Placa" (input)="capturarPlaca($event, grupo)" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
                           </div>
                           <div class="col col-3">
                             <label>Motorista</label>
-                            <input type="text" class="form-control" [value]="grupo.detalhes[0].nomeMotorista | uppercase" (input)="updateMotorista(grupo, $event)" placeholder="Nome Motorista" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
+                            <input type="text" class="form-control" [readOnly]="compareDate(grupo.detalhes[0].data)" [value]="grupo.detalhes[0].nomeMotorista | uppercase" (input)="updateMotorista(grupo, $event)" placeholder="Nome Motorista" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
                           </div>
                           <div class="col col-3">
                             <label>Observação</label>
-                            <input type="text" class="form-control" [value]="grupo.detalhes[0].observacao | uppercase" (input)="updateObservacao(grupo, $event)" placeholder="Observação" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
+                            <input type="text" class="form-control" [readOnly]="compareDate(grupo.detalhes[0].data)" [value]="grupo.detalhes[0].observacao | uppercase" (input)="updateObservacao(grupo, $event)" placeholder="Observação" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
                           </div>
                           <div class="col col-2 input-group">
                             <label>Data Ordem Serviço</label>
@@ -108,7 +108,7 @@
                                 <i class="ni ni-calendar-grid-58"></i>
                               </span>
                             </div>
-                            <input type="text" class="form-control text-center" [value]="getDate()" readonly style="background-color: #172b4d; color: #f4f5f7; font-style: bold;">
+                            <input type="text" class="form-control text-center" [value]="getDate()" readonly style="background-color: #172b4d !important; color: #f4f5f7 !important; font-style: bold !important;">
                           </div>
                         </div>
 
@@ -153,7 +153,7 @@
 
                 <div class="form-group mt-4">
                   <label for="observacao">Observação:</label>
-                  <textarea class="form-control border-style" id="observacao" rows="3" [(ngModel)]="orders.observacao" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'"></textarea>
+                  <textarea class="form-control border-style" id="observacao" rows="3" (input)="updateFieldObservacaoOrdemServico($event)" [(ngModel)]="orders.observacao" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'"></textarea>
                 </div>
 
                 <div class="form-row align-items-end mb-2">
@@ -273,7 +273,7 @@
 
           <!-- Botões -->
           <div class="d-flex">
-            <button *ngIf="newRegisters>0 || changeInput" type="button" class="btn btn-success" (click)="updateDetalheServico()" @fadeIn>Salvar</button>
+            <button *ngIf="newRegisters>0 || changeInput || observacaoFieldChange" type="button" class="btn btn-success" (click)="updateDetalheServico()" @fadeIn>Salvar</button>
             <!-- <button type="button" class="btn btn-danger">Excluir</button> -->
             <button type="button" class="btn btn-secondary ml-2" (click)="closeModal()">Fechar</button>
           </div>

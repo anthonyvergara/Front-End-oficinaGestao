@@ -24,6 +24,7 @@ export const environment = {
   apiUrlGetAllOrdemServico: "/ordemServico/oficina/2",
   apiUrlGetOrdemServicoById: "/ordemServico/",
   apiUrlCriarOrdemServico: '/ordemServico/cliente',
+  apiUrlFieldOrdemServico: '/ordemServico/cliente/',
 
   // PARCELAMENTO
   urlPutParcelamento: '/parcelamento/ordemServico'
