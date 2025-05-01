@@ -86,11 +86,38 @@ export class ModalCriarClienteComponent {
     };
   }
 
+  verificarPais(codigoPais: string): string {
+    switch (codigoPais) {
+      case '55':
+        return 'BR';
+      case '1':
+        return 'USA / CAD';
+      case '44':
+        return 'UK';
+      case '49':
+        return 'GER';
+      case '33':
+        return 'FRA';
+      case '34':
+        return 'ESP';
+      case '81':
+        return 'JPN';
+      case '86':
+        return 'China';
+      case '39':
+        return 'ITA';
+      default:
+        return 'Outro país';
+    }
+  }
+
+
   criarCliente(): Cliente{
 
-   // Usando filter para criar um novo array com os itens válidos
-  this.newCliente.telefone = this.newCliente.telefone.filter(telefone => telefone.numero != null && telefone.numero != 0 && telefone.ddd != 0);
+    // Usando filter para criar um novo array com os itens válidos
+    this.newCliente.telefone = this.newCliente.telefone.filter(telefone => telefone.numero != null && telefone.numero != 0 && telefone.ddd != 0);
 
+    this.newCliente.telefone[0].country = this.verificarPais(String(this.newCliente.telefone[0].ddd));
 
     return this.newCliente;
   }
@@ -98,7 +125,7 @@ export class ModalCriarClienteComponent {
   onSubmit(form: NgForm) {
     // Enviar os dados para o backend
     console.log('Enviando dados para o backend:', this.criarCliente()); // Verifique os dados
-    
+
     this.clientesService.criarCliente(this.criarCliente()).subscribe(
       (response) => {
         console.log('Cliente criado com sucesso!', response);
@@ -116,7 +143,7 @@ export class ModalCriarClienteComponent {
     );
     this.newCliente = this.getDefaultClient();
   }
-    
+
   formatarData() {
     // Remove todos os caracteres não numéricos
     let data = this.newCliente.dataNascimento.replace(/\D/g, '');

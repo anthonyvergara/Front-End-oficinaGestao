@@ -1,5 +1,13 @@
 <div class="modal fade show" tabindex="-1" role="dialog" style="display: block;" (click)="onBackgroundClick($event)" @fadeIn>
     <div class="modal-dialog modal-xl" role="document">
+      <div *ngIf="showSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert" @fadeIn>
+        <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
+        <span class="alert-inner--text"><strong> Sucesso!</strong>{{messageAlert}}</span>
+      </div>
+      <div *ngIf="showDangerAlert" class="alert alert-danger alert-dismissible fade show" role="alert" @fadeIn>
+        <span class="alert-inner--icon"><i class="fa fa-thumbs-down"></i></span>
+        <span class="alert-inner--text"><strong> Ops!</strong>{{messageAlert}}</span>
+      </div>
       <div class="modal-content" (click)="$event.stopPropagation()">
         <div class="modal-header">
           <h1 class="modal-title ml-4">{{nome | uppercase}}</h1>
@@ -36,10 +44,10 @@
                                         </ul>
                                         <ul *ngFor="let invoiceNumber of objectKeys(listPagamentos)" class="list-group list-group-flush">
                                             <li *ngFor="let pagamentos of listPagamentos[invoiceNumber]" class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                                <h4 class="mb-0"><i class="ni ni-like-2 icon-success"></i> 
+                                                <h4 class="mb-0"><i class="ni ni-like-2 icon-success"></i>
                                                   {{formatDate(pagamentos.dataPagamento)}}</h4>
-                                                <span class="text-secondary"> 
-                                                  {{pagamentos.valorPago | currency:'GBP':'symbol':'1.2-2'}} 
+                                                <span class="text-secondary">
+                                                  {{pagamentos.valorPago | currency:'GBP':'symbol':'1.2-2'}}
                                                 </span>
                                                 <span>
                                                   "PAGO"
@@ -58,7 +66,7 @@
                                                 <h4 class="mb-0">Nome Completo</h4>
                                             </div>
                                             <div class="col-sm-8 text-secondary">
-                                                <input type="text" class="form-control" [(ngModel)]="nome" name="nome">
+                                                <input appUppercase type="text" class="form-control" [(ngModel)]="nome" name="nome">
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -66,7 +74,7 @@
                                                 <h4 class="mb-0">Email</h4>
                                             </div>
                                             <div class="col-sm-8 text-secondary">
-                                                <input type="text" class="form-control" [(ngModel)]="email" name="email">
+                                                <input appUppercase type="text" class="form-control" [(ngModel)]="email" name="email">
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -74,7 +82,7 @@
                                                 <h4 class="mb-0">Data de Nascimento</h4>
                                             </div>
                                             <div class="col-sm-8 text-secondary">
-                                                <input type="text" class="form-control" [(ngModel)]="dataNascimento" name="dataNascimento">
+                                                <input type="text" maxlength="10" class="form-control" [(ngModel)]="dataNascimento" name="dataNascimento">
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -82,32 +90,32 @@
                                                 <h4 class="mb-0">Telefone</h4>
                                             </div>
                                             <div class="col-sm-8 text-secondary">
-                                                <input type="text" class="form-control" [(ngModel)]="telefone" name="telefone">
+                                                <input type="number" class="form-control" [(ngModel)]="telefone" name="telefone">
                                             </div>
                                         </div>
                                         <h3>ENDEREÇO</h3><hr class="mt-0">
                                         <div class="row mb-3 mt--3">
                                             <div class="col-sm-4 text-secondary">
                                                 <label>Rua</label>
-                                                <input type="text" class="form-control" [(ngModel)]="rua" name="rua">
+                                                <input appUppercase type="text" class="form-control" [(ngModel)]="rua" name="rua">
                                             </div>
                                             <div class="col-sm-2 text-secondary">
                                                 <label>Numero</label>
-                                                <input type="text" class="form-control" [(ngModel)]="numero" name="numero">
+                                                <input appUppercase type="text" class="form-control" [(ngModel)]="numero" name="numero">
                                             </div>
                                             <div class="col-sm-3 text-secondary">
                                                 <label>Postcode</label>
-                                                <input type="text" class="form-control text-uppercase" [(ngModel)]="postcode" name="postcode">
+                                                <input appUppercase type="text" class="form-control text-uppercase" [(ngModel)]="postcode" name="postcode">
                                             </div>
                                             <div class="col-sm-3 text-secondary">
                                                 <label>Cidade</label>
-                                                <input type="text" class="form-control" [(ngModel)]="cidade" name="cidade">
+                                                <input appUppercase type="text" class="form-control" [(ngModel)]="cidade" name="cidade">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-4"></div>
                                             <div class="col-sm-8 text-secondary">
-                                                <input type="button" class="btn btn-info px-4" value="Salvar Alterações">
+                                                <input type="button" class="btn btn-info px-4" (click)="updateClient()" value="Salvar Alterações">
                                             </div>
                                         </div>
                                     </div>
@@ -198,7 +206,7 @@
 
   <div id="modal-overlay" class="modal-overlay"></div>
   <modal-listar-ordemServico
-      *ngIf="modarViewOs" 
+      *ngIf="modarViewOs"
       [id]="modalData.id"
       [nome]="modalData.nome"
       [status]="modalData.status"
@@ -206,5 +214,4 @@
       [valorDaEntrada]="modalData.valorEntrada"
       (close)="closeModal()">
   </modal-listar-ordemServico>
-  
-  
+

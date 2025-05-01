@@ -21,6 +21,7 @@ export const environment = {
   apiUrlSaveClient : '/cliente/2',
   apiUrlGetClienteByIdOrdemServico : "/cliente/ordemServico/",
   apiUrlFindByNameContains : "/cliente/",
+  apiUrlUpdateClient : '/cliente/2',
 
   // ORDEM DE SERVIÇO
   apiGetOrdemServicoByIdCliente: '/ordemServico/cliente/',
