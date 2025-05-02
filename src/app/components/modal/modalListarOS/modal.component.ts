@@ -549,7 +549,7 @@ export class ModalComponent {
   updateDetalheServico() : void{
     console.log("id Ordem: "+  this.orders.id)
 
-    if (this.observacaoFieldChange == true && this.newRegisters == 0){
+    if (this.observacaoFieldChange == true && this.newRegisters == 0 && this.changeInput == false){
 
       const ordemServico: OrdemServico = {
         id: this.orders.id,
