@@ -578,7 +578,7 @@ export class ModalComponent {
       );
     }
 
-    else{
+    if (this.changeInput == true || this.newRegisters > 0 ) {
       this.detalheServicoService.putDetalheServico(this.orders.id, this.atualizarOrdemServico()).subscribe(
         response => {
           console.log('Ordem de serviço atualizada com sucesso!', response);
