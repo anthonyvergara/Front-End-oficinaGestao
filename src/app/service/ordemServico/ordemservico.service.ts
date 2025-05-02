@@ -12,8 +12,11 @@ export class OrdemservicoService {
   private apiUrlGetAllOrdemServico = `${environment.apiBaseUrl}${environment.apiUrlGetAllOrdemServico}`
   private apiUrlGetOrdemServicoById = `${environment.apiBaseUrl}${environment.apiUrlGetOrdemServicoById}`
 
-  private apiUrlCriarOrdemServico = (idCLiente : string) => 
+  private apiUrlCriarOrdemServico = (idCLiente : string) =>
     `${environment.apiBaseUrl}${environment.apiUrlCriarOrdemServico}/${idCLiente}/oficina/2`
+
+  private apiUrlUpdateFieldOrdemServico = (idCliente:string, idOficina:string) =>
+    `${environment.apiBaseUrl}${environment.apiUrlFieldOrdemServico}${idCliente}/oficina/${idOficina}`
 
   constructor(private http: HttpClient) { }
 
@@ -35,5 +38,10 @@ export class OrdemservicoService {
   postOrdemServico(ordemServico: OrdemServico, idCliente : string): Observable<any>{
     const url = this.apiUrlCriarOrdemServico(idCliente)
     return this.http.post(url,ordemServico);
+  }
+
+  updateFieldOrdemServico(ordemServico: OrdemServico, idCliente : string, idOficina : string): Observable<any>{
+    const url = this.apiUrlUpdateFieldOrdemServico(idCliente, idOficina);
+    return this.http.patch(url, ordemServico);
   }
 }

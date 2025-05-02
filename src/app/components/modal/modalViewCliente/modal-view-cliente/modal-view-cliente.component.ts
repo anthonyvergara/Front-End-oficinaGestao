@@ -4,6 +4,9 @@ import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.s
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { Parcela } from 'src/app/service/models/parcela.model';
 import { Pagamento } from 'src/app/service/models/pagamento.model';
+import {Cliente} from '../../../../service/models/cliente.model';
+import {ClientesService} from '../../../../service/clientes/clientes.service';
+import {SharedService} from '../../../../service/shared/shared.service';
 
 @Component({
   selector: 'modal-view-cliente',
@@ -21,7 +24,7 @@ import { Pagamento } from 'src/app/service/models/pagamento.model';
     ])
   ]
 })
-export class ModalViewClienteComponent implements OnInit, OnChanges {
+export class ModalViewClienteComponent implements OnInit {
 
   @Output() close = new EventEmitter<void>();
 
@@ -49,26 +52,29 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
   showSuccessAlert: boolean = false;
   showDangerAlert: boolean = false;
 
+  messageAlert: string = '';
+
   modarViewOs = false;
   modalData: any;
 
-  constructor(private ordemServico : OrdemservicoService) { }
+  constructor(private ordemServico : OrdemservicoService, private clienteServices: ClientesService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.findOrdemServicoCliente(this.id);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // Verifica se os valores de rua ou numero mudaram e faz a concatenação
-    if (changes['nome']) {
-      this.nome = this.capitalizeName(this.nome);
-    }
-    console.log("id cliente: "+this.id);
-    
-    if (changes['rua'] || changes['numero']) {
-      this.atualizarEndereco();
-    }
-  }
+  //TIRAR MAIUSCULA E FORMATAR PARA SOMENTE INICIAIS MAIUSCULAS
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   // Verifica se os valores de rua ou numero mudaram e faz a concatenação
+  //   if (changes['nome']) {
+  //     this.nome = this.capitalizeName(this.nome);
+  //   }
+  //   console.log("id cliente: "+this.id);
+
+  //   if (changes['rua'] || changes['numero']) {
+  //     this.atualizarEndereco();
+  //   }
+  // }
 
   objectKeys(obj : any) : number[] {
     return Object.keys(obj).map(key => parseInt(key));
@@ -76,7 +82,7 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
 
   getParcelasAtrasadas() : number{
     let keys : number[] = this.objectKeys(this.listParcelasEmAtrasoEPagas);
-    
+
     let valorTotalAtrasado = 0;
 
     keys.forEach(key => {
@@ -88,6 +94,67 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
     })
 
     return valorTotalAtrasado;
+  }
+
+  verificarPais(codigoPais: string): string {
+    switch (codigoPais) {
+      case '55':
+        return 'BR';
+      case '1':
+        return 'USA / CAD';
+      case '44':
+        return 'UK';
+      case '49':
+        return 'GER';
+      case '33':
+        return 'FRA';
+      case '34':
+        return 'ESP';
+      case '81':
+        return 'JPN';
+      case '86':
+        return 'China';
+      case '39':
+        return 'ITA';
+      default:
+        return 'Outro país';
+    }
+  }
+
+  updateClient() {
+    const cliente: Cliente = {
+      id: Number(this.id),
+      nome: this.nome,
+      sobrenome: '',
+      dataNascimento: this.dataNascimento,
+      email: this.email,
+      numeroDrive: 0,
+      numeroPassaporte: 0,
+      numeroRg: 0,
+      telefone: [
+        { id_telefone: 0, tipo: 'CELULAR', country: 'BR', ddd: this.ddd, numero: this.numero },
+      ],
+      endereco: [
+        { id_endereco: 0, rua: this.rua, numero: this.numero, postcode: this.postcode, cidade: this.cidade },
+      ],
+    };
+    cliente.telefone[0].country = this.verificarPais(String(this.ddd));
+
+    this.clienteServices.atualizarCliente(cliente).subscribe(
+      (response) => {
+        this.messageAlert = " Cliente atualizado com sucesso!"
+        this.showSuccessAlert = true;
+        this.sharedService.notifyClientCreated();
+        this.autoCloseAlert();
+      },
+      (error) => {
+        this.messageAlert = " Não foi possivel atualizar o cliente!"
+        this.showDangerAlert = true;
+        console.error('Erro ao atualizar cliente:', error);
+        this.autoCloseAlert();
+      }
+    );
+
   }
 
   findOrdemServicoCliente(idCliente : string): void{
@@ -109,7 +176,7 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
 
             this.listParcelasEmAtrasoEPagas[ordens.invoiceNumber] = parcelas.sort((a,b) => a.dataVencimento.localeCompare(b.dataVencimento));
             this.parcelasPagas();
-            
+
           }
         })
 
@@ -152,10 +219,10 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
       });
     });
   }
-  
+
   openModal(id: number, status: string, valorTotal: number, nome: string) {
     //console.log('Modal aberto com:', { status, clientName, totalValue, creationDate });
-    
+
 
     document.getElementById('modal-overlay')?.classList.add('show');
 
@@ -179,7 +246,7 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
 
     this.modarViewOs = true;
   }
-  
+
 
   parcelasPagas(){
     this.listParcelasPagas = {};
@@ -223,7 +290,7 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
     // Divide o nome em palavras, transforma cada palavra e junta novamente
     return name
       .split(' ')  // Divide a string em palavras
-      .map(word => 
+      .map(word =>
         word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()  // Capitaliza a primeira letra e deixa o resto minúsculo
       )
       .join(' ');  // Junta as palavras de volta com um espaço entre elas
@@ -232,10 +299,10 @@ export class ModalViewClienteComponent implements OnInit, OnChanges {
   formatDate(dateString: string): string {
     // Supondo que a data seja fornecida no formato dd/MM/yyyy (exemplo: '09/12/2024')
     const [day, month, year] = dateString.split('/');
-    
+
     // Garantindo que o ano tenha 2 dígitos
     const shortYear = year.slice(2);  // Pega os dois últimos dígitos do ano (exemplo: '2024' -> '24')
-  
+
     // Retorna a data no formato 'dd/MM/yy'
     return `${day}/${month}/${shortYear}`;
   }

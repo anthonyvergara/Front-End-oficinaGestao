@@ -22,6 +22,8 @@ export class DashboardComponent implements OnInit {
   public clicked: boolean = true;
   public clicked1: boolean = false;
 
+  isModalOpen = false;
+
   ngOnInit() {
 
     this.datasets = [
@@ -49,6 +51,18 @@ export class DashboardComponent implements OnInit {
 			options: chartExample1.options,
 			data: chartExample1.data
 		});
+  }
+
+  openModal() {
+    //console.log('Modal aberto com:', { status, clientName, totalValue, creationDate });
+    this.isModalOpen = true;
+
+    document.getElementById('modal-overlay')?.classList.add('show');
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+    document.getElementById('modal-overlay')?.classList.remove('show');
   }
 
 

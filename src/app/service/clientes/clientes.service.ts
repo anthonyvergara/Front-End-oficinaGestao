@@ -13,6 +13,7 @@ export class ClientesService {
   private apiUrlSaveClient = `${environment.apiBaseUrl}${environment.apiUrlSaveClient}`// 2 representa o id da oficina
   private apiUrlGetClienteByIdOrdemServico = `${environment.apiBaseUrl}${environment.apiUrlGetClienteByIdOrdemServico}`
   private apiUrlFindByNameContains = `${environment.apiBaseUrl}${environment.apiUrlFindByNameContains}`
+  private apiUrlUpdateClient = `${environment.apiBaseUrl}${environment.apiUrlUpdateClient}`
 
   constructor(private http: HttpClient) { }
 
@@ -32,6 +33,10 @@ export class ClientesService {
 
   criarCliente(cliente: Cliente): Observable<Cliente> {
     return this.http.post<Cliente>(this.apiUrlSaveClient, cliente);
+  }
+
+  atualizarCliente(cliente: Cliente): Observable<Cliente> {
+    return this.http.put<Cliente>(this.apiUrlUpdateClient, cliente);
   }
 
 }
