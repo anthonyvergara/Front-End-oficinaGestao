@@ -46,7 +46,7 @@ export class SidebarComponent implements OnInit {
   public submenuItems: any[] = [
     { path: '/services/listar', title: 'Ordens de Serviço', icon: 'ni-collection text-orange' },
     { path: '/services/criar', title: 'Criar Serviço', icon: 'ni-fat-add text-orange' }
-  ];  
+  ];
 
   constructor(private router: Router) { }
 
@@ -55,5 +55,5 @@ export class SidebarComponent implements OnInit {
     this.router.events.subscribe((event) => {
    });
   }
-  
+
 }

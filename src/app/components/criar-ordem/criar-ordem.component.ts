@@ -70,9 +70,8 @@ export class CriarOrdemComponent implements OnInit {
 
   ngOnInit() {
     const hoje = new Date();
-    const dia = String(hoje.getDate()).padStart(2, '0');
-    const mes = String(hoje.getMonth() + 1).padStart(2, '0'); // Janeiro é 0
-    const ano = hoje.getFullYear();
+    this.dataAtualBR = hoje.toLocaleDateString('en-GB', { timeZone: 'Europe/London' });
+
     // Inicialize o pagamentoTipo
     this.pagamentoTipo = 'Pagamento à Vista';
 
@@ -83,7 +82,6 @@ export class CriarOrdemComponent implements OnInit {
         this.pagamentoSelect.nativeElement.value = this.pagamentoTipo;
     }
 
-    this.dataAtualBR = `${dia}/${mes}/${ano}`;
 
     console.log(this.periodoPagamento);
 
