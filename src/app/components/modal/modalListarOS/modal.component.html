@@ -8,7 +8,7 @@
     <span class="alert-inner--text"><strong> Sucesso!</strong> {{messageAlert}}</span>
   </div>
   <div id="modal-bellow-overlay" class="modal-bellow-overlay"></div>
-  <div class="modal-dialog modal-xl" role="document">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
     <div *ngIf="!dadosCarregados" class="loading-overlay show d-flex justify-content-center align-items-center" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1050; background-color: rgba(0,0,0,0.5);">
       <div class="spinner-container">
         <span class="loader"></span>
@@ -16,18 +16,27 @@
     </div>
 
     <div *ngIf="dadosCarregados" class="modal-content" (click)="$event.stopPropagation()">
-      <div class="modal-header">
+      <div class="modal-header d-flex flex-column flex-sm-row">
         <h1 class="modal-title">Detalhes da Ordem de Serviço</h1>
-        <div class="ml-auto d-flex">
-          <button *ngIf="saldoDevedor() > 0 " type="button" class="btn btn-outline-success" placement="bottom" ngbTooltip="Pagar" (click)="openModalPagar()"><i class="ni ni-check-bold" style="font-size:25px"></i></button>
-          <button type="button" class="btn btn-outline-primary" placement="bottom" ngbTooltip="Cliente" (click)="openModalCliente()"><i class="ni ni-circle-08" style="font-size:20px"></i></button>
-          <button type="button" (click)="imprimir()" class="btn btn-outline-danger" placement="bottom" ngbTooltip="Imprimir"><i class="fa fa-print" style="font-size:20px"></i></button>
-          <button *ngIf="saldoDevedor() > 0 " type="button" class="btn btn-outline-default" placement="bottom" ngbTooltip="Negociar" (click)="openModalNegociar()"><i class="fa fa-calculator" style="font-size:20px"></i></button>
+        <div class="ml-auto d-flex mt-2 mt-sm-0">
+          <button *ngIf="saldoDevedor() > 0" type="button" class="btn btn-outline-success" placement="bottom" ngbTooltip="Pagar" (click)="openModalPagar()">
+            <i class="ni ni-check-bold" style="font-size:25px"></i>
+          </button>
+          <button type="button" class="btn btn-outline-primary" placement="bottom" ngbTooltip="Cliente" (click)="openModalCliente()">
+            <i class="ni ni-circle-08" style="font-size:20px"></i>
+          </button>
+          <button type="button" (click)="imprimir()" class="btn btn-outline-danger" placement="bottom" ngbTooltip="Imprimir">
+            <i class="fa fa-print" style="font-size:20px"></i>
+          </button>
+          <button *ngIf="saldoDevedor() > 0" type="button" class="btn btn-outline-default" placement="bottom" ngbTooltip="Negociar" (click)="openModalNegociar()">
+            <i class="fa fa-calculator" style="font-size:20px"></i>
+          </button>
         </div>
         <button type="button" class="close" aria-label="Close" (click)="closeModal()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+
       <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
         <div class="row">
           <div class="col">
@@ -200,21 +209,25 @@
       </div>
 
 
-      <!-- Footer do modal -->
+      <!-- Modal Footer -->
       <div class="modal-footer">
-        <div class="form-row align-items-end mt-0 d-flex justify-content-start">
-          <div class="col-auto" placement="top" ngbTooltip="Valor Total da Ordem de Serviço.">
-            <div style="width: 14rem;">
+        <div class="form-row align-items-center mt-0 d-flex justify-content-start w-100">
+          <!-- Cartão Valor Total -->
+          <div class="col-sm-4 col-12 mb-3">
+            <div style="width: 100%;">
               <div class="card card-stats bg-success mb-0 mb-lg-0">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase mb-0" style="color: white; font-style: bold;">VALOR TOTAL</h5>
-                      <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ orders.valorTotal| currency:'GBP':'symbol':'1.2-2' }}</span>
+                      <h5 class="card-title text-uppercase mb-0" style="color: white; font-weight: bold; font-size: 0.9rem;">VALOR TOTAL</h5>
+                      <span class="h2 font-weight-bold mb-0" style="color: white; font-weight: bold; font-size: 1.2rem;">
+                  {{ orders.valorTotal | currency:'GBP':'symbol':'1.2-2' }}
+                </span>
                     </div>
-                    <div class="col-auto">
+                    <!-- Ícone, ocultar no mobile -->
+                    <div class="col-auto d-none d-sm-block">
                       <div class="icon icon-shape bg-secondary rounded-circle shadow">
-                        <i class="fa fa-calculator "></i>
+                        <i class="fa fa-calculator"></i>
                       </div>
                     </div>
                   </div>
@@ -222,18 +235,23 @@
               </div>
             </div>
           </div>
-          <div class="col-auto">
-            <div style="width: 14rem;">
+
+          <!-- Cartão Valor Pago -->
+          <div class="col-sm-4 col-12 mb-3">
+            <div style="width: 100%;">
               <div class="card card-stats bg-darkblue mb-0 mb-lg-0">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase mb-0" style="color: white; font-style: bold;">VALOR PAGO</h5>
-                      <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ valorTotalPago() | currency:'GBP':'symbol':'1.2-2' }}</span>
+                      <h5 class="card-title text-uppercase mb-0" style="color: white; font-weight: bold; font-size: 0.9rem;">VALOR PAGO</h5>
+                      <span class="h2 font-weight-bold mb-0" style="color: white; font-weight: bold; font-size: 1.2rem;">
+                  {{ valorTotalPago() | currency:'GBP':'symbol':'1.2-2' }}
+                </span>
                     </div>
-                    <div class="col-auto">
+                    <!-- Ícone, ocultar no mobile -->
+                    <div class="col-auto d-none d-sm-block">
                       <div class="icon icon-shape bg-secondary rounded-circle shadow">
-                        <i class="fa fa-calculator "></i>
+                        <i class="fa fa-calculator"></i>
                       </div>
                     </div>
                   </div>
@@ -241,21 +259,24 @@
               </div>
             </div>
           </div>
-          <div class="col-auto">
-            <div class="col-auto">
-              <div style="width: 14rem;">
-                <div *ngIf="saldoDevedor() > 0" class="card card-stats mb-4 mb-lg-0" [ngClass]="saldoDevedor() <= 0 ? 'bg-success' : orders.statusOrdemServico.tipoStatus == 'AGENDADO' ? 'bg-agendado' : 'bg-danger'   " style="width: 255px;" placement="top" ngbTooltip="(Valor Total) subtraído pelo (Valor Total Pago)">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col">
-                        <h5 class="card-title text-uppercase mb-0" style="color: white; font-style: bold;">SALDO DEVEDOR</h5>
-                        <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ saldoDevedor() | currency:'GBP':'symbol':'1.2-2' }}</span> <!-- currency:'GBP':true -->
-                      </div>
-                      <div class="col-auto">
-                        <div class="icon icon-shape bg-secondary rounded-circle shadow">
-                          £
-                        </div>
-                      </div>
+
+          <!-- Cartão Saldo Devedor -->
+          <div class="col-sm-4 col-12 mb-3">
+            <div *ngIf="saldoDevedor() > 0" class="card card-stats mb-0 mb-lg-0"
+                 [ngClass]="saldoDevedor() <= 0 ? 'bg-success' : orders.statusOrdemServico.tipoStatus == 'AGENDADO' ? 'bg-agendado' : 'bg-danger'"
+                 style="width: 100%;" placement="top" ngbTooltip="(Valor Total) subtraído pelo (Valor Total Pago)">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <h5 class="card-title text-uppercase mb-0" style="color: white; font-weight: bold; font-size: 0.9rem;">SALDO DEVEDOR</h5>
+                    <span class="h2 font-weight-bold mb-0" style="color: white; font-weight: bold; font-size: 1.2rem;">
+                {{ saldoDevedor() | currency:'GBP':'symbol':'1.2-2' }}
+              </span>
+                  </div>
+                  <!-- Ícone, ocultar no mobile -->
+                  <div class="col-auto d-none d-sm-block">
+                    <div class="icon icon-shape bg-secondary rounded-circle shadow">
+                      £
                     </div>
                   </div>
                 </div>
@@ -263,8 +284,9 @@
             </div>
           </div>
         </div>
+
         <!-- Alinha os botões no canto direito -->
-        <div class="ml-auto d-flex flex-column align-items-end">
+        <div class="ml-auto d-flex flex-column align-items-end w-100">
           <!-- Linha com a label e o botão de copiar ao lado -->
           <div class="d-flex align-items-center mb-2" *ngIf="dataUltimoPagamento != null">
             <label class="text-sm mb-0" for="observacao">{{ultimoPagamento()}}</label>
@@ -274,13 +296,15 @@
           </div>
 
           <!-- Botões -->
-          <div class="d-flex">
+          <div class="d-flex flex-wrap justify-content-between w-100">
             <button *ngIf="newRegisters>0 || changeInput || observacaoFieldChange" type="button" class="btn btn-success" (click)="updateDetalheServico()" @fadeIn>Salvar</button>
-            <!-- <button type="button" class="btn btn-danger">Excluir</button> -->
-            <button type="button" class="btn btn-secondary ml-2" (click)="closeModal()">Fechar</button>
+            <!-- Colocando o botão 'Fechar' no canto direito -->
+            <button type="button" class="btn btn-secondary ml-auto" (click)="closeModal()">Fechar</button>
           </div>
         </div>
       </div>
+
+
     </div>
   </div>
 </div>
