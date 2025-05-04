@@ -1,5 +1,5 @@
 <!-- Page content -->
-<div class="container-fluid mt--7">
+<div class="container-fluid mt--9">
   <!-- Table -->
   <div class="row">
     <div class="col">
@@ -70,7 +70,7 @@
                                   {{ order.statusOrdemServico.tipoStatus }}
                                 </span>
                               </div>
-                              
+
                             </div>
                           </th>
                           <td [ngClass]="i % 2 === 0 ? '' : 'table-dark'">
@@ -115,7 +115,7 @@
                     </table>
                     <div id="modal-overlay" class="modal-overlay"></div>
                     <modal-listar-ordemServico
-                        *ngIf="isModalOpen" 
+                        *ngIf="isModalOpen"
                         [id]="modalData.id"
                         [nome]="modalData.nome"
                         [status]="modalData.status"
@@ -135,7 +135,7 @@
                             <span class="sr-only">Previous</span>
                           </a>
                         </li>
-                        <li class="page-item" *ngFor="let page of getPaginationPages('ULTIMAS')" 
+                        <li class="page-item" *ngFor="let page of getPaginationPages('ULTIMAS')"
                         [class.active]="page === currentPageUltimas"
                         [class.disabled]="page === -1">
                           <a class="page-link" href="javascript:void(0)" (click)="page !== -1 ? goToPage(page,'ULTIMAS') : null">
@@ -156,9 +156,9 @@
 
                 </div>
               </div>
-            
+
               <div class="custom-collapse">
-                <div class="custom-header btn badge-agendado" 
+                <div class="custom-header btn badge-agendado"
                 style="color: white;" (click)="toggleCollapse('item2'); selectedMenu = 'AGENDADOS'">
                   AGENDADOS
                 </div>
@@ -257,7 +257,7 @@
                     </table>
                     <div id="modal-overlay" class="modal-overlay"></div>
                     <modal-listar-ordemServico
-                        *ngIf="isModalOpen" 
+                        *ngIf="isModalOpen"
                         [id]="modalData.id"
                         [nome]="modalData.nome"
                         [status]="modalData.status"
@@ -277,7 +277,7 @@
                             <span class="sr-only">Previous</span>
                           </a>
                         </li>
-                        <li class="page-item" *ngFor="let page of getPaginationPages('AGENDADO')" 
+                        <li class="page-item" *ngFor="let page of getPaginationPages('AGENDADO')"
                         [class.active]="page === currentPageAgendados"
                         [class.disabled]="page === -1">
                           <a class="page-link" href="javascript:void(0)" (click)="page !== -1 ? goToPage(page,'AGENDADO') : null">
@@ -296,7 +296,7 @@
                   </div>
                 </div>
               </div>
-            
+
               <div class="custom-collapse">
                 <div class="custom-header btn btn-danger"
                 (click)="toggleCollapse('item3');selectedMenu = 'ATRASADOS'">
@@ -397,7 +397,7 @@
                     </table>
                     <div id="modal-overlay" class="modal-overlay"></div>
                     <modal-listar-ordemServico
-                        *ngIf="isModalOpen" 
+                        *ngIf="isModalOpen"
                         [id]="modalData.id"
                         [nome]="modalData.nome"
                         [status]="modalData.status"
@@ -417,7 +417,7 @@
                             <span class="sr-only">Previous</span>
                           </a>
                         </li>
-                        <li class="page-item" *ngFor="let page of getPaginationPages('ATRASADO')" 
+                        <li class="page-item" *ngFor="let page of getPaginationPages('ATRASADO')"
                         [class.active]="page === currentPageAtrasados"
                         [class.disabled]="page === -1">
                           <a class="page-link" href="javascript:void(0)" (click)="page !== -1 ? goToPage(page,'ATRASADO') : null">
@@ -436,7 +436,7 @@
                   </div>
                 </div>
               </div>
-            
+
               <div class="custom-collapse">
                 <div class="custom-header btn btn-darkblue"
                 (click)="toggleCollapse('item4');selectedMenu = 'TODOS'">
@@ -537,7 +537,7 @@
                     </table>
                     <div id="modal-overlay" class="modal-overlay"></div>
                     <modal-listar-ordemServico
-                        *ngIf="isModalOpen" 
+                        *ngIf="isModalOpen"
                         [id]="modalData.id"
                         [nome]="modalData.nome"
                         [status]="modalData.status"
@@ -557,7 +557,7 @@
                             <span class="sr-only">Previous</span>
                           </a>
                         </li>
-                        <li class="page-item" *ngFor="let page of getPaginationPages('')" 
+                        <li class="page-item" *ngFor="let page of getPaginationPages('')"
                         [class.active]="page === currentPage"
                         [class.disabled]="page === -1">
                           <a class="page-link" href="javascript:void(0)" (click)="page !== -1 ? goToPage(page,'') : null">

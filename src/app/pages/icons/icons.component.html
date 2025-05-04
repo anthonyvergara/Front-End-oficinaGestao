@@ -1,5 +1,5 @@
 <!-- Page content -->
-<div class="container-fluid mt--7">
+<div class="container-fluid mt--9">
 <!-- Table -->
 <div class="row">
   <div class="col">
@@ -35,7 +35,7 @@
             <tr>
               <th scope="col">
                 <h4></h4>
-                
+
               </th>
               <th scope="col">
                 <h4>Nome do Cliente</h4>
@@ -101,11 +101,11 @@
         </table>
         <div id="modal-overlay" class="modal-overlay"></div>
         <modal-criar-cliente
-            *ngIf="isModalOpen" 
+            *ngIf="isModalOpen"
             (close)="closeModal()">
         </modal-criar-cliente>
 
-        <modal-view-cliente 
+        <modal-view-cliente
         *ngIf="isModalViewClienteOpen"
         [id]="modalData.id"
         [nome]="modalData.nome"
@@ -133,7 +133,7 @@
               </a>
             </li>
 
-            <li class="page-item" *ngFor="let page of getPaginationPages()" 
+            <li class="page-item" *ngFor="let page of getPaginationPages()"
             [class.active]="page === currentPage"
             [class.disabled]="page === -1">
               <a class="page-link" href="javascript:void(0)" (click)="page !== -1 ? goToPage(page) : null">
@@ -151,7 +151,7 @@
           </ul>
         </nav>
       </div>
-      
+
     </div>
   </div>
 </div>

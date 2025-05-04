@@ -11,7 +11,7 @@ export class AdminLayoutComponent implements OnInit {
 
   shouldShowHeaderbar = true;
 
-  c// Lista de rotas onde o header não será mostrado
+  // Lista de rotas onde o header não será mostrado
   private routesToHideHeaderbar = ['/user-profile', '/criar'];
 
   constructor(private router: Router) {
