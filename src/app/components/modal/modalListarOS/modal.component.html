@@ -32,7 +32,7 @@
             <i class="fa fa-calculator" style="font-size:20px"></i>
           </button>
         </div>
-        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <button type="button" class="close d-none d-sm-block" aria-label="Close" (click)="closeModal()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -213,7 +213,7 @@
       <div class="modal-footer">
         <div class="form-row align-items-center mt-0 d-flex justify-content-start w-100">
           <!-- Cartão Valor Total -->
-          <div class="col-sm-4 col-12 mb-3">
+          <div class="col-4 mb-3">
             <div style="width: 100%;">
               <div class="card card-stats bg-success mb-0 mb-lg-0">
                 <div class="card-body">
@@ -224,7 +224,7 @@
                   {{ orders.valorTotal | currency:'GBP':'symbol':'1.2-2' }}
                 </span>
                     </div>
-                    <!-- Ícone, ocultar no mobile -->
+                    <!-- Ícone oculto em telas pequenas -->
                     <div class="col-auto d-none d-sm-block">
                       <div class="icon icon-shape bg-secondary rounded-circle shadow">
                         <i class="fa fa-calculator"></i>
@@ -237,7 +237,7 @@
           </div>
 
           <!-- Cartão Valor Pago -->
-          <div class="col-sm-4 col-12 mb-3">
+          <div class="col-4 mb-3">
             <div style="width: 100%;">
               <div class="card card-stats bg-darkblue mb-0 mb-lg-0">
                 <div class="card-body">
@@ -248,7 +248,7 @@
                   {{ valorTotalPago() | currency:'GBP':'symbol':'1.2-2' }}
                 </span>
                     </div>
-                    <!-- Ícone, ocultar no mobile -->
+                    <!-- Ícone oculto em telas pequenas -->
                     <div class="col-auto d-none d-sm-block">
                       <div class="icon icon-shape bg-secondary rounded-circle shadow">
                         <i class="fa fa-calculator"></i>
@@ -261,7 +261,7 @@
           </div>
 
           <!-- Cartão Saldo Devedor -->
-          <div class="col-sm-4 col-12 mb-3">
+          <div class="col-4 mb-3">
             <div *ngIf="saldoDevedor() > 0" class="card card-stats mb-0 mb-lg-0"
                  [ngClass]="saldoDevedor() <= 0 ? 'bg-success' : orders.statusOrdemServico.tipoStatus == 'AGENDADO' ? 'bg-agendado' : 'bg-danger'"
                  style="width: 100%;" placement="top" ngbTooltip="(Valor Total) subtraído pelo (Valor Total Pago)">
@@ -273,7 +273,7 @@
                 {{ saldoDevedor() | currency:'GBP':'symbol':'1.2-2' }}
               </span>
                   </div>
-                  <!-- Ícone, ocultar no mobile -->
+                  <!-- Ícone oculto em telas pequenas -->
                   <div class="col-auto d-none d-sm-block">
                     <div class="icon icon-shape bg-secondary rounded-circle shadow">
                       £
@@ -287,9 +287,8 @@
 
         <!-- Alinha os botões no canto direito -->
         <div class="ml-auto d-flex flex-column align-items-end w-100">
-          <!-- Linha com a label e o botão de copiar ao lado -->
           <div class="d-flex align-items-center mb-2" *ngIf="dataUltimoPagamento != null">
-            <label class="text-sm mb-0" for="observacao">{{ultimoPagamento()}}</label>
+            <label class="text-sm mb-0" for="observacao">{{ ultimoPagamento() }}</label>
             <button class="btn btn-icon btn-outline-danger btn-sm ml-2" type="button" placement="top" ngbTooltip="Histórico de pagamentos">
               <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
             </button>
@@ -297,12 +296,12 @@
 
           <!-- Botões -->
           <div class="d-flex flex-wrap justify-content-between w-100">
-            <button *ngIf="newRegisters>0 || changeInput || observacaoFieldChange" type="button" class="btn btn-success" (click)="updateDetalheServico()" @fadeIn>Salvar</button>
-            <!-- Colocando o botão 'Fechar' no canto direito -->
+            <button *ngIf="newRegisters > 0 || changeInput || observacaoFieldChange" type="button" class="btn btn-success" (click)="updateDetalheServico()" @fadeIn>Salvar</button>
             <button type="button" class="btn btn-secondary ml-auto" (click)="closeModal()">Fechar</button>
           </div>
         </div>
       </div>
+
 
 
     </div>
