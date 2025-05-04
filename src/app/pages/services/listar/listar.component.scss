@@ -140,4 +140,35 @@ table tbody tr:hover {
   }
 }
 
+/* Essa regra se aplica apenas a telas menores que 992px (mobile/ tablet) */
+@media (max-width: 991.98px) {
+  .custom-header.btn {
+    font-size: 0.6rem; /* ajuste esse valor conforme necessário */
+  }
+
+  .adjust-layout {
+    flex-wrap: wrap;
+  }
+  .adjust-layout .custom-collapse-container {
+    flex: 0 0 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+  /* Ajuste do campo de filtro */
+  .adjust-layout .input-group {
+    flex: 0 0 100%;
+    width: 100% !important;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  /* Centraliza o texto dos menus */
+  .adjust-layout .custom-collapse .custom-header {
+    width: 100%;
+    text-align: center;
+    justify-content: center; /* No caso de elementos flex */
+  }
+}
+
+
 
