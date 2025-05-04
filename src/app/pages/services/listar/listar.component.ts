@@ -50,7 +50,7 @@ export class ListarComponent implements OnInit {
     this.isItem2Open = false;
     this.isItem3Open = false;
     this.isItem4Open = false;
-  
+
     // Abre o item desejado
     if (item === 'item1') {
       this.isItem1Open = true;
@@ -61,30 +61,30 @@ export class ListarComponent implements OnInit {
     } else if (item === 'item4') {
       this.isItem4Open = true;
     }
-  
+
     // Atualiza a classe 'show' conforme o estado dos itens
     const element1 = document.querySelector('.custom-body.item1');
     element1.classList.toggle('show', this.isItem1Open);
-  
+
     const element2 = document.querySelector('.custom-body.item2');
     element2.classList.toggle('show', this.isItem2Open);
-  
+
     const element3 = document.querySelector('.custom-body.item3');
     element3.classList.toggle('show', this.isItem3Open);
-  
+
     const element4 = document.querySelector('.custom-body.item4');
     element4.classList.toggle('show', this.isItem4Open);
   }
 
-  
+
 
   loadOrdemServico(): void {
     this.ordemServico.getAllOrdemServico().subscribe(
       (ordemServico) => {
         console.log(ordemServico);
         this.orders = ordemServico;
-    
-        const clienteRequests = ordemServico.map(ordem => 
+
+        const clienteRequests = ordemServico.map(ordem =>
           this.clienteService.getClienteByIdOrdemServico(ordem.id.toString())
         );
       },
@@ -96,7 +96,7 @@ export class ListarComponent implements OnInit {
 
   openModal(id: number, status: string, valorTotal: number, nome: string) {
     //console.log('Modal aberto com:', { status, clientName, totalValue, creationDate });
-    
+
 
     document.getElementById('modal-overlay')?.classList.add('show');
 
@@ -120,6 +120,7 @@ export class ListarComponent implements OnInit {
     };
 
     this.isModalOpen = true;
+    document.getElementById('modal-overlay')?.classList.add('show');
   }
 
   closeModal() {
@@ -138,7 +139,7 @@ export class ListarComponent implements OnInit {
   currentPage = 1;  // Página atual
   itemsPerPage = 5; // Número de itens por página (no seu caso, 1 cliente por página)
   itemsPerPageTodos = 10
-  
+
   currentPageAgendados = 1
   currentPageAtrasados = 1
   currentPageUltimas = 1
@@ -166,7 +167,7 @@ export class ListarComponent implements OnInit {
         if (!a.dataInicio || !b.dataInicio) {
           return 0;
         }
-  
+
         // Divide a string de data e monta o objeto Date manualmente
         const parseDate = (dateString) => {
           const [datePart, timePart] = dateString.split(' '); // Separa data e hora
@@ -174,10 +175,10 @@ export class ListarComponent implements OnInit {
           const [hours, minutes, seconds] = timePart.split(':').map(Number); // Converte para números
           return new Date(year, month - 1, day, hours, minutes, seconds); // Cria o objeto Date
         };
-  
+
         const dateA = parseDate(a.dataInicio);
         const dateB = parseDate(b.dataInicio);
-  
+
         // Ordena pela data mais recente
         return dateB.getTime() - dateA.getTime();
       });
@@ -193,7 +194,7 @@ export class ListarComponent implements OnInit {
         if (!a.dataInicio || !b.dataInicio) {
           return 0;
         }
-  
+
         // Divide a string de data e monta o objeto Date manualmente
         const parseDate = (dateString) => {
           const [datePart, timePart] = dateString.split(' '); // Separa data e hora
@@ -201,15 +202,15 @@ export class ListarComponent implements OnInit {
           const [hours, minutes, seconds] = timePart.split(':').map(Number); // Converte para números
           return new Date(year, month - 1, day, hours, minutes, seconds); // Cria o objeto Date
         };
-  
+
         const dateA = parseDate(a.dataInicio);
         const dateB = parseDate(b.dataInicio);
-  
+
         // Ordena pela data mais recente
         return dateB.getTime() - dateA.getTime();
       });
   }
-  
+
   get filteredOrdersByUltimas() {
     return this.orders
       .filter(order =>
@@ -220,7 +221,7 @@ export class ListarComponent implements OnInit {
         if (!a.dataInicio || !b.dataInicio) {
           return 0;
         }
-  
+
         // Divide a string de data e monta o objeto Date manualmente
         const parseDate = (dateString) => {
           const [datePart, timePart] = dateString.split(' '); // Separa data e hora
@@ -228,15 +229,15 @@ export class ListarComponent implements OnInit {
           const [hours, minutes, seconds] = timePart.split(':').map(Number); // Converte para números
           return new Date(year, month - 1, day, hours, minutes, seconds); // Cria o objeto Date
         };
-  
+
         const dateA = parseDate(a.dataInicio);
         const dateB = parseDate(b.dataInicio);
-  
+
         // Ordena pela data mais recente
         return dateB.getTime() - dateA.getTime();
       });
   }
-  
+
 
   setRecords(records: number) {
     this.recordsToShow = records;
@@ -269,15 +270,15 @@ export class ListarComponent implements OnInit {
   goToPage(page: number, tipo : string) {
 
     switch(tipo){
-      case 'AGENDADO': 
+      case 'AGENDADO':
         if (page < 1 || page > this.totalPagesAgendados()) return;
         this.currentPageAgendados = page;
         break;
-      case 'ATRASADO' : 
+      case 'ATRASADO' :
         if (page < 1 || page > this.totalPagesAtrasados()) return;
         this.currentPageAtrasados = page;
         break;
-      case 'ULTIMAS' : 
+      case 'ULTIMAS' :
         if (page < 1 || page > this.totalPagesUltimas()) return;
         this.currentPageUltimas = page;
         break;
@@ -287,21 +288,21 @@ export class ListarComponent implements OnInit {
         break;
     }
   }
-  
+
   nextPage(tipo : string) {
 
     switch(tipo){
-      case 'AGENDADO': 
+      case 'AGENDADO':
         if (this.currentPageAgendados < this.totalPagesAgendados()) {
           this.currentPageAgendados++;
         }
         break;
-      case 'ATRASADO' : 
+      case 'ATRASADO' :
         if (this.currentPageAtrasados < this.totalPagesAtrasados()) {
           this.currentPageAtrasados++;
         }
         break;
-      case 'ULTIMAS' : 
+      case 'ULTIMAS' :
         if (this.currentPageUltimas < this.totalPagesUltimas()) {
           this.currentPageUltimas++;
         }
@@ -313,20 +314,20 @@ export class ListarComponent implements OnInit {
         break;
     }
   }
-  
+
   previousPage(tipo : string) {
     switch(tipo){
-      case 'AGENDADO': 
+      case 'AGENDADO':
         if (this.currentPageAgendados > 1) {
           this.currentPageAgendados--;
         }
         break;
-      case 'ATRASADO' : 
+      case 'ATRASADO' :
         if (this.currentPageAtrasados > 1) {
           this.currentPageAtrasados--;
         }
         break;
-      case 'ULTIMAS' : 
+      case 'ULTIMAS' :
         if (this.currentPageUltimas > 1) {
           this.currentPageUltimas--;
         }
@@ -337,9 +338,9 @@ export class ListarComponent implements OnInit {
         }
         break;
     }
-    
+
   }
-  
+
   totalPages(): number {
     return Math.ceil(this.filteredOrders.length / this.itemsPerPageTodos);
   }
@@ -361,13 +362,13 @@ export class ListarComponent implements OnInit {
     var totalPages = 0
 
     switch(tipo){
-      case 'AGENDADO': 
+      case 'AGENDADO':
         totalPages = this.totalPagesAgendados();
         break;
-      case 'ATRASADO' : 
+      case 'ATRASADO' :
         totalPages = this.totalPagesAtrasados();
         break;
-      case 'ULTIMAS' : 
+      case 'ULTIMAS' :
         totalPages = this.totalPagesUltimas();
         break;
       default:
@@ -376,7 +377,7 @@ export class ListarComponent implements OnInit {
     }
 
     const pages = [];
-  
+
     if (totalPages <= 4) {
       // Se houver 4 ou menos páginas, exibe todas
       for (let i = 1; i <= totalPages; i++) {
@@ -388,7 +389,7 @@ export class ListarComponent implements OnInit {
       pages.push(-1); // Indica os "..."
       pages.push(totalPages); // sempre mostra a última página
     }
-  
+
     return pages;
   }
 
@@ -401,7 +402,7 @@ export class ListarComponent implements OnInit {
     const direction = this.sortDirection[column] === 'asc' ? 'desc' : 'asc';
     this.sortDirection[column] = direction;
     this.sortColumn = column;
-  
+
     // Função para acessar as propriedades aninhadas dinamicamente
     const getValue = (obj: any, path: string) => {
       if (path === 'cliente.nome') {
@@ -411,27 +412,27 @@ export class ListarComponent implements OnInit {
       if (path === 'status') {
         return obj.statusOrdemServico?.tipoStatus;  // Acesse o nome do cliente diretamente
       }
-      
+
       // Acessa a propriedade de forma dinâmica (por exemplo, "order.statusOrdemServico.status")
       return path.split('.').reduce((acc, part) => acc && acc[part] !== undefined ? acc[part] : null, obj);
     };
-  
+
     this.orders = this.orders.sort((a, b) => {
       const aValue = getValue(a, column);
       const bValue = getValue(b, column);
-  
+
       // Verifica se ambos os valores são numéricos
       const isNumeric = !isNaN(aValue) && !isNaN(bValue);
-  
+
       if (aValue === null || bValue === null) {
         return 0; // Trata casos de valores nulos, não ordenando esses itens
       }
-  
+
       // Caso os valores sejam numéricos, realiza a comparação numérica
       if (isNumeric) {
         return direction === 'asc' ? aValue - bValue : bValue - aValue;
       }
-  
+
       // Caso contrário, compara como string
       if (aValue < bValue) {
         return direction === 'asc' ? -1 : 1;
@@ -441,6 +442,6 @@ export class ListarComponent implements OnInit {
       }
       return 0;
     });
-  }  
+  }
 
 }

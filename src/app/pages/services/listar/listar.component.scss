@@ -9,7 +9,7 @@
 th {
     position: relative;
   }
-  
+
 th i {
 position: absolute;
 right: 10px;
@@ -26,10 +26,14 @@ table tbody tr:hover {
     cursor: pointer; /* Cursor em forma de ponteiro */
   }
 
-  table tbody tr:hover td.table-dark, 
+.table-dark{
+  background-color: #0284c7 !important;
+}
+
+  table tbody tr:hover td.table-dark,
   table tbody tr:hover th.table-dark {
-    background-color: #1c335b;
-    cursor: pointer;
+    background-color: #00699a !important;
+    cursor: pointer !important;
 }
 
 /* Estilo para o fundo desfocado */
