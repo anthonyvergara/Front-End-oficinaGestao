@@ -67,7 +67,7 @@
 
             <div class="form-row align-items-end mt-3">
                 <div class="col">
-                    <button class="btn btn-primary btn-round bg-default" type="button" (click)="incluirMoto()">
+                    <button class="btn btn-primary btn-round bg-darkblue" type="button" (click)="incluirMoto()">
                         <i class="fas fa-motorcycle"></i> Adicionar Moto
                     </button>
                 </div>
@@ -76,7 +76,7 @@
             <div id="collapseMenu" class="mt-3">
                 <div *ngFor="let moto of motos; let i = index" @fadeBox>
                     <div class="card mt-2" [attr.id]="'moto' + moto.id" style="background-color: #f4f5f7;">
-                        <div class="card-header d-flex justify-content-between align-items-center bg-default" style="height: 60px;">
+                        <div class="card-header d-flex justify-content-between align-items-center bg-gradient-darkblue" style="height: 60px;">
                           <button class="btn btn-secondary" type="button" (click)="moto.isCollapsed = !moto.isCollapsed">
                             <i class="fas" [ngClass]="moto.isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
                           </button>
@@ -90,7 +90,7 @@
                              <!-- <span>Nova Moto {{ moto.id }</span>}-->
 
 
-                            <button class="btn btn-danger" type="button" (click)="removerMoto(i)">
+                            <button class="btn btn-secondary" type="button" (click)="removerMoto(i)">
                               <i class="fas fa-trash"></i>
                             </button>
 
@@ -98,7 +98,7 @@
                         <div class="card-body" [ngClass]="{'collapse': moto.isCollapsed}">
                             <div class="form-row align-items-end">
                                 <div class="mt-2 col-2">
-                                    <button class="btn btn-success text-nowrap btn-round" type="button" (click)="incluirRegistro(i)" placement="top" ngbTooltip="Incluir Serviço">
+                                    <button class="btn btn-darkblue text-nowrap btn-round" type="button" (click)="incluirRegistro(i)" placement="top" ngbTooltip="Incluir Serviço">
                                         <i class="">Adicionar Serviço</i>
                                     </button>
                                 </div>
@@ -131,8 +131,8 @@
                                           <i class="ni ni-calendar-grid-58"></i>
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control text-center"
-                                           [name]="'data' + i" [value]="dataAtualBR" readonly style="background-color: #172b4d; color: #f4f5f7; font-style: bold;">
+                                    <input type="text" class="form-control text-center bg-darkblue"
+                                           [name]="'data' + i" [value]="dataAtualBR" readonly style="color: #f4f5f7; font-style: bold;">
                                 </div>
                             </div>
 
@@ -271,10 +271,10 @@
 
               <!-- Botões Criar Ordem e Imprimir alinhados à direita -->
               <div class="col-auto ml-auto d-flex align-items-center">
-                <button class="btn btn-default" type="button" (click)="submitForm(form)">
+                <button class="btn btn-darkblue" type="button" (click)="submitForm(form)">
                   <i class="ni ni-check-bold"></i>&nbsp;&nbsp;CRIAR ORDEM
                 </button>
-                <button class="btn btn-danger ml-2" type="button">
+                <button hidden class="btn btn-danger ml-2" type="button">
                   <i class="fa fa-print" style="font-size:20px"></i>
                 </button>
               </div>
