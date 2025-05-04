@@ -99,28 +99,6 @@
             </tr>
           </tbody>
         </table>
-        <div id="modal-overlay" class="modal-overlay"></div>
-        <modal-criar-cliente
-            *ngIf="isModalOpen"
-            (close)="closeModal()">
-        </modal-criar-cliente>
-
-        <modal-view-cliente
-        *ngIf="isModalViewClienteOpen"
-        [id]="modalData.id"
-        [nome]="modalData.nome"
-        [email]="modalData.email"
-        [dataNascimento]="modalData.dataNascimento"
-        [telefone]="modalData.telefone"
-        [ddd]="modalData.ddd"
-        [rua]="modalData.rua"
-        [numero]="modalData.numero"
-        [cidade]="modalData.cidade"
-        [postcode]="modalData.postcode"
-        [saldoDevedor]="modalData.saldoDevedor"
-        (close)="closeModal()">
-        </modal-view-cliente>
-
       </div>
 
       <div class="card-footer py-4">
@@ -156,3 +134,24 @@
   </div>
 </div>
 </div>
+<div id="modal-overlay" class="modal-overlay"></div>
+<modal-criar-cliente
+  *ngIf="isModalOpen"
+  (close)="closeModal()">
+</modal-criar-cliente>
+
+<modal-view-cliente
+  *ngIf="isModalViewClienteOpen"
+  [id]="modalData.id"
+  [nome]="modalData.nome"
+  [email]="modalData.email"
+  [dataNascimento]="modalData.dataNascimento"
+  [telefone]="modalData.telefone"
+  [ddd]="modalData.ddd"
+  [rua]="modalData.rua"
+  [numero]="modalData.numero"
+  [cidade]="modalData.cidade"
+  [postcode]="modalData.postcode"
+  [saldoDevedor]="modalData.saldoDevedor"
+  (close)="closeModal()">
+</modal-view-cliente>
