@@ -1,4 +1,4 @@
-<nav class="navbar navbar-vertical navbar-expand-md navbar-light bg-white" id="sidenav-main">
+<nav class="navbar navbar-vertical navbar-expand-md navbar-light bg-white" id="sidenav-main" @fadeIn>
   <div class="container-fluid">
     <!-- Toggler -->
     <button class="navbar-toggler" type="button" (click)="isCollapsed=!isCollapsed"
@@ -65,7 +65,7 @@
         <div class="row">
           <div class="col-6 collapse-brand">
             <a  routerLinkActive="active" [routerLink]="['/dashboard']">
-              <img src="./assets/img/brand/blue.png">
+              <img src="./assets/img/brand/red.png">
             </a>
           </div>
           <div class="col-6 collapse-close">
@@ -90,25 +90,25 @@
       <!-- Navigation -->
       <ul class="navbar-nav">
         <!-- Renderize os itens do menu principal -->
-        
+
         <!-- Primeiro item do menu -->
-        <li *ngFor="let menuItem of menuItems.slice(0, 1)" class="{{menuItem.class}} nav-item">
+        <li *ngFor="let menuItem of menuItems.slice(0, 1)" class="{{menuItem.class}} nav-item" (click)="toggleNavbar()">
           <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
             <i class="ni {{menuItem.icon}}"></i>
             {{menuItem.title}}
           </a>
         </li>
-        
+
         <!-- Menu dropdown como segundo item -->
         <li class="nav-item">
           <a class="nav-link" (click)="isCollapsed = !isCollapsed" style="cursor: pointer !important">
             <i class="ni ni-pin-3 text-orange"></i>
             Serviços
           </a>
-          <div *ngIf="!isCollapsed" class="submenu" @fadeIn>
+          <div class="submenu" @fadeIn>
             <ul>
               <li *ngFor="let submenuItem of submenuItems" class="nav-item">
-                <a routerLinkActive="active" [routerLink]="[submenuItem.path]" class="nav-link">
+                <a routerLinkActive="active" [routerLink]="[submenuItem.path]" class="nav-link" (click)="toggleNavbar()">
                   <i class="ni {{submenuItem.icon}}"></i>
                   {{submenuItem.title}}
                 </a>
@@ -116,17 +116,17 @@
             </ul>
           </div>
         </li>
-      
+
         <!-- Os demais itens do menu, exceto o primeiro que já foi renderizado -->
-        <li *ngFor="let menuItem of menuItems.slice(1)" class="{{menuItem.class}} nav-item">
+        <li *ngFor="let menuItem of menuItems.slice(1)" class="{{menuItem.class}} nav-item" (click)="toggleNavbar()">
           <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
             <i class="ni {{menuItem.icon}}"></i>
             {{menuItem.title}}
           </a>
         </li>
       </ul>
-      
-      
+
+
       <!-- Divider -->
       <hr class="my-3">
       <!-- Heading -->

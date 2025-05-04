@@ -41,7 +41,7 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarComponent implements OnInit {
 
   public menuItems: any[];
-  public isCollapsed = false;
+  public isCollapsed = true;
 
   public submenuItems: any[] = [
     { path: '/services/listar', title: 'Ordens de Serviço', icon: 'ni-collection text-orange' },
@@ -54,6 +54,11 @@ export class SidebarComponent implements OnInit {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
     this.router.events.subscribe((event) => {
    });
+  }
+
+  // Função para alternar o estado da navbar
+  toggleNavbar() {
+    this.isCollapsed = !this.isCollapsed;
   }
 
 }
