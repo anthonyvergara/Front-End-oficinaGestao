@@ -37,7 +37,7 @@
               </div>
               <form>
                 <div class="form-row align-items-end mt-2">
-                  <div class="col col-2 input-group">
+                  <div class="col-12 col-md-2 mb-2 input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text">
                         <i class="fas fa-file-alt"></i>
@@ -45,15 +45,15 @@
                     </div>
                     <input disabled type="text" class="form-control text-center" placeholder="N.Invoice" [(ngModel)]="orders.invoiceNumber" name="invoice">
                   </div>
-                  <div class="col col-6">
+                  <div class="col-12 col-md-6 mb-2">
                     <label>Nome do cliente</label>
                     <input disabled type="text" class="form-control border-style" placeholder="Nome Cliente" [(ngModel)]="nome" name="nome">
                   </div>
-                  <div class="col col-2">
+                  <div class="col-12 col-md-2 mb-2">
                     <label>Vat Number</label>
                     <input [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'" type="text" class="form-control border-style" placeholder="VAT" [(ngModel)]="vat" name="vat">
                   </div>
-                  <div class="col">
+                  <div class="col-12 col-md-2 mb-1">
                     <input disabled type="text" class="form-control text-center" placeholder="Status" [(ngModel)]="orders.statusOrdemServico.tipoStatus" name="status" [ngClass]="saldoDevedor() <= 0 ? 'bg-border-pago bg-success' : orders.statusOrdemServico.tipoStatus == 'AGENDADO' ? 'bg-border-agendado bg-agendado' : 'bg-border-atrasado bg-danger' ">
                   </div>
                 </div>
@@ -86,24 +86,24 @@
 
                       <div *ngIf="detalheServicoCollapse[grupo.placa]" class="card-body">
                         <div class="form-row align-items-end">
-                          <div class="mt-2 col-2">
+                          <div class="col-12 col-md-2 mb-2">
                             <button [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'" class="btn text-nowrap btn-darkblue btn-round " type="button" (click)="incluirRegistro(i)">
                                 <i class="">Adicionar Serviço</i>
                             </button>
                           </div>
-                          <div class="col col-2">
+                          <div class="col-12 col-md-2 mb-2">
                             <label>Placa</label>
                             <input type="text" class="form-control" [readOnly]="compareDate(grupo.detalhes[0].data)" [value]="grupo.placa" placeholder="Placa" (input)="capturarPlaca($event, grupo)" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
                           </div>
-                          <div class="col col-3">
+                          <div class="col-12 col-md-3 mb-2">
                             <label>Motorista</label>
                             <input type="text" class="form-control" [readOnly]="compareDate(grupo.detalhes[0].data)" [value]="grupo.detalhes[0].nomeMotorista | uppercase" (input)="updateMotorista(grupo, $event)" placeholder="Nome Motorista" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
                           </div>
-                          <div class="col col-3">
+                          <div class="col-12 col-md-3 mb-2">
                             <label>Observação</label>
                             <input type="text" class="form-control" [readOnly]="compareDate(grupo.detalhes[0].data)" [value]="grupo.detalhes[0].observacao | uppercase" (input)="updateObservacao(grupo, $event)" placeholder="Observação" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
                           </div>
-                          <div class="col col-2 input-group">
+                          <div class="col-12 col-md-2 mb-2 input-group">
                             <label>Data Ordem Serviço</label>
                             <div class="input-group-prepend">
                               <span class="input-group-text">
@@ -117,25 +117,25 @@
                         <div class="mt-2" *ngFor="let registro of grupo.detalhes; let j = index; trackBy: trackById">
                           <!-- <pre>{{ registro | json }}</pre> -->
                           <div class="form-row align-items-end mt-2">
-                            <div class="col col-1">
+                            <div class="col-12 col-md-1 mb-2">
                               <label>QTD</label>
                               <input type="number" class="form-control" [value]="registro.quantidade" (input)="updateQuantidade(grupo, j, $event)" [readOnly]="compareDate(registro.data)" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
                             </div>
-                            <div class="col col-6">
+                            <div class="col-12 col-md-6 mb-2">
                               <label>Descrição</label><label class="ml-9" style="font-size: 12px;">Data: {{registro.data}}</label>
                               <input type="text" class="form-control" [value]="registro.descricao" (input)="updateDescricao(grupo, j, $event)" [readOnly]="compareDate(registro.data)" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
                             </div>
-                            <div class="col col-2">
+                            <div class="col-12 col-md-2 mb-2">
                               <label>Preço</label>
                               <input type="text" class="form-control"
                               [value]="registro.valor | currency:'GBP':'symbol':'1.2-2'"
                               (input)="formatarValorEmTempoReal($event, grupo, j)" [readOnly]="compareDate(registro.data)" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
                             </div>
-                            <div class="col col-2">
+                            <div class="col-12 col-md-2 mb-2">
                               <label>Milhagem</label>
                               <input type="text" class="form-control" [value]="registro.milhagem | number:'1.0-0'" (input)="updateMilhagem(grupo, j, $event)" [readOnly]="compareDate(registro.data)" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
                             </div>
-                            <div class="col">
+                            <div class="col-12 col-md-1 mb-2">
                               <button *ngIf="grupo.detalhes.length > 1 && compareDate(registro.data) == false && orders.statusOrdemServico.tipoStatus != 'PAGO'" class="btn btn-outline-danger btn-round" type="button" (click)="removerRegistro(i, j)" [readOnly]="compareDate(registro.data)">
                                 <i class="fas fa-trash"></i>
                               </button>
@@ -159,7 +159,7 @@
                 </div>
 
                 <div class="form-row align-items-end mb-2">
-                  <div class="col col-3">
+                  <div class="col-12 col-md-3">
                     <label for="observacao">Forma de Pagamento</label>
                     <select class="form-control border-style block-cursor" id="pagamentoSelect" (change)="onPagamentoChange($event.target.value)" disabled>
                       <option value="Pagamento à Vista" *ngIf="orders.quantidadeParcelas == 0">Pagamento à Vista</option>
@@ -170,13 +170,13 @@
                     <label for="observacao">Quantidade de Parcelas</label>
                     <input type="number" class="form-control border-style" placeholder="Quantidade de Parcelas" [(ngModel)]="quantidadeParcelas">
                   </div>-->
-                  <div class="col col-3" *ngIf="orders.quantidadeParcelas > 0" @fadeBox>
+                  <div class="col-12 col-md-3" *ngIf="orders.quantidadeParcelas > 0" @fadeBox>
                     <label for="observacao">Perido entre Pagamentos</label>
                     <select class="form-control border-style block-cursor" id="pagamentoPeriodoSelect" disabled>
                       <option value="Pagamento à Vista">Pagamento {{orders.tipoPagamento | titlecase}}</option>
                     </select>
                   </div>
-                  <div class="col col-3" *ngIf="orders.quantidadeParcelas > 0" @fadeBox>
+                  <div class="col-12 col-md-3" *ngIf="orders.quantidadeParcelas > 0" @fadeBox>
                     <label for="observacao">Parcelas</label>
                     <select class="form-control border-style" id="valorParcelasSelect">
                       <option *ngFor="let parcela of orders.parcela" value="Pagamento à Vista">

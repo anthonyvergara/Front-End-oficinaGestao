@@ -113,17 +113,6 @@
                         </tr>
                       </tbody>
                     </table>
-                    <div id="modal-overlay" class="modal-overlay"></div>
-                    <modal-listar-ordemServico
-                        *ngIf="isModalOpen"
-                        [id]="modalData.id"
-                        [nome]="modalData.nome"
-                        [status]="modalData.status"
-                        [valorTotal]="modalData.valorTotal"
-                        [valorDaEntrada]="modalData.valorEntrada"
-                        (close)="closeModal()">
-                    </modal-listar-ordemServico>
-
                   </div>
 
                   <div class="card-footer py-4">
@@ -255,16 +244,6 @@
                         </tr>
                       </tbody>
                     </table>
-                    <div id="modal-overlay" class="modal-overlay"></div>
-                    <modal-listar-ordemServico
-                        *ngIf="isModalOpen"
-                        [id]="modalData.id"
-                        [nome]="modalData.nome"
-                        [status]="modalData.status"
-                        [valorTotal]="modalData.valorTotal"
-                        [valorDaEntrada]="modalData.valorEntrada"
-                        (close)="closeModal()">
-                    </modal-listar-ordemServico>
 
                   </div>
 
@@ -395,16 +374,6 @@
                         </tr>
                       </tbody>
                     </table>
-                    <div id="modal-overlay" class="modal-overlay"></div>
-                    <modal-listar-ordemServico
-                        *ngIf="isModalOpen"
-                        [id]="modalData.id"
-                        [nome]="modalData.nome"
-                        [status]="modalData.status"
-                        [valorTotal]="modalData.valorTotal"
-                        [valorDaEntrada]="modalData.valorEntrada"
-                        (close)="closeModal()">
-                    </modal-listar-ordemServico>
 
                   </div>
 
@@ -535,17 +504,6 @@
                         </tr>
                       </tbody>
                     </table>
-                    <div id="modal-overlay" class="modal-overlay"></div>
-                    <modal-listar-ordemServico
-                        *ngIf="isModalOpen"
-                        [id]="modalData.id"
-                        [nome]="modalData.nome"
-                        [status]="modalData.status"
-                        [valorTotal]="modalData.valorTotal"
-                        [valorDaEntrada]="modalData.valorEntrada"
-                        (close)="closeModal()">
-                    </modal-listar-ordemServico>
-
                   </div>
 
                   <div class="card-footer py-4">
@@ -598,3 +556,14 @@
     </div>
   </div>
 </div>
+
+<div id="modal-overlay" class="modal-overlay"></div>
+<modal-listar-ordemServico
+  *ngIf="isModalOpen"
+  [id]="modalData.id"
+  [nome]="modalData.nome"
+  [status]="modalData.status"
+  [valorTotal]="modalData.valorTotal"
+  [valorDaEntrada]="modalData.valorEntrada"
+  (close)="closeModal()">
+</modal-listar-ordemServico>
