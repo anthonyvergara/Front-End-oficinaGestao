@@ -10,13 +10,13 @@
 
         <!-- Linha para os botões de controle e o campo de pesquisa -->
         <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center">
+          <div class="d-flex justify-content-between align-items-center adjust-layout">
             <!-- Botões de controle de registros -->
             <div class="custom-collapse-container">
               <div class="custom-collapse">
-                <div class="custom-header btn btn-primary"
-                     (click)="toggleCollapse('item1'); selectedMenu = 'ULTIMOS'">
-                  ÚLTIMOS SERVIÇOS
+                <div class="custom-header btn btn-primary" (click)="toggleCollapse('item1'); selectedMenu = 'ULTIMOS'">
+                  <span class="d-none d-md-inline">ÚLTIMOS SERVIÇOS</span>
+                  <span class="d-inline d-md-none">ÚLTIMOS</span>
                 </div>
 
                 <div class="custom-header-underline underline-primary"
@@ -103,7 +103,7 @@
                                        role="progressbar"
                                        [class.bg-danger]="order.statusOrdemServico.tipoStatus === 'ATRASADO'"
                                        [class.bg-success]="order.statusOrdemServico.tipoStatus === 'PAGO'"
-                                       [class.bg-warning]="order.statusOrdemServico.tipoStatus !== 'PAGO' && order.statusOrdemServico.tipoStatus !== 'ATRASADO'"
+                                       [class.badge-agendado]="order.statusOrdemServico.tipoStatus !== 'PAGO' && order.statusOrdemServico.tipoStatus !== 'ATRASADO'"
                                        [style.width]="order.statusOrdemServico.tipoStatus === 'PAGO' ? '100%' : '30%'">
                                   </div>
                                 </div>
@@ -417,9 +417,9 @@
 
 
               <div class="custom-collapse">
-                <div class="custom-header btn btn-darkblue"
-                     (click)="toggleCollapse('item4'); selectedMenu = 'TODOS'">
-                  TODOS SERVIÇOS
+                <div class="custom-header btn btn-darkblue" (click)="toggleCollapse('item4'); selectedMenu = 'TODOS'">
+                  <span class="d-none d-md-inline">TODOS SERVIÇOS</span>
+                  <span class="d-inline d-md-none">TODOS</span>
                 </div>
 
                 <div class="custom-header-underline underline-darkblue"
@@ -555,7 +555,7 @@
             </div>
 
             <!-- Campo de filtro de pesquisa (alinhado à direita) -->
-            <div class="input-group w-auto ml-auto" style="width: 400px !important;">
+            <div class="input-group d-none d-md-inline-flex w-auto ml-auto">
               <input type="text" class="form-control" placeholder="Buscar por cliente..." [(ngModel)]="searchQuery" />
               <div class="input-group-append">
                 <span class="input-group-text">
