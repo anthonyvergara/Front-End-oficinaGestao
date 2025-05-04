@@ -62,7 +62,7 @@
                     <label>Vat Number</label>
                     <input [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'" type="text" class="form-control border-style" placeholder="VAT" [(ngModel)]="vat" name="vat">
                   </div>
-                  <div class="col-12 col-md-2 mb-1">
+                  <div class="col-12 col-md-2 mb-2">
                     <input disabled type="text" class="form-control text-center" placeholder="Status" [(ngModel)]="orders.statusOrdemServico.tipoStatus" name="status" [ngClass]="saldoDevedor() <= 0 ? 'bg-border-pago bg-success' : orders.statusOrdemServico.tipoStatus == 'AGENDADO' ? 'bg-border-agendado bg-agendado' : 'bg-border-atrasado bg-danger' ">
                   </div>
                 </div>
