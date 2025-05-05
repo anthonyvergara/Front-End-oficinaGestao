@@ -97,30 +97,24 @@ export class ListarComponent implements OnInit {
   openModal(id: number, status: string, valorTotal: number, nome: string) {
     //console.log('Modal aberto com:', { status, clientName, totalValue, creationDate });
 
-
-    document.getElementById('modal-overlay')?.classList.add('show');
-
-    const ordemEncontrada = this.orders.find(ordem => ordem.id == id);
-
-    let valorEntrada = 0; // Inicializa com null ou qualquer valor padrão
-    if (ordemEncontrada) {
-      if(ordemEncontrada.pagamento != null){
-        ordemEncontrada.pagamento.forEach(pagamento => {
-          valorEntrada += pagamento.valorPago;
-        })
+    this.ordemServico.getOrdemServicoById(id).subscribe(ordemEncontrada => {
+      let valorEntrada = 0;
+      if (ordemEncontrada.pagamento != null) {
+        ordemEncontrada.pagamento.forEach(p => valorEntrada += p.valorPago);
       }
-    }
 
-    this.modalData = {
-      id,
-      nome,
-      status,
-      valorTotal,
-      valorEntrada
-    };
-
-    this.isModalOpen = true;
-    document.getElementById('modal-overlay')?.classList.add('show');
+      this.modalData = {
+        id,
+        nome,
+        status,
+        valorTotal,
+        valorEntrada
+      };
+      console.log("MODAL DATA")
+      console.log(this.modalData);
+      this.isModalOpen = true;
+      document.getElementById('modal-overlay')?.classList.add('show');
+    });
   }
 
   closeModal() {
