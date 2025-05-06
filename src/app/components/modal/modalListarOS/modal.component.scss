@@ -60,3 +60,9 @@ input:disabled, input[readonly] {
   background: rgb(255, 255, 255) !important;
   cursor: not-allowed !important;
 }
+
+@media (max-width: 576px) {
+  .valor-devedor, .valor-total, .valor-pago {
+    font-size: 1rem !important; /* ou um tamanho menor que 1.2rem */
+  }
+}

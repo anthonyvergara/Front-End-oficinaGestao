@@ -219,8 +219,8 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase mb-0" style="color: white; font-weight: bold; font-size: 0.9rem;">VALOR TOTAL</h5>
-                      <span class="h2 font-weight-bold mb-0" style="color: white; font-weight: bold; font-size: 1.2rem;">
+                      <h5 class="card-title text-uppercase mb-0 valor-total" style="color: white; font-weight: bold; font-size: 0.9rem;">VALOR TOTAL</h5>
+                      <span class="h2 font-weight-bold mb-0 valor-total" style="color: white; font-weight: bold; font-size: 1.2rem;">
                   {{ orders.valorTotal | currency:'GBP':'symbol':'1.2-2' }}
                 </span>
                     </div>
@@ -243,8 +243,8 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase mb-0" style="color: white; font-weight: bold; font-size: 0.9rem;">VALOR PAGO</h5>
-                      <span class="h2 font-weight-bold mb-0" style="color: white; font-weight: bold; font-size: 1.2rem;">
+                      <h5 class="card-title text-uppercase mb-0 valor-pago" style="color: white; font-weight: bold; font-size: 0.9rem;">VALOR PAGO</h5>
+                      <span class="h2 font-weight-bold mb-0 valor-pago" style="color: white; font-weight: bold; font-size: 1.2rem;">
                   {{ valorTotalPago() | currency:'GBP':'symbol':'1.2-2' }}
                 </span>
                     </div>
@@ -268,8 +268,8 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col">
-                    <h5 class="card-title text-uppercase mb-0" style="color: white; font-weight: bold; font-size: 0.9rem;">VALOR DEVIDO</h5>
-                    <span class="h2 font-weight-bold mb-0" style="color: white; font-weight: bold; font-size: 1.2rem;">
+                    <h5 class="card-title text-uppercase mb-0 valor-devedor" style="color: white; font-weight: bold; font-size: 0.9rem;">VALOR DEVIDO</h5>
+                    <span class="h2 font-weight-bold mb-0 valor-devedor" style="color: white; font-weight: bold; font-size: 1.2rem;">
                 {{ saldoDevedor() | currency:'GBP':'symbol':'1.2-2' }}
               </span>
                   </div>
