@@ -104,7 +104,6 @@ export class CriarOrdemComponent implements OnInit {
       quantidadeParcelas: this.quantidadeParcelas || 0, // Garantir que sempre tenha um valor
       detalheServico: this.motos.flatMap(moto => {
         return moto.registros.map(registro => ({
-          id: moto.id, // Usando o ID da moto
           placa: moto.placa, // Placa da moto
           descricao: registro.descricao || null, // Descrição do registro (pode ser null)
           quantidade: registro.qtd || 1, // Quantidade (zero caso não esteja preenchido)
