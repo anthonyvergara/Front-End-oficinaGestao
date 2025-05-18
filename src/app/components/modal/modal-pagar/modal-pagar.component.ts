@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { Pagamento } from 'src/app/service/models/pagamento.model';
 import { StatusOrdemServico } from 'src/app/service/models/statusOrdemServico.model';
@@ -28,7 +28,7 @@ export class ModalPagarComponent implements OnInit {
   parcialPayment : boolean = false;
   precoParcial : string;
 
-  valorTotalAhPagar : number = 0; 
+  valorTotalAhPagar : number = 0;
   valorParcialAhPagar : number = 0;
 
   showSuccessAlert: boolean = false;
@@ -40,12 +40,15 @@ export class ModalPagarComponent implements OnInit {
   message : string = ""
 
   today : Date = new Date();
-  
-  @Output() successAlert = new EventEmitter<string>(); 
-  @Output() dangerAlert = new EventEmitter<string>(); 
+
+  @Output() successAlert = new EventEmitter<string>();
+  @Output() dangerAlert = new EventEmitter<string>();
   @Output() close = new EventEmitter<void>();  // Evento de fechamento do modal
 
-  constructor(private pagamentoService: PagamentoService, private sharedService: SharedService, private statusOrdemService : StatusOrdemServicoService) { }
+  constructor(private pagamentoService: PagamentoService,
+              private sharedService: SharedService,
+              private statusOrdemService : StatusOrdemServicoService,
+              private el: ElementRef) { }
 
   ngOnInit(): void {
     this.getStatusOrdemServico();
@@ -82,7 +85,7 @@ export class ModalPagarComponent implements OnInit {
   }
 
   onPrecoParcialChange(){
-    this.valorParcialAhPagar = parseFloat(this.precoParcial.replace(/[^\d]/g, "")) / 100 || 0;
+    this.valorParcialAhPagar = parseFloat(this.precoParcial.replace(/[^\d]/g, "")) || 0;
     this.valorTotalAhPagar = this.valorParcialAhPagar;
     console.log(this.valorParcialAhPagar)
   }
@@ -143,6 +146,43 @@ export class ModalPagarComponent implements OnInit {
     console.log("abrindo.");
     document.getElementById('modal-bellow-overlay')?.classList.add('show');
 
+  }
+
+  onCurrencyInput(value: string): void {
+    this.precoParcial = this.formatCurrency(value);
+  }
+
+  onCurrencyBlur(): void {
+    this.precoParcial = this.formatCurrency(this.precoParcial, true);
+  }
+
+  private formatCurrency(value: string, blur: boolean = false): string {
+    if (!value) return '';
+
+    let original = value;
+    value = value.replace(/\D/g, '');
+
+    let leftSide = '';
+    let rightSide = '';
+
+    // Verifica se tem decimal
+    if (original.includes('.')) {
+      [leftSide, rightSide] = original.split('.');
+      leftSide = this.formatNumber(leftSide);
+      rightSide = this.formatNumber(rightSide);
+
+      if (blur) rightSide += '00';
+      rightSide = rightSide.substring(0, 2);
+
+      return `£${leftSide}.${rightSide}`;
+    } else {
+      leftSide = this.formatNumber(value);
+      return blur ? `£${leftSide}.00` : `$${leftSide}`;
+    }
+  }
+
+  private formatNumber(value: string): string {
+    return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
 }

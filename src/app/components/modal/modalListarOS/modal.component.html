@@ -142,7 +142,7 @@
                             </div>
                             <div class="col-12 col-md-2 mb-2">
                               <label>Milhagem</label>
-                              <input type="text" class="form-control" [value]="registro.milhagem | number:'1.0-0'" (input)="updateMilhagem(grupo, j, $event)" [readOnly]="compareDate(registro.data)" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
+                              <input type="text" class="form-control" [value]="registro.milhagem ?? 0 | number:'1.0-0'" (input)="updateMilhagem(grupo, j, $event)" [readOnly]="compareDate(registro.data)" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
                             </div>
                             <div class="col-12 col-md-1 mb-2">
                               <button *ngIf="grupo.detalhes.length > 1 && compareDate(registro.data) == false && orders.statusOrdemServico.tipoStatus != 'PAGO'" class="btn btn-outline-danger btn-round" type="button" (click)="removerRegistro(i, j)" [readOnly]="compareDate(registro.data)">

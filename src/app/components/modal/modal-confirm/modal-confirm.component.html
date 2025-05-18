@@ -5,8 +5,9 @@
 			<div class="modal-header">
 				<div class="icon-box">
 					<i class="ni ni-check-bold">&#xE876;</i>
-				</div>				
-				<h4 class="modal-title w-100">Confirmar Pagamento!</h4>	
+				</div>
+				<h4 *ngIf="message.includes('negociação')" class="modal-title w-100">Confirmar Negocição!</h4>
+        <h4 *ngIf="message.includes('pagamento')" class="modal-title w-100">Confirmar Pagamento!</h4>
 			</div>
 			<div class="modal-body">
 				<p class="text-center">{{message}}</p>
@@ -17,4 +18,4 @@
 			</div>
 		</div>
 	</div>
-</div>    
+</div>
