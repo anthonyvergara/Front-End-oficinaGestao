@@ -66,8 +66,9 @@ export class CriarOrdemComponent implements OnInit {
 
   sugestoes: any[] = [];
 
-  constructor(private ordemServicoService: OrdemservicoService, private clienteService : ClientesService,
-    private el: ElementRef
+  constructor(private ordemServicoService: OrdemservicoService,
+              private clienteService : ClientesService,
+              private el: ElementRef
   ) { }
 
   ngOnInit() {
@@ -109,7 +110,7 @@ export class CriarOrdemComponent implements OnInit {
           placa: moto.placa, // Placa da moto
           descricao: registro.descricao || null, // Descrição do registro (pode ser null)
           quantidade: registro.qtd || 1, // Quantidade (zero caso não esteja preenchido)
-          milhagem: registro.milhagem || null, // Milhagem do registro
+          milhagem: parseFloat(registro.milhagem.replace(/[^\d]/g, "")) / 100 || 0 ,// Milhagem do registro
           observacao: moto.observacao,
           nomeMotorista: moto.nomeMotorista,
           data: null, // Usando a data atual
@@ -192,6 +193,8 @@ export class CriarOrdemComponent implements OnInit {
         this.showSuccessAlert = true;
         this.autoCloseAlert();
         form.reset();
+        this.valorTotalGeral = 0;
+        this.valorEntrada = 0;
       },
       error => {
         console.error('Erro ao cadastrar a ordem de serviço', error);
@@ -293,7 +296,7 @@ export class CriarOrdemComponent implements OnInit {
       qtd: null,
       descricao: '',
       preco: null,
-      milhagem: '',
+      milhagem: 0,
       observacao: '',
       nomeMotorista: '',
       data: '',
@@ -310,7 +313,7 @@ export class CriarOrdemComponent implements OnInit {
       descricao: '',
       preco: null,
       data: '',
-      milhagem: null,
+      milhagem: 0,
       nomeMotorista: '',
       observacao: '',
     });
@@ -403,5 +406,49 @@ export class CriarOrdemComponent implements OnInit {
       this.showSuccessAlert = false; // Fecha o alerta de sucesso
       this.showDangerAlert = false; // Fecha o alerta de erro
     }, 5000); // 5000 milissegundos = 5 segundos
+  }
+
+  onMilhasInput(event: Event, i: number, j: number): void {
+    const input = event.target as HTMLInputElement;
+    const caretPos = input.selectionStart || 0;
+    const originalLen = input.value.length;
+
+    this.motos[i].registros[j].milhagem = this.formatMilhas(input.value);
+
+    setTimeout(() => {
+      const updatedLen = this.motos[i].registros[j].milhagem.length;
+      const newCaretPos = updatedLen - originalLen + caretPos;
+      input.setSelectionRange(newCaretPos, newCaretPos);
+    });
+  }
+
+  onMilhasBlur(i: number, j: number): void {
+    this.motos[i].registros[j].milhagem = this.formatMilhas(this.motos[i].registros[j].milhagem, true);
+    console.log(this.formatMilhas(this.motos[i].registros[j].milhagem, true));
+  }
+
+  formatMilhasNumber(value: string): string {
+    return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  formatMilhas(value: string, blur: boolean = false): string {
+    if (!value) return "";
+
+    if (value.indexOf(".") >= 0) {
+      const decimalPos = value.indexOf(".");
+      let left = value.substring(0, decimalPos);
+      let right = value.substring(decimalPos);
+
+      left = this.formatMilhasNumber(left);
+      right = this.formatMilhasNumber(right);
+      if (blur) right += "00";
+      right = right.substring(0, 2);
+
+      return left + "." + right;
+    } else {
+      value = this.formatMilhasNumber(value);
+      if (blur) value += ".00";
+      return value;
+    }
   }
 }

@@ -58,8 +58,8 @@
                                                     <div><span class="cross">Data:</span><span class="pin ml-2">{{today | date}}</span></div>
                                                 </div>
                                             </div>
-                        
-                        
+
+
                                             <div class="py-2  px-3" (click)="optionTotalPayment()">
                                                 <div class="pl-2 d-flex py-2" [ngClass]="totalPayment ? 'active' : 'second' ">
                                                     <div class="form-check">
@@ -69,11 +69,11 @@
                                                     <div class="border-left pl-2"><span class="head">Valor total devido</span>
                                                         <div><span class="amount">{{saldoDevedor | currency:'GBP':'symbol':'1.2-2'}}</span></div>
                                                     </div>
-                        
+
                                                 </div>
                                             </div>
-                        
-                        
+
+
                                             <div class="py-2  px-3" (click)="optionParcialPayment()">
                                                 <div class="pl-2 d-flex py-2" [ngClass]="parcialPayment ? 'active' : 'second' ">
                                                     <div class="form-check">
@@ -82,17 +82,23 @@
                                                     </div>
                                                     <div class="border-left pl-2"><span class="head">Outro valor</span>
                                                         <div class="d-flex"><span *ngIf="precoParcial == null" class="dollar">£</span>
-                                                            <input type="text" appCurrencyFormat [(ngModel)]="precoParcial" (ngModelChange)="onPrecoParcialChange()" name="text" class="form-control ml-1" placeholder="0"></div>
+                                                            <input type="text"
+                                                                   [(ngModel)]="precoParcial"
+                                                                   (ngModelChange)="onCurrencyInput($event)"
+                                                                   (blur)="onCurrencyBlur()"
+                                                                   (ngModelChange)="onPrecoParcialChange()"
+                                                                   name="text" class="form-control ml-1"
+                                                                   placeholder="0"></div>
                                                     </div>
-                        
+
                                                 </div>
                                             </div>
-                        
+
                                             <div class="d-flex justify-content-between px-3 pt-4 pb-3">
                                                 <div><span class="back"> </span></div>
                                                 <button type="button" (click)="openModalConfirm()" class="btn btn-pagar w-100">Pagar</button>
                                             </div>
-                        
+
                                         </div>
                             </div>
                         </div>

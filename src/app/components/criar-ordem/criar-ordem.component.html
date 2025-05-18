@@ -168,7 +168,12 @@
                                                [name]="'preco' + i + '-' + j">
                                     </div>
                                     <div class="col-12 col-md-2 mb-2">
-                                        <input type="number" class="form-control" [(ngModel)]="registro.milhagem" placeholder="Milhagem" (keypress)="checkRegistroEnter($event, i, j)" [name]="'milhagem' + i + '-' + j">
+                                        <input type="text" class="form-control"
+                                               [(ngModel)]="registro.milhagem" placeholder="Milhagem"
+                                               (ngModelChange)="onMilhasInput($event, i, j)"
+                                               (blur)="onMilhasBlur(i, j)"
+                                               (keypress)="checkRegistroEnter($event, i, j)"
+                                               [name]="'milhagem' + i + '-' + j">
                                     </div>
                                     <!--
                                     <div class="col col-2">
@@ -202,6 +207,10 @@
                         <option value="Pagamento Parcelado">Pagamento Parcelado</option>
                     </select>
                 </div>
+                <div class="col-12 col-md-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
+                  <label for="valorEntrada">Valor de Entrada</label>
+                  <input type="number" class="form-control border-style" value="0" placeholder="Valor Entrada" [(ngModel)]="valorEntrada" (input)="onValorEntradaChange()">
+                </div>
                 <div class="parcelas-container col-12 col-md-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
                   <label for="quantidadeParcelas">Parcelas</label>
                   <select
@@ -224,10 +233,7 @@
                       <option value="MENSAL">Pagamento Mensal</option>
                     </select>
                 </div>
-                <div class="col-12 col-md-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
-                    <label for="observacao">Valor de Entrada</label>
-                    <input type="text" class="form-control border-style" placeholder="Valor Entrada" [(ngModel)]="valorEntrada" (input)="onValorEntradaChange()">
-                </div>
+
             </div>
 
             <div class="form-row mt-3 mb-4 d-flex align-items-end justify-content-between">
