@@ -157,7 +157,15 @@
                                         <input type="text" appUppercase #descricaoInput class="form-control" [ngClass]="registro.descricao.length == 0 ? 'is-invalid' : 'is-valid' " [(ngModel)]="registro.descricao" placeholder="Descrição" [name]="'descricao' + i + '-' + j">
                                     </div>
                                     <div class="col-12 col-md-2 mb-2"> <!-- [ngClass]=" <= 0 ? 'has-danger' : 'has-success' " -->
-                                        <input required="" type="text" [ngClass]="registro.preco <= 0 ? 'is-invalid' : 'is-valid' "  appCurrencyFormat class="form-control" [(ngModel)]="registro.preco" (ngModelChange)="onPrecoChange()" placeholder="Preço" (keypress)="checkRegistroEnter($event, i, j)" [name]="'preco' + i + '-' + j">
+                                        <input required type="text"
+                                               [ngClass]="registro.preco <= 0 ? 'is-invalid' : 'is-valid' " class="form-control"
+                                               [(ngModel)]="registro.preco"
+                                               (input)="onPrecoInput($event, i, j)"
+                                               (blur)="onPrecoBlur(i, j)"
+                                               (ngModelChange)="onPrecoChange()"
+                                               placeholder="Preço"
+                                               (keypress)="checkRegistroEnter($event, i, j)"
+                                               [name]="'preco' + i + '-' + j">
                                     </div>
                                     <div class="col-12 col-md-2 mb-2">
                                         <input type="number" class="form-control" [(ngModel)]="registro.milhagem" placeholder="Milhagem" (keypress)="checkRegistroEnter($event, i, j)" [name]="'milhagem' + i + '-' + j">

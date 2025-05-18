@@ -208,13 +208,14 @@ export class CriarOrdemComponent implements OnInit {
 
   atualizarValorTotalGeral() {
     this.valorTotalGeral = this.motos.reduce((total, moto) => total + this.calcularSoma(moto), 0);
-
+    console.log(this.valorTotalGeral);
     if(this.vat > 0){
       const vatPercentual = this.vat || 0;
       const valorComVat = this.valorTotalGeral + (this.valorTotalGeral * vatPercentual / 100);
       this.valorTotalGeral = parseFloat(valorComVat.toFixed(2));
     }
 
+    console.log(this.valorTotalGeral);
     this.atualizarValorFinal();
   }
 
@@ -233,6 +234,52 @@ export class CriarOrdemComponent implements OnInit {
       console.log(`Valor de cada parcela: £${valorParcela}`);
     }
   }
+
+  onPrecoInput(event: Event, i: number, j: number): void {
+    const input = event.target as HTMLInputElement;
+    const caretPos = input.selectionStart || 0;
+    const originalLen = input.value.length;
+
+    this.motos[i].registros[j].preco = this.formatCurrency(input.value);
+
+    setTimeout(() => {
+      const updatedLen = this.motos[i].registros[j].preco.length;
+      const newCaretPos = updatedLen - originalLen + caretPos;
+      input.setSelectionRange(newCaretPos, newCaretPos);
+    });
+  }
+
+  onPrecoBlur(i: number, j: number): void {
+    this.motos[i].registros[j].preco = this.formatCurrency(this.motos[i].registros[j].preco, true);
+    console.log(this.formatCurrency(this.motos[i].registros[j].preco, true));
+  }
+
+  formatNumber(value: string): string {
+    return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  formatCurrency(value: string, blur: boolean = false): string {
+    if (!value) return "";
+
+    if (value.indexOf(".") >= 0) {
+      const decimalPos = value.indexOf(".");
+      let left = value.substring(0, decimalPos);
+      let right = value.substring(decimalPos);
+
+      left = this.formatNumber(left);
+      right = this.formatNumber(right);
+      if (blur) right += "00";
+      right = right.substring(0, 2);
+
+      return "£" + left + "." + right;
+    } else {
+      value = this.formatNumber(value);
+      value = "£" + value;
+      if (blur) value += ".00";
+      return value;
+    }
+  }
+
 
   incluirMoto() {
 
@@ -276,7 +323,8 @@ export class CriarOrdemComponent implements OnInit {
 
     // Verifica e processa o preço da moto
     if (moto.preco) {
-        const precoMoto = parseInt(moto.preco.replace(/[^\d]/g, ""), 10); // Mantém como inteiro (em centavos)
+      console.log("preco moto: " + moto.preco);
+        const precoMoto = parseFloat(moto.preco.replace(/[^\d.]/g, "")); // Mantém como inteiro (em centavos)
         if (!isNaN(precoMoto)) {
             soma += precoMoto; // Adiciona se for um número válido
         }
@@ -285,13 +333,14 @@ export class CriarOrdemComponent implements OnInit {
     // Verifica e processa os registros
     moto.registros.forEach((registro: any) => {
         if (registro.preco) {
-            const precoRegistro = parseInt(registro.preco.replace(/[^\d]/g, ""), 10); // Mantém como inteiro (em centavos)
-            if (!isNaN(precoRegistro)) {
+          const precoRegistro = parseFloat(registro.preco.replace(/[^\d.]/g, "")); // Preserva o valor decimal
+          console.log("preco moto: " + precoRegistro);
+          if (!isNaN(precoRegistro)) {
                 soma += precoRegistro; // Adiciona se for um número válido
             }
         }
     });
-    return soma / 100; // Retorna a soma total em formato de unidade
+    return soma; // Retorna a soma total em formato de unidade
 }
 
 
