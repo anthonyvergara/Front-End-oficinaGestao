@@ -45,7 +45,9 @@ export class CriarOrdemComponent implements OnInit {
   pagamentoTipo: string;
   quantidadeParcelas: number | null = null;
   valorTotalGeral: number = 0;
+  valorTotalGeralComVat: number = 0;
   valorEntrada: number = null;
+  vatAnterior: number = 0;
 
   isModalClientOpen = false;
 
@@ -199,8 +201,20 @@ export class CriarOrdemComponent implements OnInit {
     );
   }
 
+  onVatChange() {
+    this.atualizarValorTotalGeral();
+  }
+
+
   atualizarValorTotalGeral() {
     this.valorTotalGeral = this.motos.reduce((total, moto) => total + this.calcularSoma(moto), 0);
+
+    if(this.vat > 0){
+      const vatPercentual = this.vat || 0;
+      const valorComVat = this.valorTotalGeral + (this.valorTotalGeral * vatPercentual / 100);
+      this.valorTotalGeral = parseFloat(valorComVat.toFixed(2));
+    }
+
     this.atualizarValorFinal();
   }
 
@@ -318,7 +332,7 @@ export class CriarOrdemComponent implements OnInit {
   onPeriodoPagamentoChange(value: string) {
     this.periodoPagamento = value;
     console.log('Periodo de Pagamento selecionado:', this.periodoPagamento);
-}
+  }
 
   onPagamentoChange(valor: string) {
     this.pagamentoTipo = valor;
