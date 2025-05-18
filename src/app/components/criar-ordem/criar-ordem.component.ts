@@ -110,7 +110,7 @@ export class CriarOrdemComponent implements OnInit {
           placa: moto.placa, // Placa da moto
           descricao: registro.descricao || null, // Descrição do registro (pode ser null)
           quantidade: registro.qtd || 1, // Quantidade (zero caso não esteja preenchido)
-          milhagem: parseFloat(registro.milhagem.replace(/[^\d]/g, "")) / 100 || 0 ,// Milhagem do registro
+          milhagem: parseFloat((registro.milhagem ?? 0).toString().replace(/[^\d]/g, "")) / 100 || 0,
           observacao: moto.observacao,
           nomeMotorista: moto.nomeMotorista,
           data: null, // Usando a data atual
@@ -193,8 +193,6 @@ export class CriarOrdemComponent implements OnInit {
         this.showSuccessAlert = true;
         this.autoCloseAlert();
         form.reset();
-        this.valorTotalGeral = 0;
-        this.valorEntrada = 0;
       },
       error => {
         console.error('Erro ao cadastrar a ordem de serviço', error);
