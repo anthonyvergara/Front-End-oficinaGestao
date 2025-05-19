@@ -435,17 +435,17 @@ export class CriarOrdemComponent implements OnInit {
     if (value.indexOf(".") >= 0) {
       const decimalPos = value.indexOf(".");
       let left = value.substring(0, decimalPos);
-      let right = value.substring(decimalPos);
+      //let right = value.substring(decimalPos);
 
       left = this.formatMilhasNumber(left);
-      right = this.formatMilhasNumber(right);
-      if (blur) right += "00";
-      right = right.substring(0, 2);
+      //right = this.formatMilhasNumber(right);
+      //if (blur) right += "00";
+      //right = right.substring(0, 2);
 
-      return left + "." + right;
+      return left + ".";
     } else {
       value = this.formatMilhasNumber(value);
-      if (blur) value += ".00";
+      if (blur) value += "";
       return value;
     }
   }
