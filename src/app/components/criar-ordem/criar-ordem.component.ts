@@ -190,9 +190,22 @@ export class CriarOrdemComponent implements OnInit {
     this.ordemServicoService.postOrdemServico(this.criarOrdemServico(),this.clienteId).subscribe(
       response => {
         console.log('Ordem de serviço cadastrada com sucesso!', response);
+        // Zera tudo antes de recalcular
+        this.motos = [];
+        this.valorEntrada = null;
+        this.vat = null;
+
+        this.valorTotalGeral = 0;
+        this.valorTotalGeralComVat = 0;
+        this.observacao = '';
+        this.nomeCliente = '';
+
         this.showSuccessAlert = true;
         this.autoCloseAlert();
-        form.reset();
+
+        // Adiciona moto e registro DEPOIS de tudo estar limpo
+        this.incluirMoto();
+        this.incluirRegistro(0); // importante: isso recalcula o total
       },
       error => {
         console.error('Erro ao cadastrar a ordem de serviço', error);
@@ -209,7 +222,7 @@ export class CriarOrdemComponent implements OnInit {
 
   atualizarValorTotalGeral() {
     this.valorTotalGeral = this.motos.reduce((total, moto) => total + this.calcularSoma(moto), 0);
-    console.log(this.valorTotalGeral);
+    console.log("APOS RESET"+this.valorTotalGeral);
     if(this.vat > 0){
       const vatPercentual = this.vat || 0;
       const valorComVat = this.valorTotalGeral + (this.valorTotalGeral * vatPercentual / 100);
