@@ -110,7 +110,7 @@ export class CriarOrdemComponent implements OnInit {
           placa: moto.placa, // Placa da moto
           descricao: registro.descricao || null, // Descrição do registro (pode ser null)
           quantidade: registro.qtd || 1, // Quantidade (zero caso não esteja preenchido)
-          milhagem: parseFloat((registro.milhagem ?? 0).toString().replace(/[^\d]/g, "")) / 100 || 0,
+          milhagem: parseFloat((registro.milhagem ?? 0).toString().replace(/[^\d]/g, "")) || 0,
           observacao: moto.observacao,
           nomeMotorista: moto.nomeMotorista,
           data: null, // Usando a data atual

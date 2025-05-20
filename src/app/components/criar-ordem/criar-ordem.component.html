@@ -47,8 +47,12 @@
                 <!-- Exibição das sugestões -->
 
 
-                <div class="col-12 col-md-2 mb-2">
-                    <input maxlength="2" type="text" class="form-control border-style" placeholder="VAT" [(ngModel)]="vat" name="vat" (ngModelChange)="onVatChange()">
+                <div class="col-12 col-md-2 mb-2 percent-wrapper">
+                    <input maxlength="2" type="text" class="form-control border-style"
+                           placeholder="VAT"
+                           [(ngModel)]="vat" name="vat"
+                           (ngModelChange)="onVatChange()"/>
+                    <span class="percent-icon">%</span>
                 </div>
                 <!--
                 <div class="col">
