@@ -117,5 +117,29 @@
   }
 }
 
+.percent-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 120px;
+}
+
+.percent-wrapper input {
+  width: 100%;
+  padding-right: 20px; /* espaço para o ícone */
+  box-sizing: border-box;
+}
+
+.percent-icon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #959494;
+  font-weight: bold;
+}
+
+
 
 

@@ -110,7 +110,7 @@ export class CriarOrdemComponent implements OnInit {
           placa: moto.placa, // Placa da moto
           descricao: registro.descricao || null, // Descrição do registro (pode ser null)
           quantidade: registro.qtd || 1, // Quantidade (zero caso não esteja preenchido)
-          milhagem: parseFloat((registro.milhagem ?? 0).toString().replace(/[^\d]/g, "")) / 100 || 0,
+          milhagem: parseFloat((registro.milhagem ?? 0).toString().replace(/[^\d]/g, "")) || 0,
           observacao: moto.observacao,
           nomeMotorista: moto.nomeMotorista,
           data: null, // Usando a data atual
@@ -190,9 +190,22 @@ export class CriarOrdemComponent implements OnInit {
     this.ordemServicoService.postOrdemServico(this.criarOrdemServico(),this.clienteId).subscribe(
       response => {
         console.log('Ordem de serviço cadastrada com sucesso!', response);
+        // Zera tudo antes de recalcular
+        this.motos = [];
+        this.valorEntrada = null;
+        this.vat = null;
+
+        this.valorTotalGeral = 0;
+        this.valorTotalGeralComVat = 0;
+        this.observacao = '';
+        this.nomeCliente = '';
+
         this.showSuccessAlert = true;
         this.autoCloseAlert();
-        form.reset();
+
+        // Adiciona moto e registro DEPOIS de tudo estar limpo
+        this.incluirMoto();
+        this.incluirRegistro(0); // importante: isso recalcula o total
       },
       error => {
         console.error('Erro ao cadastrar a ordem de serviço', error);
@@ -209,7 +222,7 @@ export class CriarOrdemComponent implements OnInit {
 
   atualizarValorTotalGeral() {
     this.valorTotalGeral = this.motos.reduce((total, moto) => total + this.calcularSoma(moto), 0);
-    console.log(this.valorTotalGeral);
+    console.log("APOS RESET"+this.valorTotalGeral);
     if(this.vat > 0){
       const vatPercentual = this.vat || 0;
       const valorComVat = this.valorTotalGeral + (this.valorTotalGeral * vatPercentual / 100);
@@ -435,17 +448,17 @@ export class CriarOrdemComponent implements OnInit {
     if (value.indexOf(".") >= 0) {
       const decimalPos = value.indexOf(".");
       let left = value.substring(0, decimalPos);
-      let right = value.substring(decimalPos);
+      //let right = value.substring(decimalPos);
 
       left = this.formatMilhasNumber(left);
-      right = this.formatMilhasNumber(right);
-      if (blur) right += "00";
-      right = right.substring(0, 2);
+      //right = this.formatMilhasNumber(right);
+      //if (blur) right += "00";
+      //right = right.substring(0, 2);
 
-      return left + "." + right;
+      return left + ".";
     } else {
       value = this.formatMilhasNumber(value);
-      if (blur) value += ".00";
+      if (blur) value += "";
       return value;
     }
   }
