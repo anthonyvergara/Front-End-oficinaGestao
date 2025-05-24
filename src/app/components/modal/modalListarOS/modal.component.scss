@@ -121,4 +121,8 @@ input:disabled, input[readonly] {
   }
 }
 
+form input {
+  text-transform: uppercase;
+}
+
 
