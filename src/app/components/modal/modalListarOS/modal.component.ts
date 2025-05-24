@@ -9,6 +9,7 @@ import { ImpressaoService } from 'src/app/service/impressao/impressao.service';
 import { SharedService } from 'src/app/service/shared/shared.service';
 import { DetalheServico } from 'src/app/service/models/detalheServico.model';
 import { DetalheServicoService } from 'src/app/service/detalheServico/detalhe-servico.service';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'modal-listar-ordemServico',
@@ -130,6 +131,13 @@ export class ModalComponent {
 
     // Retorna a data no formato yyyy-mm-dd
     return `${year}-${month}-${day}`;
+  }
+
+  getValorTotal(): number {
+    const total = Object.values(this.valorTotalDetalheServicoPorPlaca)
+      .reduce((acc, curr) => acc + curr, 0);
+
+    return total;
   }
 
   ultimoPagamento() : string{
@@ -279,7 +287,7 @@ export class ModalComponent {
   // Método para incluir uma nova moto
   incluirMoto() {
     const novoGrupo = {
-      placa: 'NOVA_PLACA',  // A placa pode ser dinâmica ou deixada para o usuário preencher
+      placa: '',  // A placa pode ser dinâmica ou deixada para o usuário preencher
       detalhes: []
     };
     this.groupedDetalheServico.push(novoGrupo);
@@ -396,12 +404,14 @@ export class ModalComponent {
 
   // Método para atualizar a quantidade de um registro específico
   updateQuantidade(grupo: any, index: number, event: Event): void {
+    this.changeInput = true;
     const input = event.target as HTMLInputElement;
     grupo.detalhes[index].quantidade = input.value;
   }
 
   // Método para atualizar a descrição de um registro específico
   updateDescricao(grupo: any, index: number, event: Event): void {
+    this.changeInput = true;
     const input = event.target as HTMLInputElement;
     grupo.detalhes[index].descricao = input.value;
   }
@@ -447,6 +457,10 @@ export class ModalComponent {
     grupo.detalhes[index].valor = numValue / 100;
 
     // Recalcula os totais
+    this.calcularTotais();
+  }
+
+  onPrecoChange(){
     this.calcularTotais();
   }
 
@@ -510,6 +524,102 @@ export class ModalComponent {
     });
   }
 
+  onPrecoInput(event: Event, grupo: any, j: number): void {
+    this.changeInput = true;
+    const input = event.target as HTMLInputElement;
+    const caretPos = input.selectionStart || 0;
+    const originalLen = input.value.length;
+
+    grupo.detalhes[j].valor = this.formatCurrency(input.value);
+
+    setTimeout(() => {
+      const updatedLen = grupo.detalhes[j].valor.length;
+      const newCaretPos = updatedLen - originalLen + caretPos;
+      input.setSelectionRange(newCaretPos, newCaretPos);
+    });
+  }
+
+  onPrecoBlur(grupo: any, j: number): void {
+    const valorFormatado = this.formatCurrency(grupo.detalhes[j].valor, true);
+    // Extrair o valor numérico da string formatada
+    const valorNumerico = parseFloat(valorFormatado.replace(/[^\d.]/g, ''));
+    grupo.detalhes[j].valor = isNaN(valorNumerico) ? 0 : parseFloat(valorNumerico.toFixed(2)); // Mantém 2 decimais
+
+    this.calcularTotais();
+  }
+
+
+
+  formatNumber(value: string): string {
+    return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  formatCurrency(value: string, blur: boolean = false): string {
+    if (!value) return "";
+
+    let numberValue = value.replace(/[^\d.]/g, ""); // remove tudo que não é número ou ponto
+
+    if (numberValue.indexOf(".") >= 0) {
+      const decimalPos = numberValue.indexOf(".");
+      let left = numberValue.substring(0, decimalPos);
+      let right = numberValue.substring(decimalPos + 1);
+
+      left = this.formatNumber(left);
+      right = right.replace(/\D/g, ""); // só números na parte decimal
+
+      if (blur) {
+        right = right.padEnd(2, "0"); // preenche com zeros até 2 casas decimais
+      } else {
+        right = right.substring(0, 2); // limita a 2 casas decimais durante digitação
+      }
+
+      return "£" + left + "." + right;
+    } else {
+      // sem ponto decimal
+      numberValue = this.formatNumber(numberValue);
+      return blur ? "£" + numberValue + ".00" : "£" + numberValue;
+    }
+  }
+
+  onMilhasInput(event: Event, grupo: any, j: number): void {
+    this.changeInput = true;
+    const input = event.target as HTMLInputElement;
+    const caretPos = input.selectionStart || 0;
+    const originalLen = input.value.length;
+
+    grupo.detalhes[j].milhagem = this.formatMilhas(input.value);
+
+    setTimeout(() => {
+      const updatedLen = grupo.detalhes[j].milhagem.length;
+      const newCaretPos = updatedLen - originalLen + caretPos;
+      input.setSelectionRange(newCaretPos, newCaretPos);
+    });
+  }
+
+  onMilhasBlur(grupo: any, j: number): void {
+    grupo.detalhes[j].milhagem = this.formatMilhas(grupo.detalhes[j].milhagem, true);
+  }
+
+  formatMilhasNumber(value: string): string {
+    return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  formatMilhas(value: string, blur: boolean = false): string {
+    if (!value) return "";
+
+    if (value.indexOf(".") >= 0) {
+      const decimalPos = value.indexOf(".");
+      let left = value.substring(0, decimalPos);
+      left = this.formatMilhasNumber(left);
+      return left + ".";
+    } else {
+      value = this.formatMilhasNumber(value);
+      return blur ? value : value;
+    }
+  }
+
+
+
 
   atualizarOrdemServico(): DetalheServico[] {
     // Cria um array vazio onde você vai armazenar os detalhes extraídos
@@ -529,7 +639,7 @@ export class ModalComponent {
           descricao: detalhe.descricao,
           placa: detalhe.placa,
           valor: detalhe.valor || 0,
-          milhagem: detalhe.milhagem || 0, // Adiciona outros campos que deseja
+          milhagem: parseFloat((detalhe.milhagem ?? 0).toString().replace(/[^\d]/g, "")) || 0, // Adiciona outros campos que deseja
           quantidade: detalhe.quantidade,
           observacao: detalhe.observacao,
           nomeMotorista: detalhe.nomeMotorista,
@@ -547,6 +657,7 @@ export class ModalComponent {
   }
 
   updateDetalheServico() : void{
+
     console.log("id Ordem: "+  this.orders.id)
 
     if (this.observacaoFieldChange == true){
@@ -569,11 +680,12 @@ export class ModalComponent {
 
       this.ordemServico.updateFieldOrdemServico(ordemServico,String(this.orders.cliente.id), "2").subscribe(
         response => {
-          console.log('Ordem de serviço atualizada com sucesso!', response);
+          this.successAlert("Ordem de serviço atualizada com sucesso!");
           this.sharedService.notifyPaymentCompleted();
         },
         error => {
-          console.error('Erro ao atualizar ordem de serviço', error);
+          this.dangerAlert("Erro ao atualizar ordem de serviço")
+          // console.error('Erro ao atualizar ordem de serviço', error);
         }
       );
     }
@@ -581,11 +693,12 @@ export class ModalComponent {
     if (this.changeInput == true || this.newRegisters > 0 ) {
       this.detalheServicoService.putDetalheServico(this.orders.id, this.atualizarOrdemServico()).subscribe(
         response => {
-          console.log('Ordem de serviço atualizada com sucesso!', response);
+          this.successAlert("Ordem de serviço atualizada com sucesso!");
           this.sharedService.notifyPaymentCompleted();
         },
         error => {
-          console.error('Erro ao atualizar ordem de serviço', error);
+          this.dangerAlert("Erro ao atualizar ordem de serviço")
+          // console.error('', error);
         }
       );
     }
@@ -599,6 +712,9 @@ export class ModalComponent {
   // Método para remover um registro de uma moto
   removerRegistro(grupoIndex: number, registroIndex: number) {
     this.newRegisters--;
+    if (this.newRegisters < 0) {
+      this.changeInput = true;
+    }
     const grupo = this.groupedDetalheServico[grupoIndex];
     if (grupo && grupo.detalhes && grupo.detalhes.length > 0) {
       // Remove o registro do grupo pelo índice

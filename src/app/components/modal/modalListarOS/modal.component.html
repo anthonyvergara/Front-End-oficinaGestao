@@ -91,7 +91,10 @@
                         <span *ngIf="!detalheServicoCollapse[grupo.placa]" class="ml-auto" style="margin-right: 30px;">
                           <h3 style="color: white;">TOTAL: {{ valorTotalDetalheServicoPorPlaca[grupo.placa] | currency:'GBP':'symbol':'1.2-2' }}</h3>
                         </span>
-                        <button *ngIf="groupedDetalheServico.length > 1 && orders.statusOrdemServico.tipoStatus != 'PAGO'" class="btn btn-outline btn-lg bg-secondary" type="button" (click)="removerMoto(i)">
+                        <button *ngIf="groupedDetalheServico.length > 1 && orders.statusOrdemServico.tipoStatus != 'PAGO'"
+                                class="btn btn-outline btn-lg bg-secondary"
+                                type="button"
+                                (click)="removerMoto(i)">
                           <i class="fas fa-trash" style="font-size: 18px;"></i>
                         </button>
                       </div>
@@ -140,12 +143,22 @@
                             <div class="col-12 col-md-2 mb-2">
                               <label>Preço</label>
                               <input type="text" class="form-control"
-                              [value]="registro.valor | currency:'GBP':'symbol':'1.2-2'"
-                              (input)="formatarValorEmTempoReal($event, grupo, j)" [readOnly]="compareDate(registro.data)" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
+                                     [ngClass]="grupo.detalhes[j].valor <= 0 ? 'is-invalid' : 'is-valid'"
+                                     [value]="formatCurrency(grupo.detalhes[j].valor?.toString())"
+                                     (input)="onPrecoInput($event, grupo, j)"
+                                     (blur)="onPrecoBlur(grupo, j)"
+                                     [readOnly]="compareDate(registro.data)"
+                                     [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
                             </div>
                             <div class="col-12 col-md-2 mb-2">
                               <label>Milhagem</label>
-                              <input type="text" class="form-control" [value]="registro.milhagem ?? 0 | number:'1.0-0'" (input)="updateMilhagem(grupo, j, $event)" [readOnly]="compareDate(registro.data)" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
+                              <input type="text" class="form-control"
+                                     [value]="registro.milhagem"
+                                     (input)="onMilhasInput($event, grupo, j)"
+                                     (blur)="onMilhasBlur(grupo, j)"
+                                     [readOnly]="compareDate(registro.data)"
+                                     [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
+
                             </div>
                             <div class="col-12 col-md-1 mb-2">
                               <button *ngIf="grupo.detalhes.length > 1 && compareDate(registro.data) == false && orders.statusOrdemServico.tipoStatus != 'PAGO'" class="btn btn-outline-danger btn-round" type="button" (click)="removerRegistro(i, j)" [readOnly]="compareDate(registro.data)">
@@ -214,7 +227,7 @@
 
       <!-- Modal Footer -->
       <div class="modal-footer">
-        <div class="form-row align-items-center mt-0 d-flex justify-content-start w-100">
+        <div class="modal-footer-values form-row align-items-center mt-0 d-flex justify-content-start w-100">
           <!-- Cartão Valor Total -->
           <div class="col-4 mb-3">
             <div style="width: 100%;">
@@ -224,7 +237,7 @@
                     <div class="col">
                       <h5 class="card-title text-uppercase mb-0 valor-total" style="color: white; font-weight: bold; font-size: 0.9rem;">VALOR TOTAL</h5>
                       <span class="h2 font-weight-bold mb-0 valor-total" style="color: white; font-weight: bold; font-size: 1.2rem;">
-                  {{ orders.valorTotal | currency:'GBP':'symbol':'1.2-2' }}
+                  {{ getValorTotal() | currency:'GBP':'symbol':'1.2-2' }}
                 </span>
                     </div>
                     <!-- Ícone oculto em telas pequenas -->
@@ -290,17 +303,17 @@
 
         <!-- Alinha os botões no canto direito -->
         <div class="ml-auto d-flex flex-column align-items-end w-100">
-          <div class="d-flex align-items-center mb-2" *ngIf="dataUltimoPagamento != null">
-            <label class="text-sm mb-0" for="observacao">{{ ultimoPagamento() }}</label>
-            <button class="btn btn-icon btn-outline-danger btn-sm ml-2" type="button" placement="top" ngbTooltip="Histórico de pagamentos">
-              <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
-            </button>
-          </div>
+<!--          <div class="d-flex align-items-center mb-2" *ngIf="dataUltimoPagamento != null">-->
+<!--            <label class="text-sm mb-0" for="observacao">{{ ultimoPagamento() }}</label>-->
+<!--            <button class="btn btn-icon btn-outline-danger btn-sm ml-2" type="button" placement="top" ngbTooltip="Histórico de pagamentos">-->
+<!--              <span class="btn-inner&#45;&#45;icon"><i class="ni ni-single-copy-04"></i></span>-->
+<!--            </button>-->
+<!--          </div>-->
 
           <!-- Botões -->
           <div class="d-flex flex-wrap justify-content-between w-100">
             <button *ngIf="newRegisters > 0 || changeInput || observacaoFieldChange" type="button" class="btn btn-success" (click)="updateDetalheServico()" @fadeIn>Salvar</button>
-            <button type="button" class="btn btn-secondary ml-auto" (click)="closeModal()">Fechar</button>
+<!--            <button type="button" class="btn btn-secondary ml-auto" (click)="closeModal()">Fechar</button>-->
           </div>
         </div>
       </div>
@@ -310,6 +323,39 @@
     </div>
   </div>
 </div>
+
+<div class="floating-values position-fixed top-20 end-0 p-3 d-flex flex-column" style="width: 250px; z-index: 1100;">
+  <!-- Cartão Valor Total -->
+  <div class="card card-stats bg-success mb-2">
+    <div class="card-body">
+      <h5 class="card-title text-uppercase text-white fw-bold mb-1">VALOR TOTAL</h5>
+      <span class="h4 fw-bold text-white">
+        {{ getValorTotal() | currency:'GBP':'symbol':'1.2-2' }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Cartão Valor Pago -->
+  <div class="card card-stats bg-darkblue mb-2">
+    <div class="card-body">
+      <h5 class="card-title text-uppercase text-white fw-bold mb-1">VALOR PAGO</h5>
+      <span class="h4 fw-bold text-white">
+        {{ valorTotalPago() | currency:'GBP':'symbol':'1.2-2' }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Cartão Valor Devido -->
+  <div class="card card-stats mb-2" [ngClass]="saldoDevedor() > 0 ? 'bg-danger' : 'bg-success'">
+    <div class="card-body">
+      <h5 class="card-title text-uppercase text-white fw-bold mb-1">VALOR DEVIDO</h5>
+      <span class="h4 fw-bold text-white">
+        {{ saldoDevedor() | currency:'GBP':'symbol':'1.2-2' }}
+      </span>
+    </div>
+  </div>
+</div>
+
               <app-modal-cliente-profile *ngIf="isModalOpen"
               [invoiceId]="orders?.id"
               (close)="closedModal()">
