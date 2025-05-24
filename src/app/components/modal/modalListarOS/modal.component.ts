@@ -9,6 +9,7 @@ import { ImpressaoService } from 'src/app/service/impressao/impressao.service';
 import { SharedService } from 'src/app/service/shared/shared.service';
 import { DetalheServico } from 'src/app/service/models/detalheServico.model';
 import { DetalheServicoService } from 'src/app/service/detalheServico/detalhe-servico.service';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'modal-listar-ordemServico',
@@ -403,12 +404,14 @@ export class ModalComponent {
 
   // Método para atualizar a quantidade de um registro específico
   updateQuantidade(grupo: any, index: number, event: Event): void {
+    this.changeInput = true;
     const input = event.target as HTMLInputElement;
     grupo.detalhes[index].quantidade = input.value;
   }
 
   // Método para atualizar a descrição de um registro específico
   updateDescricao(grupo: any, index: number, event: Event): void {
+    this.changeInput = true;
     const input = event.target as HTMLInputElement;
     grupo.detalhes[index].descricao = input.value;
   }
@@ -522,6 +525,7 @@ export class ModalComponent {
   }
 
   onPrecoInput(event: Event, grupo: any, j: number): void {
+    this.changeInput = true;
     const input = event.target as HTMLInputElement;
     const caretPos = input.selectionStart || 0;
     const originalLen = input.value.length;
@@ -578,6 +582,7 @@ export class ModalComponent {
   }
 
   onMilhasInput(event: Event, grupo: any, j: number): void {
+    this.changeInput = true;
     const input = event.target as HTMLInputElement;
     const caretPos = input.selectionStart || 0;
     const originalLen = input.value.length;
@@ -612,9 +617,6 @@ export class ModalComponent {
       return blur ? value : value;
     }
   }
-
-
-
 
 
 
@@ -655,6 +657,7 @@ export class ModalComponent {
   }
 
   updateDetalheServico() : void{
+
     console.log("id Ordem: "+  this.orders.id)
 
     if (this.observacaoFieldChange == true){
@@ -677,11 +680,12 @@ export class ModalComponent {
 
       this.ordemServico.updateFieldOrdemServico(ordemServico,String(this.orders.cliente.id), "2").subscribe(
         response => {
-          console.log('Ordem de serviço atualizada com sucesso!', response);
+          this.successAlert("Ordem de serviço atualizada com sucesso!");
           this.sharedService.notifyPaymentCompleted();
         },
         error => {
-          console.error('Erro ao atualizar ordem de serviço', error);
+          this.dangerAlert("Erro ao atualizar ordem de serviço")
+          // console.error('Erro ao atualizar ordem de serviço', error);
         }
       );
     }
@@ -689,11 +693,12 @@ export class ModalComponent {
     if (this.changeInput == true || this.newRegisters > 0 ) {
       this.detalheServicoService.putDetalheServico(this.orders.id, this.atualizarOrdemServico()).subscribe(
         response => {
-          console.log('Ordem de serviço atualizada com sucesso!', response);
+          this.successAlert("Ordem de serviço atualizada com sucesso!");
           this.sharedService.notifyPaymentCompleted();
         },
         error => {
-          console.error('Erro ao atualizar ordem de serviço', error);
+          this.dangerAlert("Erro ao atualizar ordem de serviço")
+          // console.error('', error);
         }
       );
     }
@@ -707,6 +712,9 @@ export class ModalComponent {
   // Método para remover um registro de uma moto
   removerRegistro(grupoIndex: number, registroIndex: number) {
     this.newRegisters--;
+    if (this.newRegisters < 0) {
+      this.changeInput = true;
+    }
     const grupo = this.groupedDetalheServico[grupoIndex];
     if (grupo && grupo.detalhes && grupo.detalhes.length > 0) {
       // Remove o registro do grupo pelo índice
