@@ -26,6 +26,7 @@ jobs:
 
       - name: Copy dist to Docker build context (datasweb)
         run: |
+          mkdir -p datasweb
           rm -rf datasweb/*
           cp -r dist/* datasweb/
 
