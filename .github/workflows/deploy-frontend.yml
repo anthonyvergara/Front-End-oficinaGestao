@@ -3,7 +3,7 @@ name: Deploy Frontend Angular via Zip
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
