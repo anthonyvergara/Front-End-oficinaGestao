@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
 
-  apiBaseUrl: '/oficina',
+  apiBaseUrl: 'http://localhost:8080/oficina',
 
   //STATUS ORDEM SERVICO
   urlGetStatusOrdemServicoById: "/status/",
