@@ -134,8 +134,14 @@ export class ModalComponent {
   }
 
   getValorTotal(): number {
-    const total = Object.values(this.valorTotalDetalheServicoPorPlaca)
+    var total = Object.values(this.valorTotalDetalheServicoPorPlaca)
       .reduce((acc, curr) => acc + curr, 0);
+
+    if (this.orders.vat != null || this.orders.vat != undefined || this.orders.vat != 0) {
+      const vat = this.orders.vat / 100
+      const sub_total = total * vat
+      total = total + sub_total
+    }
 
     return total;
   }
@@ -844,10 +850,18 @@ export class ModalComponent {
     // Montar a data no formato dd/MM/YYYY com o nome do mês
     var formattedDateWithMonthName = `${day} de ${month} de ${year}`;
 
+    var valot_total_sem_vat= Object.values(this.valorTotalDetalheServicoPorPlaca)
+      .reduce((acc, curr) => acc + curr, 0);
+
     var vat = this.orders.vat
-    var vatValue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(this.orders.valorTotal * vat);
-    var valorTotal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(this.orders.valorTotal + (this.orders.valorTotal * vat));
-    var subTotal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(this.orders.valorTotal);
+    var vatValueNumber = valot_total_sem_vat * (vat / 100);
+    var vatValue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(vatValueNumber);
+    var valorTotal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(valot_total_sem_vat + vatValueNumber);
+
+    var subTotalNumber = this.orders.valorTotal - vatValueNumber;
+    var subTotal = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(subTotalNumber);
+
+
 
 
     if (printWindow) {
@@ -899,22 +913,22 @@ export class ModalComponent {
             <span class="title">CONTACT</span>
             <div class="phone">
                 <ul class="list-unstyled">
-                  <li>+1(535)-8999278</li>
-                  <li>+1(656)-3558302</li>
+                  <li>+44 02088884733</li>
+                  <!--<li>+1(656)-3558302</li>-->
                 </ul>
               </div>
         </div>
 
-        <div class="phone">
+        <!--<div class="phone">
           <ul class="list-unstyled">
             <li>+1(535)-8999278</li>
             <li>+1(656)-3558302</li>
           </ul>
-        </div>
+        </div>-->
         <div class="email">
           <ul class="list-unstyled">
             <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9af7fbf3e9f5f4ffeeeeffdaf9f5f7eafbf4e3b4f9f5">[email&#160;protected]</a></li>
-            <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dbb6bab2a8b4b5beafafbe9ba8aeababb4a9aff5b8b4">[email&#160;protected]</a></li>
+           <!-- <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dbb6bab2a8b4b5beafafbe9ba8aeababb4a9aff5b8b4">[email&#160;protected]</a></li>-->
           </ul>
         </div>
       </div>
@@ -957,7 +971,7 @@ export class ModalComponent {
         </table>
       </div>
     </div>
-    <div class="row">
+    <!--<div class="row">
       <div class="col-md-12">
         <div class="invoice-payment-details">
           <p><b>Payment Method:</b> Credit card</p>
@@ -965,10 +979,10 @@ export class ModalComponent {
           <p><b>Number verification:</b> 4256981387</p>
         </div>
       </div>
-    </div>
+    </div>-->
     <div class="row">
       <div class="col-md-12 invoice-message mt-5 mb-5 mt-sm-6 mb-sm-6"><span class="title mb-4">Thank you for contacting us!</span>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis massa nisl. Sed fringilla turpis id mi ultrices, et faucibus ipsum aliquam.</p>
+        <p></p>
       </div>
     </div>
     <div class="row invoice-footer">
