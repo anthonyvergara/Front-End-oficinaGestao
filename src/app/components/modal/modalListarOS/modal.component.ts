@@ -811,23 +811,44 @@ export class ModalComponent {
   imprimir() {
     const printWindow = window.open('', '_blank');
 
-    let itemsHtml = '';
+    // Agrupar os serviços por placa
+    const servicosPorPlaca = {};
+
     this.orders.detalheServico.forEach((servico) => {
-      // Formatando o valor para o formato moeda padrão dos EUA
-      const formattedAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(servico.valor);
-
-      // Capitalizando a primeira letra da descrição
-      const capitalizedDescription = servico.descricao.charAt(0).toUpperCase() + servico.descricao.slice(1);
-
-      // Adicionando os itens formatados ao HTML
-      itemsHtml += `
-          <tr>
-              <td class="description">${capitalizedDescription}</td>
-              <td class="hours text-center">${servico.quantidade}</td>
-              <td class="amount text-center">${formattedAmount}</td>
-          </tr>
-      `;
+      const placa = servico.placa;
+      if (!servicosPorPlaca[placa]) {
+        servicosPorPlaca[placa] = [];
+      }
+      servicosPorPlaca[placa].push(servico);
     });
+
+// Gerar HTML agrupado
+    let itemsHtml = '';
+
+    Object.keys(servicosPorPlaca).forEach((placa) => {
+      const servicos = servicosPorPlaca[placa];
+
+      // Adiciona linha de separação com a placa apenas uma vez
+      itemsHtml += `
+    <tr>
+      <td colspan="3"><strong>${placa}</strong></td>
+    </tr>
+  `;
+
+      servicos.forEach((servico) => {
+        const formattedAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(servico.valor);
+        const capitalizedDescription = servico.descricao.charAt(0).toUpperCase() + servico.descricao.slice(1);
+
+        itemsHtml += `
+      <tr>
+        <td class="description">${capitalizedDescription}</td>
+        <td class="hours text-center">${servico.quantidade}</td>
+        <td class="amount text-center">${formattedAmount}</td>
+      </tr>
+    `;
+      });
+    });
+
 
     var today: Date = new Date();
 
