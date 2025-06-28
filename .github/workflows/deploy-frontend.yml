@@ -48,7 +48,7 @@ jobs:
             unzip /tmp/dist.zip -d /var/www/datasweb/
             cp /tmp/Dockerfile /var/www/datasweb/
             rm /tmp/dist.zip
-            docker build --no-cache -t seu-frontend-image:latest /var/www/datasweb/
+            docker build --no-cache --pull -t seu-frontend-image:latest /var/www/datasweb/
             docker stop frontend-app || true
             docker rm frontend-app || true
             docker-compose -f /root/prod/docker-compose.prod.yml up -d --build frontend
