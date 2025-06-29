@@ -13,7 +13,7 @@ import { UserProfileComponent } from '../../pages/user-profile/user-profile.comp
 
 import { ListarComponent } from '../../pages/services/listar/listar.component';
 import { CriarComponent } from '../../pages/services/criar/criar.component';
-import { ModalComponent } from 'src/app/components/modal/modalListarOS/modal.component';
+import { ModalViewOrdemComponent } from 'src/app/components/modal/modalViewOS/modal-view-ordem.component';
 import { ModalCriarClienteComponent } from 'src/app/components/modal/modalCriarCliente/modal-criarCliente.component';
 import { ModalViewClienteComponent } from 'src/app/components/modal/modalViewCliente/modal-view-cliente/modal-view-cliente.component';
 import { ModalClienteProfileComponent } from 'src/app/components/modal/modal-cliente-profile/modal-cliente-profile.component';
@@ -52,7 +52,7 @@ import { UppercaseDirective } from 'src/app/directives/uppercase.directive';
     UppercaseDirective,
     ListarComponent,
     CriarComponent,
-    ModalComponent,
+    ModalViewOrdemComponent,
     ModalCriarClienteComponent,
     CriarOrdemComponent,
     ModalViewClienteComponent,

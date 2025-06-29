@@ -12,9 +12,9 @@ import { DetalheServicoService } from 'src/app/service/detalheServico/detalhe-se
 import {NgForm} from '@angular/forms';
 
 @Component({
-  selector: 'modal-listar-ordemServico',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss'],
+  selector: 'modal-view-ordemServico',
+  templateUrl: './modal-view-ordem.component.html',
+  styleUrls: ['./modal-view-ordem.component.scss'],
   animations: [
     trigger('fadeIn', [
       transition(':enter', [
@@ -36,7 +36,7 @@ import {NgForm} from '@angular/forms';
     ])
   ],
 })
-export class ModalComponent {
+export class ModalViewOrdemComponent {
   @Input() status: string | undefined;
   @Input() id: number | undefined;
   @Input() nome: string | undefined;
