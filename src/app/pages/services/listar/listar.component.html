@@ -576,7 +576,7 @@
 </div>
 
 <div id="modal-overlay" class="modal-overlay"></div>
-<modal-listar-ordemServico
+<modal-view-ordemServico
   *ngIf="isModalOpen"
   [id]="modalData.id"
   [nome]="modalData.nome"
@@ -584,4 +584,4 @@
   [valorTotal]="modalData.valorTotal"
   [valorDaEntrada]="modalData.valorEntrada"
   (close)="closeModal()">
-</modal-listar-ordemServico>
+</modal-view-ordemServico>
