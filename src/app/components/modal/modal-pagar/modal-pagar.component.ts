@@ -177,7 +177,7 @@ export class ModalPagarComponent implements OnInit {
       return `£${leftSide}.${rightSide}`;
     } else {
       leftSide = this.formatNumber(value);
-      return blur ? `£${leftSide}.00` : `$${leftSide}`;
+      return blur ? `£${leftSide}.00` : `£${leftSide}`;
     }
   }
 
