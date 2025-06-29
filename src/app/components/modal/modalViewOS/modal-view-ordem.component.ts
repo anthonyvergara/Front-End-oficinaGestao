@@ -292,12 +292,29 @@ export class ModalViewOrdemComponent {
 
   // Método para incluir uma nova moto
   incluirMoto() {
+    this.groupedDetalheServico.forEach((servico) => {
+      this.detalheServicoCollapse[servico.placa] = false;
+    });
+
     const novoGrupo = {
-      placa: '',  // A placa pode ser dinâmica ou deixada para o usuário preencher
-      detalhes: []
+      placa: 'PLACA '+this.groupedDetalheServico.length,
+      data: null,
+      detalhes: [{
+        id: 0,
+        descricao: '',
+        quantidade: 1,
+        valor: 0.00,
+        milhagem: 0,
+        placa: '',
+        observacao: '',
+        nomeMotorista: '',
+        data: null
+      }]
     };
     this.groupedDetalheServico.push(novoGrupo);
+    this.detalheServicoCollapse[novoGrupo.placa] = true; // collapse começa expandido
   }
+
 
   get vat():string{
     return this.orders.vat === 0 ? null : this.orders.vat.toString();
@@ -352,7 +369,7 @@ export class ModalViewOrdemComponent {
 
         if (this.groupedDetalheServico.length === 1) {
           this.groupedDetalheServico.forEach(grupo => {
-            this.detalheServicoCollapse[grupo.placa] = true;
+            this.detalheServicoCollapse[grupo.placa] = true; // INICIA COLLAPSE SE POSSUI MAIS QUE 1 MOTO
           });
         };
 
@@ -434,12 +451,37 @@ export class ModalViewOrdemComponent {
     this.calcularTotais();
   }
 
-  capturarPlaca(event : any, grupo: any, index: number){
-    const inputElement = event.target;
-    // Remove caracteres não numéricos
-    let placa = inputElement.value;
+  capturarPlaca(event: any, grupo: any) {
+    const placaAntiga = grupo.placa;  // guarda a placa antiga
+    const novaPlaca = event.target.value;
 
+    // Atualiza a placa do grupo
+    grupo.placa = novaPlaca;
+    grupo.detalhes[0].placa = novaPlaca;
+    // Se existir estado para a placa antiga, transfere para a nova placa
+    if (this.detalheServicoCollapse[placaAntiga] !== undefined) {
+      this.detalheServicoCollapse[novaPlaca] = this.detalheServicoCollapse[placaAntiga];
+      delete this.detalheServicoCollapse[placaAntiga];
+    }
   }
+
+
+  atualizarPlaca(index: number, novaPlaca: string) {
+    const grupo = this.groupedDetalheServico[index];
+    const placaAntiga = grupo.placa;
+
+    // Atualiza a placa no grupo
+    grupo.placa = novaPlaca;
+
+    // Se já havia uma entrada com a placa antiga, copia o estado
+    if (this.detalheServicoCollapse[placaAntiga] !== undefined) {
+      this.detalheServicoCollapse[novaPlaca] = this.detalheServicoCollapse[placaAntiga];
+      delete this.detalheServicoCollapse[placaAntiga];
+    } else {
+      this.detalheServicoCollapse[novaPlaca] = true;
+    }
+  }
+
 
   formatarValorEmTempoReal(event: any, grupo: any, index: number): void {
     const inputElement = event.target;
@@ -499,18 +541,22 @@ export class ModalViewOrdemComponent {
     this.newRegisters++;
     // Verifica se o grupo existe e adiciona um novo registro
     const grupo = this.groupedDetalheServico[grupoIndex];
+    console.log("GRUPO INDEX: "+grupoIndex);
+    console.log("GRUPO EXISTENTE: "+grupo)
+    console.log("PLACA GRUPO EXISTENTE: "+grupo.placa)
     if (grupo) {
       const novoRegistro = {
-        id:0,
+        id: 0,
         descricao: '',
         quantidade: 1,
         valor: 0.00,
         milhagem: 0,
         placa: grupo.placa,
-        observacao: '',
-        nomeMotorista: '',
-        data: null  // Pode ser substituído com outra lógica para data
+        observacao: grupo.observacao,
+        nomeMotorista: grupo.motorista,
+        data: grupo.data
       };
+
       grupo.detalhes.push(novoRegistro);
 
       this.calcularTotais();
@@ -697,6 +743,8 @@ export class ModalViewOrdemComponent {
     }
 
     if (this.changeInput == true || this.newRegisters > 0 ) {
+      console.log("DETALHES DE MOTOS A SEREM ATUALIZADAS")
+      console.log(this.atualizarOrdemServico());
       this.detalheServicoService.putDetalheServico(this.orders.id, this.atualizarOrdemServico()).subscribe(
         response => {
           this.successAlert("Ordem de serviço atualizada com sucesso!");
