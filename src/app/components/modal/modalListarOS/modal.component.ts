@@ -831,7 +831,7 @@ export class ModalComponent {
       // Adiciona linha de separação com a placa apenas uma vez
       itemsHtml += `
     <tr>
-      <td colspan="3"><strong>${placa}</strong></td>
+      <td colspan="3"><strong>Placa: ${placa}</strong></td>
     </tr>
   `;
 
