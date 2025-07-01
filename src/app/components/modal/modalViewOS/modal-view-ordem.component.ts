@@ -888,7 +888,7 @@ export class ModalViewOrdemComponent {
         const capitalizedDescription = servico.descricao.charAt(0).toUpperCase() + servico.descricao.slice(1);
 
         itemsHtml += `
-      <tr>
+      <tr style="margin-left: 10px">
         <td class="description">${capitalizedDescription}</td>
         <td class="hours text-center">${servico.quantidade}</td>
         <td class="amount text-center">${formattedAmount}</td>
@@ -902,13 +902,12 @@ export class ModalViewOrdemComponent {
 
     // Array com os nomes dos meses
     var monthNames = [
-        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
     ];
 
     // Obter o mês atual (getMonth retorna 0 para Janeiro, 1 para Fevereiro, etc.)
     var month = monthNames[today.getMonth()];
-
     // Obter o dia e o ano
     var day = today.getDate();
     var year = today.getFullYear();
@@ -917,7 +916,7 @@ export class ModalViewOrdemComponent {
     if (day < 10) day = Number('0') + day;
 
     // Montar a data no formato dd/MM/YYYY com o nome do mês
-    var formattedDateWithMonthName = `${day} de ${month} de ${year}`;
+    var formattedDateWithMonthName = `${day} ${month} ${year}`;
 
     var valot_total_sem_vat= Object.values(this.valorTotalDetalheServicoPorPlaca)
       .reduce((acc, curr) => acc + curr, 0);
@@ -1005,8 +1004,13 @@ export class ModalViewOrdemComponent {
   </div>
   <div class="col-md-9 invoice-content">
     <div class="row invoice-header">
-      <div class="col-6 invoice-title"><span>MOTO HACKNEY LIMITED</span></div>
-      <div class="col-6 invoice-order"><span class="invoice-number"></span><span class="invoice-date">${formattedDateWithMonthName}</span></div>
+      <div class="col-6 invoice-title"><p>MTH</p><span>MOTO HACKNEY LIMITED</span></div>
+      <div class="col-6 invoice-order">
+        <span class="invoice-number"></span>
+        <p class="invoice-date">Company N: 10689065</p>
+        <span class="invoice-date">${formattedDateWithMonthName}</span>
+        <!--<p class="invoice-date">Invoice № ${this.orders.invoiceNumber}</p>-->
+        </div>
     </div>
     <div class="row">
       <div class="col-md-12">

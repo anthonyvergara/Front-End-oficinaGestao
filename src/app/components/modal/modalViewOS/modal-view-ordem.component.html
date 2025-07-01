@@ -91,7 +91,7 @@
                         <span *ngIf="!detalheServicoCollapse[grupo.placa]" class="ml-auto" style="margin-right: 30px;">
                           <h3 style="color: white;">TOTAL: {{ valorTotalDetalheServicoPorPlaca[grupo.placa] | currency:'GBP':'symbol':'1.2-2' }}</h3>
                         </span>
-                        <button *ngIf="groupedDetalheServico.length > 1 && orders.statusOrdemServico.tipoStatus != 'PAGO'"
+                        <button *ngIf="groupedDetalheServico.length > 1 && orders.statusOrdemServico.tipoStatus != 'PAGO' && !compareDate(grupo.detalhes[0].data)"
                                 class="btn btn-outline btn-lg bg-secondary"
                                 type="button"
                                 (click)="removerMoto(i)">
