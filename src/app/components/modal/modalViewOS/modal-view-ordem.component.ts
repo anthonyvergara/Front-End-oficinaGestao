@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter, ViewChildren, QueryList, ElementRef} from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
@@ -46,6 +46,8 @@ export class ModalViewOrdemComponent {
   @Input() creationDate: string | undefined;
 
   @Output() close = new EventEmitter<void>();
+
+  @ViewChildren('descricaoInput') descricaoInputs!: QueryList<ElementRef>;
 
   orders : OrdemServico = {} as OrdemServico;
 
@@ -264,6 +266,10 @@ export class ModalViewOrdemComponent {
     return this.orders.valorTotal - this.valorTotalPago();
   }
 
+  valorTotalView() : number{
+    return this.orders.valorTotal;
+  }
+
   autoCloseAlert() {
     setTimeout(() => {
       this.showSuccessAlert = false; // Fecha o alerta de sucesso
@@ -290,6 +296,24 @@ export class ModalViewOrdemComponent {
     this.closeModal();
   }
 
+  checkRegistroEnter(event: KeyboardEvent, motoIndex: number, registroIndex: number) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.incluirRegistro(motoIndex);
+
+      setTimeout(() => {
+        const descricaoInputElements = this.descricaoInputs.toArray();
+        const nextRegistroIndex = (registroIndex !== null ? registroIndex + 1 : this.motos[motoIndex].registros.length - 1);
+
+        // Direciona o foco para o campo de descrição do novo registro
+        if (nextRegistroIndex < descricaoInputElements.length) {
+          descricaoInputElements[nextRegistroIndex].nativeElement.focus();
+        }
+      });
+
+    }
+  }
+
   // Método para incluir uma nova moto
   incluirMoto() {
     this.groupedDetalheServico.forEach((servico) => {
@@ -297,7 +321,7 @@ export class ModalViewOrdemComponent {
     });
 
     const novoGrupo = {
-      placa: 'PLACA '+this.groupedDetalheServico.length,
+      placa: '',
       data: null,
       detalhes: [{
         id: 0,
@@ -366,7 +390,6 @@ export class ModalViewOrdemComponent {
         this.groupedDetalheServico = this.groupByPlaca(this.orders.detalheServico);
 
         this.calcularValorTotalDetalheServiçoPorPlaca();
-
         if (this.groupedDetalheServico.length === 1) {
           this.groupedDetalheServico.forEach(grupo => {
             this.detalheServicoCollapse[grupo.placa] = true; // INICIA COLLAPSE SE POSSUI MAIS QUE 1 MOTO
@@ -533,7 +556,9 @@ export class ModalViewOrdemComponent {
 
   // Método para remover uma moto
   removerMoto(grupoIndex: number) {
+    this.changeInput = true;
     this.groupedDetalheServico.splice(grupoIndex, 1);
+    this.calcularTotais();
   }
 
   // Método para incluir um novo registro para uma moto
