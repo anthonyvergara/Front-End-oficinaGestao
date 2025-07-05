@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { ClientesService } from '../../../service/clientes/clientes.service';
 import { Cliente } from '../../../service/models/cliente.model';
@@ -21,8 +21,9 @@ import { SharedService } from 'src/app/service/shared/shared.service';
     ])
   ]
 })
-export class ModalCriarClienteComponent {
-
+export class ModalCriarClienteComponent implements OnInit, OnChanges{
+  @Input() nomeInicial: string = '';
+  @Output() clienteCriado = new EventEmitter<{ nome: string; clienteNovo: boolean }>();
   @Output() close = new EventEmitter<void>();
 
   showSuccessAlert: boolean = false;
@@ -34,7 +35,7 @@ export class ModalCriarClienteComponent {
 
   newCliente: Cliente = {
     id: 0,  // Este ID será gerado automaticamente pelo backend
-    nome: '',
+    nome: this.nomeInicial,
     sobrenome: '',
     dataNascimento: '',
     email: '',
@@ -49,12 +50,34 @@ export class ModalCriarClienteComponent {
     ],
   };
 
+  ngOnInit() {
+    this.newCliente.nome = this.nomeInicial;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['nomeInicial']) {
+      this.newCliente.nome = this.nomeInicial;
+    }
+  }
+
+  closeModalAfeterCreate() {
+    this.close.emit();
+  }
+
   closeModal() {
     this.close.emit(); // Emite o evento para o componente pai
     //document.getElementById('modal-overlay')?.classList.remove('show');
+    this.clienteCriado.emit({
+      nome: this.newCliente.nome,
+      clienteNovo: false
+    });
   }
 
   onBackgroundClick(event: MouseEvent) {
+    this.clienteCriado.emit({
+      nome: this.newCliente.nome,
+      clienteNovo: false
+    });
     this.closeModal();
   }
 
@@ -125,7 +148,10 @@ export class ModalCriarClienteComponent {
   onSubmit(form: NgForm) {
     // Enviar os dados para o backend
     console.log('Enviando dados para o backend:', this.criarCliente()); // Verifique os dados
-
+    this.clienteCriado.emit({
+      nome: this.newCliente.nome,
+      clienteNovo: true
+    });
     this.clientesService.criarCliente(this.criarCliente()).subscribe(
       (response) => {
         console.log('Cliente criado com sucesso!', response);
