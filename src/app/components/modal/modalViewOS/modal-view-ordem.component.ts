@@ -297,7 +297,7 @@ export class ModalViewOrdemComponent {
     });
 
     const novoGrupo = {
-      placa: 'PLACA '+this.groupedDetalheServico.length,
+      placa: '',
       data: null,
       detalhes: [{
         id: 0,
