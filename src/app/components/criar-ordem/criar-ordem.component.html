@@ -1,7 +1,7 @@
 
 <div *ngIf="showSuccessAlert" id="successAlert" class="alert alert-success alert-dismissible fade show text-center" role="alert" @fadeIn>
   <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
-  <span class="alert-inner--text" style="font-size: 17px;"><strong> Perfeito!</strong> A ordem de serviço foi criada com sucesso!</span>
+  <span class="alert-inner--text" style="font-size: 17px;"><strong> Perfeito!</strong> {{messageAlert}}</span>
 </div>
 <div *ngIf="showDangerAlert" id="dangerAlert" class="alert alert-danger alert-dismissible fade show text-center" role="alert" @fadeIn>
   <span class="alert-inner--icon"><i class="fa fa-thumbs-down"></i></span>
@@ -310,6 +310,8 @@
     <div id="modal-overlay" class="modal-overlay"></div>
     <modal-criar-cliente
       *ngIf="isModalClientOpen"
+      [nomeInicial]="modalNomeCliente"
+      (clienteCriado)="onClienteCriado($event.nome, $event.clienteNovo)"
       (close)="closeModalClient()">
     </modal-criar-cliente>
 

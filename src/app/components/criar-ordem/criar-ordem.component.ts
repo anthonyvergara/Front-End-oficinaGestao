@@ -49,6 +49,8 @@ export class CriarOrdemComponent implements OnInit {
   valorEntrada: number = null;
   vatAnterior: number = 0;
 
+  modalNomeCliente: string = '';
+
   isModalClientOpen = false;
 
   clienteId: string = null;
@@ -62,6 +64,7 @@ export class CriarOrdemComponent implements OnInit {
   dataAtualBR: string = '';
 
   showSuccessAlert: boolean = false;
+  messageAlert: string = '';
   showDangerAlert: boolean = false;
 
   sugestoes: any[] = [];
@@ -154,9 +157,26 @@ export class CriarOrdemComponent implements OnInit {
   }
 
   createClient() {
+    this.modalNomeCliente = this.nomeCliente;
+    console.log(this.modalNomeCliente);
     this.isModalClientOpen = true;
+    this.findSugestao = true;
     document.getElementById('modal-overlay')?.classList.add('show');
   }
+
+  onClienteCriado(nome: string, response: boolean) {
+    this.nomeCliente = nome;         // Atualiza input
+    if (response == true){
+      this.findSugestao = true;
+      this.messageAlert = 'Cliente cadastrado com sucesso!';
+      this.showSuccessAlert = true;
+      this.autoCloseAlert();
+    }else{
+      this.findSugestao = false;
+    }
+    this.closeModalClient();         // Fecha modal e overlay
+  }
+
 
   closeModalClient() {
     this.isModalClientOpen = false;
@@ -200,6 +220,7 @@ export class CriarOrdemComponent implements OnInit {
         this.observacao = '';
         this.nomeCliente = '';
 
+        this.messageAlert = 'A ordem de serviço foi criada com sucesso!'
         this.showSuccessAlert = true;
         this.autoCloseAlert();
 
