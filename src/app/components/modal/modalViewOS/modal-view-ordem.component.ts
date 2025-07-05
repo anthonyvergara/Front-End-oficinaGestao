@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter, ViewChildren, QueryList, ElementRef} from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
@@ -12,9 +12,9 @@ import { DetalheServicoService } from 'src/app/service/detalheServico/detalhe-se
 import {NgForm} from '@angular/forms';
 
 @Component({
-  selector: 'modal-listar-ordemServico',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss'],
+  selector: 'modal-view-ordemServico',
+  templateUrl: './modal-view-ordem.component.html',
+  styleUrls: ['./modal-view-ordem.component.scss'],
   animations: [
     trigger('fadeIn', [
       transition(':enter', [
@@ -36,7 +36,7 @@ import {NgForm} from '@angular/forms';
     ])
   ],
 })
-export class ModalComponent {
+export class ModalViewOrdemComponent {
   @Input() status: string | undefined;
   @Input() id: number | undefined;
   @Input() nome: string | undefined;
@@ -46,6 +46,8 @@ export class ModalComponent {
   @Input() creationDate: string | undefined;
 
   @Output() close = new EventEmitter<void>();
+
+  @ViewChildren('descricaoInput') descricaoInputs!: QueryList<ElementRef>;
 
   orders : OrdemServico = {} as OrdemServico;
 
@@ -264,6 +266,10 @@ export class ModalComponent {
     return this.orders.valorTotal - this.valorTotalPago();
   }
 
+  valorTotalView() : number{
+    return this.orders.valorTotal;
+  }
+
   autoCloseAlert() {
     setTimeout(() => {
       this.showSuccessAlert = false; // Fecha o alerta de sucesso
@@ -290,14 +296,49 @@ export class ModalComponent {
     this.closeModal();
   }
 
+  checkRegistroEnter(event: KeyboardEvent, motoIndex: number, registroIndex: number) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.incluirRegistro(motoIndex);
+
+      setTimeout(() => {
+        const descricaoInputElements = this.descricaoInputs.toArray();
+        const nextRegistroIndex = (registroIndex !== null ? registroIndex + 1 : this.motos[motoIndex].registros.length - 1);
+
+        // Direciona o foco para o campo de descrição do novo registro
+        if (nextRegistroIndex < descricaoInputElements.length) {
+          descricaoInputElements[nextRegistroIndex].nativeElement.focus();
+        }
+      });
+
+    }
+  }
+
   // Método para incluir uma nova moto
   incluirMoto() {
+    this.groupedDetalheServico.forEach((servico) => {
+      this.detalheServicoCollapse[servico.placa] = false;
+    });
+
     const novoGrupo = {
-      placa: '',  // A placa pode ser dinâmica ou deixada para o usuário preencher
-      detalhes: []
+      placa: '',
+      data: null,
+      detalhes: [{
+        id: 0,
+        descricao: '',
+        quantidade: 1,
+        valor: 0.00,
+        milhagem: 0,
+        placa: '',
+        observacao: '',
+        nomeMotorista: '',
+        data: null
+      }]
     };
     this.groupedDetalheServico.push(novoGrupo);
+    this.detalheServicoCollapse[novoGrupo.placa] = true; // collapse começa expandido
   }
+
 
   get vat():string{
     return this.orders.vat === 0 ? null : this.orders.vat.toString();
@@ -349,10 +390,9 @@ export class ModalComponent {
         this.groupedDetalheServico = this.groupByPlaca(this.orders.detalheServico);
 
         this.calcularValorTotalDetalheServiçoPorPlaca();
-
         if (this.groupedDetalheServico.length === 1) {
           this.groupedDetalheServico.forEach(grupo => {
-            this.detalheServicoCollapse[grupo.placa] = true;
+            this.detalheServicoCollapse[grupo.placa] = true; // INICIA COLLAPSE SE POSSUI MAIS QUE 1 MOTO
           });
         };
 
@@ -434,12 +474,37 @@ export class ModalComponent {
     this.calcularTotais();
   }
 
-  capturarPlaca(event : any, grupo: any, index: number){
-    const inputElement = event.target;
-    // Remove caracteres não numéricos
-    let placa = inputElement.value;
+  capturarPlaca(event: any, grupo: any) {
+    const placaAntiga = grupo.placa;  // guarda a placa antiga
+    const novaPlaca = event.target.value;
 
+    // Atualiza a placa do grupo
+    grupo.placa = novaPlaca;
+    grupo.detalhes[0].placa = novaPlaca;
+    // Se existir estado para a placa antiga, transfere para a nova placa
+    if (this.detalheServicoCollapse[placaAntiga] !== undefined) {
+      this.detalheServicoCollapse[novaPlaca] = this.detalheServicoCollapse[placaAntiga];
+      delete this.detalheServicoCollapse[placaAntiga];
+    }
   }
+
+
+  atualizarPlaca(index: number, novaPlaca: string) {
+    const grupo = this.groupedDetalheServico[index];
+    const placaAntiga = grupo.placa;
+
+    // Atualiza a placa no grupo
+    grupo.placa = novaPlaca;
+
+    // Se já havia uma entrada com a placa antiga, copia o estado
+    if (this.detalheServicoCollapse[placaAntiga] !== undefined) {
+      this.detalheServicoCollapse[novaPlaca] = this.detalheServicoCollapse[placaAntiga];
+      delete this.detalheServicoCollapse[placaAntiga];
+    } else {
+      this.detalheServicoCollapse[novaPlaca] = true;
+    }
+  }
+
 
   formatarValorEmTempoReal(event: any, grupo: any, index: number): void {
     const inputElement = event.target;
@@ -491,7 +556,9 @@ export class ModalComponent {
 
   // Método para remover uma moto
   removerMoto(grupoIndex: number) {
+    this.changeInput = true;
     this.groupedDetalheServico.splice(grupoIndex, 1);
+    this.calcularTotais();
   }
 
   // Método para incluir um novo registro para uma moto
@@ -499,18 +566,22 @@ export class ModalComponent {
     this.newRegisters++;
     // Verifica se o grupo existe e adiciona um novo registro
     const grupo = this.groupedDetalheServico[grupoIndex];
+    console.log("GRUPO INDEX: "+grupoIndex);
+    console.log("GRUPO EXISTENTE: "+grupo)
+    console.log("PLACA GRUPO EXISTENTE: "+grupo.placa)
     if (grupo) {
       const novoRegistro = {
-        id:0,
+        id: 0,
         descricao: '',
         quantidade: 1,
         valor: 0.00,
         milhagem: 0,
         placa: grupo.placa,
-        observacao: '',
-        nomeMotorista: '',
-        data: null  // Pode ser substituído com outra lógica para data
+        observacao: grupo.observacao,
+        nomeMotorista: grupo.motorista,
+        data: grupo.data
       };
+
       grupo.detalhes.push(novoRegistro);
 
       this.calcularTotais();
@@ -697,6 +768,8 @@ export class ModalComponent {
     }
 
     if (this.changeInput == true || this.newRegisters > 0 ) {
+      console.log("DETALHES DE MOTOS A SEREM ATUALIZADAS")
+      console.log(this.atualizarOrdemServico());
       this.detalheServicoService.putDetalheServico(this.orders.id, this.atualizarOrdemServico()).subscribe(
         response => {
           this.successAlert("Ordem de serviço atualizada com sucesso!");
@@ -811,35 +884,55 @@ export class ModalComponent {
   imprimir() {
     const printWindow = window.open('', '_blank');
 
-    let itemsHtml = '';
+    // Agrupar os serviços por placa
+    const servicosPorPlaca = {};
+
     this.orders.detalheServico.forEach((servico) => {
-      // Formatando o valor para o formato moeda padrão dos EUA
-      const formattedAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(servico.valor);
-
-      // Capitalizando a primeira letra da descrição
-      const capitalizedDescription = servico.descricao.charAt(0).toUpperCase() + servico.descricao.slice(1);
-
-      // Adicionando os itens formatados ao HTML
-      itemsHtml += `
-          <tr>
-              <td class="description">${capitalizedDescription}</td>
-              <td class="hours text-center">${servico.quantidade}</td>
-              <td class="amount text-center">${formattedAmount}</td>
-          </tr>
-      `;
+      const placa = servico.placa;
+      if (!servicosPorPlaca[placa]) {
+        servicosPorPlaca[placa] = [];
+      }
+      servicosPorPlaca[placa].push(servico);
     });
+
+// Gerar HTML agrupado
+    let itemsHtml = '';
+
+    Object.keys(servicosPorPlaca).forEach((placa) => {
+      const servicos = servicosPorPlaca[placa];
+
+      // Adiciona linha de separação com a placa apenas uma vez
+      itemsHtml += `
+    <tr>
+      <td colspan="3"><strong>Placa: ${placa}</strong></td>
+    </tr>
+  `;
+
+      servicos.forEach((servico) => {
+        const formattedAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'GBP' }).format(servico.valor);
+        const capitalizedDescription = servico.descricao.charAt(0).toUpperCase() + servico.descricao.slice(1);
+
+        itemsHtml += `
+      <tr style="margin-left: 10px">
+        <td class="description">${capitalizedDescription}</td>
+        <td class="hours text-center">${servico.quantidade}</td>
+        <td class="amount text-center">${formattedAmount}</td>
+      </tr>
+    `;
+      });
+    });
+
 
     var today: Date = new Date();
 
     // Array com os nomes dos meses
     var monthNames = [
-        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
     ];
 
     // Obter o mês atual (getMonth retorna 0 para Janeiro, 1 para Fevereiro, etc.)
     var month = monthNames[today.getMonth()];
-
     // Obter o dia e o ano
     var day = today.getDate();
     var year = today.getFullYear();
@@ -848,7 +941,7 @@ export class ModalComponent {
     if (day < 10) day = Number('0') + day;
 
     // Montar a data no formato dd/MM/YYYY com o nome do mês
-    var formattedDateWithMonthName = `${day} de ${month} de ${year}`;
+    var formattedDateWithMonthName = `${day} ${month} ${year}`;
 
     var valot_total_sem_vat= Object.values(this.valorTotalDetalheServicoPorPlaca)
       .reduce((acc, curr) => acc + curr, 0);
@@ -936,8 +1029,13 @@ export class ModalComponent {
   </div>
   <div class="col-md-9 invoice-content">
     <div class="row invoice-header">
-      <div class="col-6 invoice-title"><span>MOTO HACKNEY LIMITED</span></div>
-      <div class="col-6 invoice-order"><span class="invoice-number"></span><span class="invoice-date">${formattedDateWithMonthName}</span></div>
+      <div class="col-6 invoice-title"><p>MTH</p><span>MOTO HACKNEY LIMITED</span></div>
+      <div class="col-6 invoice-order">
+        <span class="invoice-number"></span>
+        <p class="invoice-date">Company N: 10689065</p>
+        <span class="invoice-date">${formattedDateWithMonthName}</span>
+        <!--<p class="invoice-date">Invoice № ${this.orders.invoiceNumber}</p>-->
+        </div>
     </div>
     <div class="row">
       <div class="col-md-12">

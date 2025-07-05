@@ -91,7 +91,7 @@
                         <span *ngIf="!detalheServicoCollapse[grupo.placa]" class="ml-auto" style="margin-right: 30px;">
                           <h3 style="color: white;">TOTAL: {{ valorTotalDetalheServicoPorPlaca[grupo.placa] | currency:'GBP':'symbol':'1.2-2' }}</h3>
                         </span>
-                        <button *ngIf="groupedDetalheServico.length > 1 && orders.statusOrdemServico.tipoStatus != 'PAGO'"
+                        <button *ngIf="groupedDetalheServico.length > 1 && orders.statusOrdemServico.tipoStatus != 'PAGO' && !compareDate(grupo.detalhes[0].data)"
                                 class="btn btn-outline btn-lg bg-secondary"
                                 type="button"
                                 (click)="removerMoto(i)">
@@ -138,7 +138,7 @@
                             </div>
                             <div class="col-12 col-md-6 mb-2">
                               <label>Descrição</label><label class="ml-9" style="font-size: 12px;">Data: {{registro.data}}</label>
-                              <input type="text" class="form-control" [value]="registro.descricao" (input)="updateDescricao(grupo, j, $event)" [readOnly]="compareDate(registro.data)" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
+                              <input type="text" #descricaoInput class="form-control" [value]="registro.descricao" (input)="updateDescricao(grupo, j, $event)" [readOnly]="compareDate(registro.data)" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'" [name]="'descricao' + i + '-' + j">
                             </div>
                             <div class="col-12 col-md-2 mb-2">
                               <label>Preço</label>
@@ -148,7 +148,9 @@
                                      (input)="onPrecoInput($event, grupo, j)"
                                      (blur)="onPrecoBlur(grupo, j)"
                                      [readOnly]="compareDate(registro.data)"
-                                     [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
+                                     [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'"
+                                     (keypress)="checkRegistroEnter($event, i, j)"
+                                     [name]="'preco' + i + '-' + j">
                             </div>
                             <div class="col-12 col-md-2 mb-2">
                               <label>Milhagem</label>
@@ -157,7 +159,9 @@
                                      (input)="onMilhasInput($event, grupo, j)"
                                      (blur)="onMilhasBlur(grupo, j)"
                                      [readOnly]="compareDate(registro.data)"
-                                     [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'">
+                                     [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'"
+                                     (keypress)="checkRegistroEnter($event, i, j)"
+                                     [name]="'milhagem' + i + '-' + j">
 
                             </div>
                             <div class="col-12 col-md-1 mb-2">
