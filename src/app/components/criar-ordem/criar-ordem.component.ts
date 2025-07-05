@@ -4,6 +4,9 @@ import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.s
 import { OrdemServico } from 'src/app/service/models/ordemServico.model';
 import { NgForm } from '@angular/forms';
 import { ClientesService } from 'src/app/service/clientes/clientes.service';
+import { firstValueFrom } from 'rxjs';
+
+import {Cliente} from '../../service/models/cliente.model';
 
 @Component({
   selector: 'app-criar-ordem',
@@ -203,10 +206,28 @@ export class CriarOrdemComponent implements OnInit {
     }
   }
 
-  onSubmit(form: NgForm) {
-    // Enviar os dados para o backend
-    console.log('Enviando dados para o backend:'); // Verifique os dados
+  async getClientByname(name: string): Promise<void> {
+    console.log('getClientByname', name);
 
+    const clientes = await firstValueFrom(this.clienteService.getClienteByNameContains(name));
+
+    let id: number = 0;
+
+    clientes.forEach(cliente => {
+      console.log("BEFORE " + cliente.nome);
+      if (cliente.nome === name) {
+        console.log("ACHOU " + cliente.nome);
+        id = cliente.id;
+      }
+    });
+
+    console.log("ID " + id);
+    this.clienteId = id.toString();
+    console.log('cliente', this.clienteId);
+    console.log("ID CLIENTE : " + this.clienteId);
+  }
+
+  async createOrdemServico(): Promise<void>{
     this.ordemServicoService.postOrdemServico(this.criarOrdemServico(),this.clienteId).subscribe(
       response => {
         console.log('Ordem de serviço cadastrada com sucesso!', response);
@@ -234,6 +255,15 @@ export class CriarOrdemComponent implements OnInit {
         this.autoCloseAlert();
       }
     );
+  }
+
+
+  async onSubmit(form: NgForm) {
+    // Enviar os dados para o backend
+    console.log('Enviando dados para o backend:'); // Verifique os dados
+    await this.getClientByname(this.nomeCliente);
+    console.log("ID CLIENTE principal: "+ this.clienteId);
+    await this.createOrdemServico();
   }
 
   onVatChange() {
@@ -358,7 +388,6 @@ export class CriarOrdemComponent implements OnInit {
 
     // Verifica e processa o preço da moto
     if (moto.preco) {
-      console.log("preco moto: " + moto.preco);
         const precoMoto = parseFloat(moto.preco.replace(/[^\d.]/g, "")); // Mantém como inteiro (em centavos)
         if (!isNaN(precoMoto)) {
             soma += precoMoto; // Adiciona se for um número válido
@@ -369,7 +398,6 @@ export class CriarOrdemComponent implements OnInit {
     moto.registros.forEach((registro: any) => {
         if (registro.preco) {
           const precoRegistro = parseFloat(registro.preco.replace(/[^\d.]/g, "")); // Preserva o valor decimal
-          console.log("preco moto: " + precoRegistro);
           if (!isNaN(precoRegistro)) {
                 soma += precoRegistro; // Adiciona se for um número válido
             }
