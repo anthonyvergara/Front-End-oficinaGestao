@@ -48,6 +48,7 @@ jobs:
             unzip /tmp/dist.zip -d /var/www/datasweb/
             cp /tmp/Dockerfile /var/www/datasweb/
             cp /tmp/nginx-prod-front.conf /var/www/datasweb/
+            sed -i "s/index-version-[0-9]\+/index-version-$(date +%s)/" /var/www/datasweb/nginx-prod-front.conf
             rm /tmp/dist.zip
             docker build --no-cache --pull -t seu-frontend-image:latest /var/www/datasweb/
             docker stop frontend-app || true
