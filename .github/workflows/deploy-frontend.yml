@@ -53,3 +53,4 @@ jobs:
             docker stop frontend-app || true
             docker rm frontend-app || true
             docker-compose -f /root/prod/docker-compose.prod.yml up -d --build frontend
+            docker exec frontend-app nginx -s reload
