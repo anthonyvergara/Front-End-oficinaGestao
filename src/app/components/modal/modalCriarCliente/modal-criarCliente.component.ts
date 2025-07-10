@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { ClientesService } from '../../../service/clientes/clientes.service';
-import { Cliente } from '../../../service/models/cliente.model';
+import { Cliente } from '../../../models/cliente.model';
 import { NgForm } from '@angular/forms';
 import { SharedService } from 'src/app/service/shared/shared.service';
 

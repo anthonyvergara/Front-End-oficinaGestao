@@ -1,10 +1,10 @@
 import { Component, OnInit, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
-import { OrdemServico } from 'src/app/service/models/ordemServico.model';
-import { Parcela } from 'src/app/service/models/parcela.model';
-import { Pagamento } from 'src/app/service/models/pagamento.model';
-import {Cliente} from '../../../../service/models/cliente.model';
+import { OrdemServico } from 'src/app/models/ordemServico.model';
+import { Parcela } from 'src/app/models/parcela.model';
+import { Pagamento } from 'src/app/models/pagamento.model';
+import {Cliente} from '../../../../models/cliente.model';
 import {ClientesService} from '../../../../service/clientes/clientes.service';
 import {SharedService} from '../../../../service/shared/shared.service';
 

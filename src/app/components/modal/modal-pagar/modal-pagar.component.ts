@@ -1,7 +1,7 @@
 import {Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
-import { OrdemServico } from 'src/app/service/models/ordemServico.model';
-import { Pagamento } from 'src/app/service/models/pagamento.model';
-import { StatusOrdemServico } from 'src/app/service/models/statusOrdemServico.model';
+import { OrdemServico } from 'src/app/models/ordemServico.model';
+import { Pagamento } from 'src/app/models/pagamento.model';
+import { StatusOrdemServico } from 'src/app/models/statusOrdemServico.model';
 import { PagamentoService } from 'src/app/service/pagamento/pagamento.service';
 import { SharedService } from 'src/app/service/shared/shared.service';
 import { StatusOrdemServicoService } from 'src/app/service/statusOrdemServico/status-ordem-servico.service';

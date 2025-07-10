@@ -1,13 +1,13 @@
 import {Component, Input, Output, EventEmitter, ViewChildren, QueryList, ElementRef} from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
-import { OrdemServico } from 'src/app/service/models/ordemServico.model';
+import { OrdemServico } from 'src/app/models/ordemServico.model';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
 import { Console } from 'console';
-import { Pagamento } from 'src/app/service/models/pagamento.model';
+import { Pagamento } from 'src/app/models/pagamento.model';
 import { Router } from '@angular/router';
 import { ImpressaoService } from 'src/app/service/impressao/impressao.service';
 import { SharedService } from 'src/app/service/shared/shared.service';
-import { DetalheServico } from 'src/app/service/models/detalheServico.model';
+import { DetalheServico } from 'src/app/models/detalheServico.model';
 import { DetalheServicoService } from 'src/app/service/detalheServico/detalhe-servico.service';
 import {NgForm} from '@angular/forms';
 
@@ -90,6 +90,8 @@ export class ModalViewOrdemComponent {
   isModalOpen : boolean = false;
 
   modalPagarOpen : boolean = false;
+
+  modalPaymentHistory : boolean = false;
 
   isModalNegociarOpen : boolean = false;
 
@@ -848,8 +850,13 @@ export class ModalViewOrdemComponent {
     document.getElementById('modal-bellow-overlay')?.classList.add('show');
 
   }
+  openModalPaymentHistory(){
+    this.modalPaymentHistory = true;
+    document.getElementById('modal-bellow-overlay')?.classList.add('show');
+  }
   closedModal() {
     this.isModalOpen = false;
+    this.modalPaymentHistory = false;
     this.modalPagarOpen = false;
     this.isModalNegociarOpen = false;
     document.getElementById('modal-bellow-overlay')?.classList.remove('show');

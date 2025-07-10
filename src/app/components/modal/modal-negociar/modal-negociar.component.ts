@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { OrdemServico } from 'src/app/service/models/ordemServico.model';
+import { OrdemServico } from 'src/app/models/ordemServico.model';
 import { ParcelamentoService } from 'src/app/service/parcelamento/parcelamento.service';
 import { SharedService } from 'src/app/service/shared/shared.service';
 
@@ -11,8 +11,8 @@ import { SharedService } from 'src/app/service/shared/shared.service';
 export class ModalNegociarComponent implements OnInit {
   @Input() ordemServico: OrdemServico | undefined;
 
-  @Output() successAlert = new EventEmitter<string>(); 
-  @Output() dangerAlert = new EventEmitter<string>(); 
+  @Output() successAlert = new EventEmitter<string>();
+  @Output() dangerAlert = new EventEmitter<string>();
 
   // Array de opções para o <select>
   selectOptions: { value: string, label: string }[] = [];
@@ -29,7 +29,7 @@ export class ModalNegociarComponent implements OnInit {
 
   showSuccessAlert: boolean = false;
   showDangerAlert: boolean = false;
-  
+
   isModalConfirmOpen : boolean = false
   message : string = ""
 
