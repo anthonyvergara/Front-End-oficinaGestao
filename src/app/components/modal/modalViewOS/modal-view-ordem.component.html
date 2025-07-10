@@ -307,12 +307,12 @@
 
         <!-- Alinha os botões no canto direito -->
         <div class="ml-auto d-flex flex-column align-items-end w-100">
-<!--          <div class="d-flex align-items-center mb-2" *ngIf="dataUltimoPagamento != null">-->
-<!--            <label class="text-sm mb-0" for="observacao">{{ ultimoPagamento() }}</label>-->
-<!--            <button class="btn btn-icon btn-outline-danger btn-sm ml-2" type="button" placement="top" ngbTooltip="Histórico de pagamentos">-->
-<!--              <span class="btn-inner&#45;&#45;icon"><i class="ni ni-single-copy-04"></i></span>-->
-<!--            </button>-->
-<!--          </div>-->
+          <div class="d-flex align-items-center mb-2" *ngIf="dataUltimoPagamento != null">
+            <label class="text-sm mb-0" for="observacao">{{ ultimoPagamento() }}</label>
+            <button (click)="openModalPaymentHistory()" class="btn btn-icon btn-outline-danger btn-sm ml-2" type="button" placement="top" ngbTooltip="Histórico de pagamentos">
+              <span class="btn-inner--icon"><i class="ni ni-single-copy-04"></i></span>
+            </button>
+          </div>
 
           <!-- Botões -->
           <div class="d-flex flex-wrap justify-content-between w-100">
@@ -384,3 +384,8 @@
               (dangerAlert)="dangerAlert($event)"
               (close)="closedModal()">
               </app-modal-negociar>
+
+              <app-modal-history-payment *ngIf="modalPaymentHistory"
+              [ordemServico_id]="id"
+              (close)="closedModal()">
+              </app-modal-history-payment>

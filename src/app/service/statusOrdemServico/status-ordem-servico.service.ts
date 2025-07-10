@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { StatusOrdemServico } from '../models/statusOrdemServico.model';
+import { StatusOrdemServico } from '../../models/statusOrdemServico.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

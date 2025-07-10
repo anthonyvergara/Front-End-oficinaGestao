@@ -12,6 +12,7 @@ export const environment = {
 
   // PAGAMENTO
   apiUrlPostPayOrdemServico: '/pagamento/ordemServico/',
+  apiUrlGetPaymentByIdOrdem: '/pagamento/ordemServico/',
 
   // DETALHE SERVICO
   urlPutDetalheServico: '/detalheServico/',
