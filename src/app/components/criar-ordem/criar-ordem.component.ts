@@ -1,12 +1,12 @@
 import { Component, OnInit, QueryList, ViewChildren, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
-import { OrdemServico } from 'src/app/service/models/ordemServico.model';
+import { OrdemServico } from 'src/app/models/ordemServico.model';
 import { NgForm } from '@angular/forms';
 import { ClientesService } from 'src/app/service/clientes/clientes.service';
 import { firstValueFrom } from 'rxjs';
 
-import {Cliente} from '../../service/models/cliente.model';
+import {Cliente} from '../../models/cliente.model';
 
 @Component({
   selector: 'app-criar-ordem',

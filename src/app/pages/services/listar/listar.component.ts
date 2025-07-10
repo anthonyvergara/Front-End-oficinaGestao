@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
-import { OrdemServico } from 'src/app/service/models/ordemServico.model';
+import { OrdemServico } from 'src/app/models/ordemServico.model';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
 import { ClientesService } from 'src/app/service/clientes/clientes.service';
 import { SharedService } from 'src/app/service/shared/shared.service';
