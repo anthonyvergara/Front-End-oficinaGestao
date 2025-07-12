@@ -44,33 +44,57 @@
           <div class="col-md-9 col-12">
             <div class="container mt-2 card shadow">
               <div class="progress">
-                <div class="progress-bar" [ngClass]="saldoDevedor() <= 0 ? 'bg-success' : orders.statusOrdemServico.tipoStatus == 'AGENDADO' ? 'bg-agendado' : 'bg-danger' " role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                <div class="progress-bar" [ngClass]="saldoDevedor() <= 0 ? 'bg-darkblue' : orders.statusOrdemServico.tipoStatus == 'AGENDADO' ? 'bg-darkblue' : 'bg-darkblue' " role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
               </div>
               <form>
-                <div class="form-row align-items-end mt-2">
+                <div class="form-row align-items-end mt-2 p-3 rounded shadow-sm bg-white">
+                  <!-- Invoice -->
                   <div class="col-12 col-md-2 mb-2 input-group">
                     <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="fas fa-file-alt"></i>
-                      </span>
+      <span class="input-group-text bg-light border-0">
+        <i class="fas fa-file-invoice text-darkblue"></i>
+      </span>
                     </div>
-                    <input disabled type="text" class="form-control text-center" placeholder="N.Invoice" [(ngModel)]="orders.invoiceNumber" name="invoice">
+                    <input disabled type="text" class="form-control text-center border-style" placeholder="N.Invoice" [(ngModel)]="orders.invoiceNumber" name="invoice">
                   </div>
-                  <div class="col-12 col-md-6 mb-2">
-                    <label>Nome do cliente</label>
+
+                  <!-- Nome do cliente com ícone -->
+                  <div class="col-12 col-md-6 mb-2 position-relative">
+                    <label class="font-weight-bold d-flex align-items-center">
+                      <i class="ni ni-circle-08 mr-2 text-darkblue"></i> Nome do cliente
+                    </label>
                     <input disabled type="text" class="form-control border-style" placeholder="Nome Cliente" [(ngModel)]="nome" name="nome">
                   </div>
-                  <div class="col-12 col-md-2 mb-2 percent-wrapper">
-                    <label>Vat Number</label>
-                    <input disabled
-                           type="text" class="form-control border-style"
-                           placeholder="VAT" [(ngModel)]="vat" name="vat"/>
-                    <span class="percent-icon">%</span>
+
+                  <!-- VAT com símbolo % no input -->
+                  <div class="col-12 col-md-2 mb-2 position-relative">
+                    <label class="font-weight-bold">VAT Number</label>
+                    <div class="input-group">
+                      <input disabled type="text" class="form-control border-style text-right pr-4" placeholder="VAT" [(ngModel)]="vat" name="vat">
+                      <div class="input-group-append">
+                        <span class="input-group-text bg-light border-0 font-weight-bold">%</span>
+                      </div>
+                    </div>
                   </div>
+
+                  <!-- Status como badge -->
                   <div class="col-12 col-md-2 mb-2">
-                    <input disabled type="text" class="form-control text-center" placeholder="Status" [(ngModel)]="orders.statusOrdemServico.tipoStatus" name="status" [ngClass]="saldoDevedor() <= 0 ? 'bg-border-pago bg-success' : orders.statusOrdemServico.tipoStatus == 'AGENDADO' ? 'bg-border-agendado bg-agendado' : 'bg-border-atrasado bg-danger' ">
+                    <label class="d-none d-md-block text-center w-100 font-weight-bold">Status</label>
+                    <label class="d-block d-md-none font-weight-bold">Status</label>
+                    <div class="form-control d-flex align-items-center justify-content-start justify-content-md-center p-0 border-0 bg-transparent" style="height: calc(2.25rem + 2px);">
+    <span class="badge text-white font-weight-bold px-3 py-2"
+          [ngClass]="{
+            'bg-success': saldoDevedor() <= 0,
+            'bg-agendado': orders.statusOrdemServico.tipoStatus == 'AGENDADO',
+            'bg-danger': orders.statusOrdemServico.tipoStatus == 'ATRASADO'
+          }">
+      {{ orders.statusOrdemServico.tipoStatus }}
+    </span>
+                    </div>
                   </div>
+
                 </div>
+
 
                 <div class="form-row align-items-end mt-3">
                   <div class="col">
