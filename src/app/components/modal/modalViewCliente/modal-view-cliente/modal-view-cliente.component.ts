@@ -57,11 +57,39 @@ export class ModalViewClienteComponent implements OnInit {
   modarViewOs = false;
   modalData: any;
 
+  listClientes: Cliente[];
+
   constructor(private ordemServico : OrdemservicoService, private clienteServices: ClientesService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.findOrdemServicoCliente(this.id);
+    this.getClientes(this.id);
   }
+
+  getClientes(cliente_id: any): void {
+    this.clienteServices.getClientes().subscribe((response) => {
+      this.listClientes = response;
+
+      const clienteEncontrado = this.listClientes.find((cliente: any) => cliente.id === cliente_id);
+
+      if (clienteEncontrado) {
+        console.log("CLIENTE ENCONTRADO")
+        this.nome = clienteEncontrado.nome;
+        this.email = clienteEncontrado.email;
+        this.dataNascimento = clienteEncontrado.dataNascimento;
+        this.telefone = clienteEncontrado.telefone[0].numero;
+        this.ddd = clienteEncontrado.telefone[0].ddd;
+        this.rua = clienteEncontrado.endereco[0].rua;
+        this.numero = clienteEncontrado.endereco[0].numero;
+        this.postcode = clienteEncontrado.endereco[0].postcode;
+        this.cidade = clienteEncontrado.endereco[0].cidade;
+        console.log(clienteEncontrado);
+      } else {
+        console.log("Cliente não encontrado.");
+      }
+    });
+  }
+
 
   //TIRAR MAIUSCULA E FORMATAR PARA SOMENTE INICIAIS MAIUSCULAS
   // ngOnChanges(changes: SimpleChanges): void {
