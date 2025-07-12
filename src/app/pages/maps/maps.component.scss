@@ -1,39 +1,50 @@
-.incluir-moto-btn {
-    position: fixed; /* Fixa o botão na tela */
-    right: 20px; /* Distância da borda direita */
-    bottom: 20px; /* Distância da borda inferior */
-    z-index: 1000; /* Garante que o botão fique acima de outros elementos */
-    border-radius: 50%; /* Botão redondo */
-    width: 60px; /* Largura do botão */
-    height: 60px; /* Altura do botão */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom right, #2a7de1, #56aaff);
+  padding: 40px;
+  color: #333;
 }
 
-.card-header {
-    transition: background-color 0.3s; /* Transição suave para a mudança de cor */
+.container {
+  display: flex;
+  gap: 40px;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
 }
 
-.header-default {
-    background-color: #f8f9fa; /* Cor padrão (claro) */
+.booking-section,
+.preview-section {
+  flex: 1;
 }
 
-.header-highlight {
-    background-color: #007bff; /* Cor de destaque (azul) */
-    color: white; /* Cor do texto para contraste */
+.booking-section input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-#totalSoma {
-    border: 1px solid #cad1d7;
-    border-radius: 0.375rem;
-    box-shadow: none;
-    
-}
-.border-style {
-    border: 1px solid #172b4d;
+.book-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.bt-imprimir {
-    text-align: right; /* Isso alinha o conteúdo à direita */
-  }
+.preview-box {
+  background: #f7f7f7;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.preview-box .green {
+  color: green;
+  font-weight: bold;
+}
