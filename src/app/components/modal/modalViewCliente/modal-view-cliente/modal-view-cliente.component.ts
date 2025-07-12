@@ -1,10 +1,10 @@
 import { Component, OnInit, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
-import { OrdemServico } from 'src/app/service/models/ordemServico.model';
-import { Parcela } from 'src/app/service/models/parcela.model';
-import { Pagamento } from 'src/app/service/models/pagamento.model';
-import {Cliente} from '../../../../service/models/cliente.model';
+import { OrdemServico } from 'src/app/models/ordemServico.model';
+import { Parcela } from 'src/app/models/parcela.model';
+import { Pagamento } from 'src/app/models/pagamento.model';
+import {Cliente} from '../../../../models/cliente.model';
 import {ClientesService} from '../../../../service/clientes/clientes.service';
 import {SharedService} from '../../../../service/shared/shared.service';
 
@@ -57,11 +57,39 @@ export class ModalViewClienteComponent implements OnInit {
   modarViewOs = false;
   modalData: any;
 
+  listClientes: Cliente[];
+
   constructor(private ordemServico : OrdemservicoService, private clienteServices: ClientesService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.findOrdemServicoCliente(this.id);
+    this.getClientes(this.id);
   }
+
+  getClientes(cliente_id: any): void {
+    this.clienteServices.getClientes().subscribe((response) => {
+      this.listClientes = response;
+
+      const clienteEncontrado = this.listClientes.find((cliente: any) => cliente.id === cliente_id);
+
+      if (clienteEncontrado) {
+        console.log("CLIENTE ENCONTRADO")
+        this.nome = clienteEncontrado.nome;
+        this.email = clienteEncontrado.email;
+        this.dataNascimento = clienteEncontrado.dataNascimento;
+        this.telefone = clienteEncontrado.telefone[0].numero;
+        this.ddd = clienteEncontrado.telefone[0].ddd;
+        this.rua = clienteEncontrado.endereco[0].rua;
+        this.numero = clienteEncontrado.endereco[0].numero;
+        this.postcode = clienteEncontrado.endereco[0].postcode;
+        this.cidade = clienteEncontrado.endereco[0].cidade;
+        console.log(clienteEncontrado);
+      } else {
+        console.log("Cliente não encontrado.");
+      }
+    });
+  }
+
 
   //TIRAR MAIUSCULA E FORMATAR PARA SOMENTE INICIAIS MAIUSCULAS
   // ngOnChanges(changes: SimpleChanges): void {

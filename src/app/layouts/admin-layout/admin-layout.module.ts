@@ -20,6 +20,7 @@ import { ModalClienteProfileComponent } from 'src/app/components/modal/modal-cli
 import { ModalPagarComponent } from 'src/app/components/modal/modal-pagar/modal-pagar.component';
 import { ModalNegociarComponent } from 'src/app/components/modal/modal-negociar/modal-negociar.component';
 import { ModalConfirmComponent } from 'src/app/components/modal/modal-confirm/modal-confirm.component';
+import { ModalHistoryPaymentComponent} from '../../components/modal/modal-history-payment/modal-history-payment.component';
 
 
 import { ImpressaoComponent } from 'src/app/components/impressao/impressao/impressao.component';
@@ -60,7 +61,8 @@ import { UppercaseDirective } from 'src/app/directives/uppercase.directive';
     ModalPagarComponent,
     ModalNegociarComponent,
     ImpressaoComponent,
-    ModalConfirmComponent
+    ModalConfirmComponent,
+    ModalHistoryPaymentComponent
   ],
   exports: [
     MapsComponent // Exportar para que possa ser usado em outros módulos

@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { ClientesService } from '../../../service/clientes/clientes.service';
-import { Cliente } from '../../../service/models/cliente.model';
+import { Cliente } from '../../../models/cliente.model';
 import { NgForm } from '@angular/forms';
 import { SharedService } from 'src/app/service/shared/shared.service';
 
@@ -30,6 +30,8 @@ export class ModalCriarClienteComponent implements OnInit, OnChanges{
   showDangerAlert: boolean = false;
 
   messageAlert: string = ''
+
+  dataClienteNascimento: string = '';
 
   constructor(private clientesService: ClientesService, private sharedService: SharedService) { }
 
@@ -91,6 +93,7 @@ export class ModalCriarClienteComponent implements OnInit, OnChanges{
   }
 
   getDefaultClient(){
+    this.dataClienteNascimento = '';
      return {
       id: 0,  // Este ID será gerado automaticamente pelo backend
       nome: '',
@@ -159,6 +162,7 @@ export class ModalCriarClienteComponent implements OnInit, OnChanges{
         this.showSuccessAlert = true;
         this.sharedService.notifyClientCreated();
         this.autoCloseAlert();
+        this.newCliente = this.getDefaultClient();
       },
       (error) => {
         this.messageAlert = " Não foi possivel cadastrar o cliente!"
@@ -167,23 +171,39 @@ export class ModalCriarClienteComponent implements OnInit, OnChanges{
         this.autoCloseAlert();
       }
     );
-    this.newCliente = this.getDefaultClient();
   }
 
   formatarData() {
     // Remove todos os caracteres não numéricos
-    let data = this.newCliente.dataNascimento.replace(/\D/g, '');
+    let data = this.dataClienteNascimento.replace(/\D/g, '');
 
-    // Formata a data para o formato dd/MM/yyyy
+    // Formata para dd/MM/yy
     if (data.length > 2) {
       data = data.substring(0, 2) + '/' + data.substring(2);
     }
     if (data.length > 5) {
-      data = data.substring(0, 5) + '/' + data.substring(5, 9);
+      data = data.substring(0, 5) + '/' + data.substring(5, 7);
     }
 
-    // Atualiza o valor no modelo (ngModel)
-    this.newCliente.dataNascimento = data;
+    // Atualiza o valor no input (formato dd/MM/yy)
+    this.dataClienteNascimento = data;
+
+    // Se a data estiver completa (8 caracteres, incluindo as barras)
+    if (data.length === 8) {
+      const dia = data.substring(0, 2);
+      const mes = data.substring(3, 5);
+      const anoCurto = data.substring(6, 8);
+
+      // Converte ano curto para ano completo (yyyy)
+      // Aqui, você pode definir a regra para o século.
+      // Exemplo: se ano < 50, considera 2000+ano, senão 1900+ano
+      let anoCompleto = parseInt(anoCurto, 10);
+      anoCompleto += (anoCompleto < 30) ? 2000 : 1900;
+      const datamontada = `${dia}/${mes}/${anoCompleto}`
+      console.log("DATA MONTADA:"+ datamontada );
+      // Monta a data com ano completo
+      this.newCliente.dataNascimento = `${dia}/${mes}/${anoCompleto}`;
+    }
   }
 
   // Função para fechar o alerta automaticamente após 5 segundos

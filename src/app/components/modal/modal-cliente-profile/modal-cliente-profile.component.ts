@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ClientesService } from 'src/app/service/clientes/clientes.service';
-import { Cliente } from 'src/app/service/models/cliente.model';
+import { Cliente } from 'src/app/models/cliente.model';
 
 @Component({
   selector: 'app-modal-cliente-profile',

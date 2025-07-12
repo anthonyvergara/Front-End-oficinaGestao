@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ImpressaoService } from 'src/app/service/impressao/impressao.service';
-import { OrdemServico } from 'src/app/service/models/ordemServico.model';
+import { OrdemServico } from 'src/app/models/ordemServico.model';
 
 @Component({
   selector: 'app-impressao',
@@ -11,7 +11,7 @@ export class ImpressaoComponent implements OnInit {
   @Input() dados: any;
 
   ordemServico : OrdemServico
-  
+
   constructor(private impressaoService : ImpressaoService) { }
 
   ngOnInit(): void {
@@ -21,7 +21,7 @@ export class ImpressaoComponent implements OnInit {
 
   imprimir() {
     const printWindow = window.open('', '_blank');
-    
+
     if (printWindow) {
       // Você pode renderizar um template HTML com as informações
       printWindow.document.write(`

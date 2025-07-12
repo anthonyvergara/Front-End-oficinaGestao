@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { ClientesService } from '../../service/clientes/clientes.service';
-import { Cliente } from '../../service/models/cliente.model';  // Importando a interface Cliente
+import { Cliente } from '../../models/cliente.model';  // Importando a interface Cliente
 import { OrdemservicoService } from 'src/app/service/ordemServico/ordemservico.service';
-import { OrdemServico } from 'src/app/service/models/ordemServico.model';
+import { OrdemServico } from 'src/app/models/ordemServico.model';
 import { SharedService } from 'src/app/service/shared/shared.service';
 
 @Component({
@@ -82,7 +82,7 @@ export class IconsComponent implements OnInit {
         }
       }
     })
-    
+
     document.getElementById('modal-overlay')?.classList.add('show');
   }
 
@@ -122,19 +122,19 @@ export class IconsComponent implements OnInit {
     if (page < 1 || page > this.totalPages()) return;
     this.currentPage = page;
   }
-  
+
   nextPage() {
     if (this.currentPage < this.totalPages()) {
       this.currentPage++;
     }
   }
-  
+
   previousPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
     }
   }
-  
+
   totalPages(): number {
     return Math.ceil(this.filteredOrders.length / this.itemsPerPage);
   }
@@ -143,7 +143,7 @@ export class IconsComponent implements OnInit {
   getPaginationPages(): number[] {
     const totalPages = this.totalPages();
     const pages = [];
-  
+
     if (totalPages <= 4) {
       // Se houver 4 ou menos páginas, exibe todas
       for (let i = 1; i <= totalPages; i++) {
@@ -155,12 +155,12 @@ export class IconsComponent implements OnInit {
       pages.push(-1); // Indica os "..."
       pages.push(totalPages); // sempre mostra a última página
     }
-  
+
     return pages;
   }
-    
-  
-  
+
+
+
   // Método para calcular o saldo devedor de um cliente específico
   calculateSaldoDevedorPorCliente(clienteId: string, ordens: OrdemServico[]): void {
     let totalSaldoDevedor = 0;
@@ -172,7 +172,7 @@ export class IconsComponent implements OnInit {
 
     this.saldosDevedores[clienteId] = totalSaldoDevedor;
   }
-  
+
 
   loadClientes(): void {
     this.clientesService.getClientes().subscribe(
@@ -211,12 +211,12 @@ export class IconsComponent implements OnInit {
     const direction = this.sortDirection[column] === 'asc' ? 'desc' : 'asc';
     this.sortDirection[column] = direction;
     this.sortColumn = column;
-  
+
     // Ordenação personalizada
     this.clientes = this.clientes.sort((a, b) => {
       let aValue = a[column];
       let bValue = b[column];
-  
+
       // Se a propriedade for 'saldoDevedor', usamos o valor da propriedade em 'saldosDevedores'
       if (column === 'valorTotal') {
         aValue = this.saldosDevedores[a.id.toString()] || 0;  // Acessa o saldo devedor do cliente
@@ -227,18 +227,18 @@ export class IconsComponent implements OnInit {
         aValue = aValue[0].numero;  // Acessa o primeiro telefone
         bValue = bValue[0].numero;
       }
-  
+
       // Comparação de strings e números
       if (typeof aValue === 'string' && typeof bValue === 'string') {
         // Se for string, compara lexicograficamente
-        return direction === 'asc' 
-          ? aValue.toLowerCase().localeCompare(bValue.toLowerCase()) 
+        return direction === 'asc'
+          ? aValue.toLowerCase().localeCompare(bValue.toLowerCase())
           : bValue.toLowerCase().localeCompare(aValue.toLowerCase());
       } else if (typeof aValue === 'number' && typeof bValue === 'number') {
         // Se for número, compara numericamente
         return direction === 'asc' ? aValue - bValue : bValue - aValue;
       }
-  
+
       // Caso o valor seja de outro tipo ou a comparação não tenha sido feita, mantemos 0 (sem mudança de posição)
       return 0;
     });
