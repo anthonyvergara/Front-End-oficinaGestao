@@ -1,232 +1,110 @@
-<div class="header bg-gradient-darkblue pb-8 pt-5 pt-md-8">
-  <div class="container-fluid">
-    <div class="header-body">
-      <!-- Card stats -->
-      
-    </div>
-  </div>
-</div>
 <!-- Page content -->
-<div class="container-fluid mt--9">
+<div class="container-fluid">
   <div class="row">
     <div class="col">
-      <div class="container mt-4 card shadow">
-        <h2>ORDEM DE SERVIÇO</h2>
-        <form>
-            <div class="form-row align-items-end">
-                <div class="col col-2 input-group">
-                  <div _ngcontent-c8="" class="input-group-prepend">
-                    <span _ngcontent-c8="" class="input-group-text">
-                      <i class="fas fa-file-alt"></i>
-                    </span>
-                  </div>
-                    
-                    <input type="text" class="form-control" placeholder="N.Invoice" [(ngModel)]="nInvoice">
-                </div>
-                <div class="col col-6">
-                    <input type="text" class="form-control border-style" placeholder="Nome Cliente" [(ngModel)]="nomeCliente">
-                </div>
-                <div class="col col-2">
-                    <input type="text" class="form-control border-style" placeholder="VAT" [(ngModel)]="vat">
-                </div>
-                <!--
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="Status" [(ngModel)]="status">
-                </div>
-                -->
-            </div>
-    
-            <div class="form-row align-items-end mt-3">
-                <div class="col">
-                    <button class="btn btn-primary btn-round bg-default" type="button" (click)="incluirMoto()">
-                        <i class="fas fa-motorcycle"></i> +
-                    </button>
-                </div>
-            </div>
-    
-            <div id="collapseMenu" class="mt-3">
-                <div *ngFor="let moto of motos; let i = index" @fadeBox>
-                    <div class="card mt-2" [attr.id]="'moto' + moto.id">
-                        <div class="card-header d-flex justify-content-between align-items-center bg-default" style="height: 60px;">
-                          <button class="btn btn-secondary" type="button" (click)="moto.isCollapsed = !moto.isCollapsed">
-                            <i class="fas" [ngClass]="moto.isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
-                          </button>
-                          <span *ngIf="moto.isCollapsed" class="ml-2 row justify-content-md-left">
-                            <h3 style="color: white;">TOTAL: {{ calcularSoma(moto) | currency:'GBP':'symbol':'1.2-2' }}</h3> <!-- Formato monetário -->
-                          </span>
-                          <!-- [ngClass]="i % 2 === 0 ? 'bg-default' : 'bg-info'" -->
-                             <!-- <span>Nova Moto {{ moto.id }</span>}-->
-                            
+      <div class="container mt--9 card shadow">
+        <div class="container">
+          <div class="booking-section">
+            <h2>MOT Booking</h2>
 
-                            <button class="btn btn-danger" type="button" (click)="removerMoto(i)">
-                              <i class="fas fa-trash"></i>
-                            </button>
-                            
-                        </div>
-                        <div class="card-body" [ngClass]="{'collapse': moto.isCollapsed}">
-                            <div class="form-row align-items-end">
-                                <div class="mt-2 col-1">
-                                    <button class="btn btn-success btn-round" type="button" (click)="incluirRegistro(i)">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                                <div class="col col-2">
-                                    <input type="text" class="form-control" [(ngModel)]="moto.placa" placeholder="Placa" [name]="'placa' + i">
-                                </div>
-                                <!--
-                                <div class="col col-1">
-                                    <input type="number" class="form-control" [(ngModel)]="moto.qtd" placeholder="QTD" [name]="'qtd' + i">
-                                </div>-->   
-                                <div class="col col-3">
-                                    <input type="text" class="form-control" [(ngModel)]="moto.descricao" placeholder="Nome Motorista" [name]="'descricao' + i">
-                                </div>
-                                <!--
-                                <div class="col col-2">
-                                    <input type="text" class="form-control" [(ngModel)]="moto.preco" placeholder="Preço" [name]="'preco' + i">
-                                </div>-->
-                                <div class="col col-3">
-                                    <input type="text" class="form-control" [(ngModel)]="moto.milhagem" placeholder="Observação" (keypress)="checkRegistroEnter($event, i, null)" [name]="'milhagem' + i">
-                                </div>
-                                <div class="col col-2 input-group">
-                                    <div _ngcontent-c8="" class="input-group-prepend">
-                                        <span _ngcontent-c8="" class="input-group-text">
-                                          <i class="ni ni-calendar-grid-58"></i>
-                                        </span>
-                                    </div>
-                                    <input type="text" class="form-control text-center" [name]="'data' + i" [value]="dataAtualBR" readonly style="background-color: #172b4d; color: #f4f5f7; font-style: bold;">
-                                </div>
-                            </div>
-                            
-                            <div class="mt-2" *ngIf="!moto.isCollapsed">
-                                <div *ngFor="let registro of moto.registros; let j = index" class="form-row align-items-end mt-2" @fadeBox>
-                                    <div class="col col-1">
-                                        <input type="number" class="form-control" [(ngModel)]="registro.qtd" placeholder="QTD" [name]="'qtd' + i + '-' + j">
-                                    </div>
-                                    <div class="col col-6">
-                                        <input type="text" #descricaoInput class="form-control" [(ngModel)]="registro.descricao" placeholder="Descrição" [name]="'descricao' + i + '-' + j">
-                                    </div>
-                                    <div class="col col-2">
-                                        <input type="text" appCurrencyFormat class="form-control" [(ngModel)]="registro.preco" (ngModelChange)="onPrecoChange()" placeholder="Preço" (keypress)="checkRegistroEnter($event, i, j)" [name]="'preco' + i + '-' + j">
-                                    </div>
-                                    <div class="col col-2">
-                                        <input type="text" class="form-control" [(ngModel)]="registro.milhagem" placeholder="Milhagem" (keypress)="checkRegistroEnter($event, i, j)" [name]="'milhagem' + i + '-' + j">
-                                    </div>
-                                    <!--
-                                    <div class="col col-2">
-                                        <input type="date" class="form-control" [(ngModel)]="registro.data" placeholder="Data" [name]="'data' + i + '-' + j">
-                                    </div>-->
-                                    <div class="col">
-                                        <button class="btn btn-danger btn-round" type="button" (click)="removerRegistro(i, j)">
-                                          <i class="fas fa-trash"></i> 
-                                          </button>
-                                    </div>
-                                </div>
-                                <span *ngIf="!moto.isCollapsed" class="ml-4">
-                                    <h3 id="">TOTAL: {{ calcularSoma(moto) | currency:'GBP':'symbol':'1.2-2' }}</h3> <!-- Formato monetário -->
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="d-flex justify-content-between">
+              <div class="mr-2" style="flex: 1;">
+                <label>Data</label>
+                <input type="date" value="2023-12-27">
+              </div>
+              <div class="mr-2" style="flex: 1;">
+                <label>Inicio</label>
+                <input type="time" value="14:30" class="">
+              </div>
+              <div class="mr-2" style="flex: 1;">
+                <label>Fim</label>
+                <input type="time" value="18:30" class="">
+              </div>
             </div>
-    
-            <div class="form-group mt-4">
-                <label for="observacao">Observação:</label>
-                <textarea class="form-control border-style" id="observacao" rows="3" [(ngModel)]="observacao"></textarea>
-            </div>
-    
-            <div class="form-row align-items-end">
-                <div class="col col-3">
-                    <label for="observacao">Forma de Pagamento</label>
-                    <select class="form-control border-style" id="pagamentoSelect" (change)="onPagamentoChange($event.target.value)">
-                        <option value="Pagamento à Vista">Pagamento à Vista</option>
-                        <option value="Pagamento Parcelado">Pagamento Parcelado</option>
-                    </select>
-                </div>
-                <div class="parcelas-container col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
-                    <label for="observacao">Quantidade de Parcelas</label>
-                    <input type="number" class="form-control border-style" placeholder="Quantidade de Parcelas" [(ngModel)]="quantidadeParcelas">
-                </div>
-                <div class="col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
-                    <label for="observacao">Perido entre Pagamentos</label>
-                    <select class="form-control border-style" id="pagamentoPeriodoSelect">
-                        <option value="Pagamento à Vista">Pagamento Semanal</option>
-                        <option value="Pagamento Parcelado">Pagamento Mensal</option>
-                    </select>
-                </div>
-                <div class="col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
-                    <label for="observacao">Valor de Entrada</label>
-                    <input type="number" class="form-control border-style" placeholder="Valor Entrada" [(ngModel)]="valorEntrada" (input)="onValorEntradaChange()">
-                </div>
-            </div>
-    
-            <div class="form-row align-items-end mt-3 d-flex justify-content-start">
-                <div class="col-auto">
-                    <div style="width: 14rem;">
-                        <div class="card card-stats bg-success mb-4 mb-lg-0">
-                        <div class="card-body">
-                            <div class="row">
-                            <div class="col">
-                                <h5 class="card-title text-uppercase mb-0" style="color: white; font-style: bold;">VALOR TOTAL</h5>
-                                <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ valorTotalGeral | currency:'GBP':'symbol':'1.2-2' }}</span>
-                            </div>
-                            <div class="col-auto">
-                                <div class="icon icon-shape bg-secondary rounded-circle shadow">
-                                <i class="fa fa-calculator "></i>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <div *ngIf="valorEntrada > 0 && valorTotalGeral > 0" @fadeIn class="col-auto">
-                        <div style="width: 14rem;">
-                            <div class="card card-stats bg-info mb-4 mb-lg-0" placement="bottom" ngbTooltip="(Valor Total) - (Valor Entrada)">
-                            <div class="card-body">
-                                <div class="row">
-                                <div class="col">
-                                    <h5 class="card-title text-uppercase mb-0" style="color: white; font-style: bold;">VALOR FINAL</h5>
-                                    <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">{{ atualizarValorFinal() | currency:'GBP':true }}</span>
-                                </div>
-                                <div class="col-auto">
-                                    <div class="icon icon-shape bg-secondary rounded-circle shadow">
-                                    £
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--
-                <div class="col-auto">
-                    <input type="text" class="form-control" placeholder="Último Pagamento" [(ngModel)]="ultimoPagamento">
-                </div>
-                -->
-            </div>
-            <div class="form-row mt-4 mb-3">
-                <div class="col">
-                    <button class="btn btn-default" type="button"><i class="ni ni-check-bold"></i>&nbsp;&nbsp;SALVAR</button>
-                </div>
-                <div class="col bt-imprimir">
-                    <button class="btn btn-danger" type="button"><i class="ni ni-folder-17" aria-hidden="true"></i>&nbsp;&nbsp;IMPRIMIR</button>
-                </div>
-            </div>
-        </form>
 
+            <div class="d-flex justify-content-between">
+              <div class=" mr-2" style="flex: 1;">
+                <label>Nome</label>
+                <input type="text" value="Anthony">
+              </div>
+              <div class=" mr-2" style="flex: 1;">
+                <label>Sobrenome</label>
+                <input type="text" value="Vergara">
+              </div>
+            </div>
 
-        
+            <div class="d-flex justify-content-between">
+              <div class=" mr-2" style="flex: 1;">
+                <label>Telefone</label>
+                <input type="text" value="07858312007">
+              </div>
+              <div class=" mr-2" style="flex: 1;">
+                <label>Email</label>
+                <input type="email" value="trevor@example.com">
+              </div>
+            </div>
 
-    </div>
-    <!-- Botão flutuante para incluir moto -->
-    <button class="btn btn-primary float-right incluir-moto-btn" (click)="incluirMoto()">
-      <i class="fas fa-motorcycle"></i>
-    </button>
-      
-      
+            <div class="d-flex justify-content-between">
+              <div class=" mr-2" style="flex: 1;">
+                <label>Placa</label>
+                <input type="text" value="LRR21USP" class="">
+              </div>
+              <div class=" mr-2" style="flex: 1;">
+                <label>Marca</label>
+                <input type="text" value="Honda" class="">
+              </div>
+              <div class="" style="flex: 1;">
+                <label>Modelo</label>
+                <input type="text" value="S100" class="">
+              </div>
+            </div>
+
+            <label>Bank Account</label>
+            <select name="serviceType" class="form-control">
+              <option value="" disabled selected>Selecione um banco</option>
+              <option value="MOT">BARCLAYS</option>
+              <option value="Revisão">REVOLUT</option>
+              <option value="Troca de óleo">WISE</option>
+            </select>
+
+            <label>Valor</label>
+            <input type="text" value="£350.00">
+
+            <button class="book-btn">BOOK</button>
+          </div>
+
+          <div class="preview-section">
+            <h2>Preview PDF</h2>
+            <div class="preview-box">
+              <h1 class="text-center">MOT BOOKING</h1>
+              <p class="text-center"><strong>Dear Customer, Anthony Vergara - 07858312007.</strong></p>
+              <p>Thank you for contact <strong>MOTO HACKNEY MOT STATION</strong>, address 38 Crawley Road - Wood Green, London, N22 6AG.</p>
+              <p>Please note the date and time for your vehicle <strong>MOT TEST!</strong></p>
+              <p>
+                <strong>Make:</strong> BMW
+                <br><strong>Model:</strong> S100
+                <br><strong>Registration Number:</strong> NRR21 USP
+              </p>
+
+              <p>
+                <strong>MOT TEST</strong>
+                <br><strong>Date:</strong> 23/07/2025
+                <br><strong>Time:</strong> 9:40pm TO 11:40pm
+              </p>
+              <p>Your booking reference is <strong>MTHBMWRIZMU5421062025</strong></p>
+              <p>You must contact <strong>MOTO HACKNEY MOT STATION ON 02088884733</strong> two hours before the teste
+                for cancellations, otherwise fee of <strong>20%</strong> will be applied.</p>
+              <p><strong>Any delay will be your own responsibility!</strong>
+                  <br><strong>All pre booking must to pay in advance!</strong></p>
+              <p><strong>Barclays</strong><br><strong>Account number: 07858213  Sort-code: 23-14-70</strong></p>
+              <p>Amount<br><span class="green">£350.00</span></p>
+              <p>Thank you for business with us!</p>
+              <p><strong>Moto Hackney Limited.</strong></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>
