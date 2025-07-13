@@ -50,8 +50,8 @@ export class SidebarComponent implements OnInit {
   ];
 
   public submenuMot: any[] = [
-    { path: '/mot/booking', title: 'Booking', icon: 'ni-collection text-blue' },
-    { path: '/mot/list', title: 'Listar', icon: 'ni-fat-add text-blue' }
+    /*{ path: '/mot/booking', title: 'Booking', icon: 'ni-collection text-blue' },
+    { path: '/mot/list', title: 'Listar', icon: 'ni-fat-add text-blue' }*/
   ];
 
   constructor(private router: Router) { }
