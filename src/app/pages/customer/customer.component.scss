@@ -1,0 +1,70 @@
+/* Estilo do componente listar */
+.badge-agendado{
+    background-color: #ffc107;
+}
+
+/* Estilo para o fundo desfocado */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+  backdrop-filter: blur(5px); /* Aplica o desfoque */
+  z-index: 1040; /* Garante que o overlay fique atrás do modal */
+  display: none; /* Inicialmente escondido */
+}
+
+/* Quando o modal estiver aberto, a classe "show" será adicionada ao overlay */
+.modal-overlay.show {
+  display: block;
+}
+
+.thead-gradient {
+  background: linear-gradient(87deg, #0284c7 0, #0232c7 100%);
+}
+
+.table th, .table td {
+  vertical-align: middle !important;
+  padding: 1rem;
+  font-size: 15px;
+}
+
+.badge-lg {
+  padding: 0.6em 1em;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+.table-blue {
+  background-color: #ffffff;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(227, 228, 228, 0.39);
+  cursor: pointer;
+}
+
+.transition {
+  transition: all 0.3s ease-in-out;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.badge-dot i {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.table-row-light {
+  background-color: #e4e4e4 !important; /* quase branco com leve tom azulado */
+}
+.table-row-light:hover {
+  background-color: #f0f0f0 !important;
+}

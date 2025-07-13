@@ -127,11 +127,11 @@ export class ListarComponent implements OnInit {
     // Adicione a lógica que você deseja executar ao clicar no botão
   }
 
-  recordsToShow = 5;  // Número de registros a serem exibidos
+  recordsToShow = 7;  // Número de registros a serem exibidos
   searchQuery = '';   // Para buscar pelo nome do cliente
 
   currentPage = 1;  // Página atual
-  itemsPerPage = 5; // Número de itens por página (no seu caso, 1 cliente por página)
+  itemsPerPage = 7; // Número de itens por página (no seu caso, 1 cliente por página)
   itemsPerPageTodos = 10
 
   currentPageAgendados = 1

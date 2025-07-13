@@ -14,62 +14,74 @@
               <h1 class="mb-0 ml--4">CRIAR ORDEM DE SERVIÇO</h1>
           </div>
         <form #form="ngForm" (ngSubmit)="onSubmit(form)">
-            <div class="form-row align-items-end">
-                <div class="col-12 col-md-2 mb-2 input-group">
-                  <div _ngcontent-c8="" class="input-group-prepend">
-                    <span _ngcontent-c8="" class="input-group-text">
-                      <i class="fas fa-file-alt"></i>
-                    </span>
-                  </div>
+          <div class="form-row align-items-end card-shadow p-3 rounded-lg bg-white">
 
-                    <input disabled type="text" class="form-control text-center" placeholder="N.Invoice" [(ngModel)]="nInvoice" name="nInvoice">
-                </div>
-                <!-- seu-componente.component.html -->
-                <div class="col-12 col-md-6 mb-2 input-group" >
-                  <input
-                    type="text"
-                    appUppercase
-                    class="form-control border-style input-nome-cliente"
-                    [ngClass]="nomeCliente.length > 0 && findSugestao == true ? 'is-valid' : 'is-invalid'"
-                    placeholder="Nome do Cliente"
-                    [(ngModel)]="nomeCliente"
-                    name="nomeCliente"
-                    (ngModelChange)="onNomeClienteChange()" />
-                  <div _ngcontent-c8="" *ngIf="nomeCliente.length > 1 && sugestoes.length == 0 && findSugestao == false" class="input-group-prepend">
-                      <span _ngcontent-c8="" style="cursor: pointer;"
-                            class="input-group-text pulse-effect"
-                            (click)="createClient()">
-                        <i class="ni ni-single-02"></i>
-                      </span>
-                  </div>
-                </div>
-
-                <!-- Exibição das sugestões -->
-
-
-                <div class="col-12 col-md-2 mb-2 percent-wrapper">
-                    <input maxlength="2" type="text" class="form-control border-style"
-                           placeholder="VAT"
-                           [(ngModel)]="vat" name="vat"
-                           (ngModelChange)="onVatChange()"/>
-                    <span class="percent-icon">%</span>
-                </div>
-                <!--
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="Status" [(ngModel)]="status">
-                </div>
-                -->
-            </div>
-            <div *ngIf="sugestoes.length > 0" class="sugestoes">
-              <ul class="list-group">
-                <li *ngFor="let sugestao of sugestoes" class="list-group-item"
-                    (click)="selecionarSugestao(sugestao)">
-                  {{ sugestao.nome }}
-                </li>
-              </ul>
+            <!-- N. Invoice -->
+            <div class="col-12 col-md-2 mb-3 input-group">
+              <div class="input-group-prepend">
+      <span class="input-group-text bg-light border-right-0">
+        <i class="fas fa-file-alt text-darkblue"></i>
+      </span>
+              </div>
+              <input disabled type="text"
+                     class="form-control text-center border-left-0 border-style"
+                     placeholder="N.Invoice"
+                     [(ngModel)]="nInvoice" name="nInvoice">
             </div>
 
-            <div class="form-row align-items-end mt-3">
+            <!-- Nome Cliente com sugestão -->
+            <div class="col-12 col-md-6 mb-3 position-relative">
+              <label class="font-weight-bold d-flex align-items-center">
+                <i class="ni ni-circle-08 mr-2 text-darkblue"></i> Nome do cliente
+              </label>
+              <input type="text"
+                     appUppercase
+                     class="form-control border-style input-nome-cliente"
+                     [ngClass]="nomeCliente.length > 0 && findSugestao == true ? 'is-valid' : 'is-invalid'"
+                     placeholder="Nome do Cliente"
+                     [(ngModel)]="nomeCliente"
+                     name="nomeCliente"
+                     (ngModelChange)="onNomeClienteChange()" />
+
+              <!-- Ícone de adicionar cliente -->
+                    <div *ngIf="nomeCliente.length > 1 && sugestoes.length == 0 && findSugestao == false"
+                   class="input-group-append">
+                        <span class="input-group-text bg-danger text-white pulse-effect"
+                              style="cursor: pointer;"
+                              (click)="createClient()">
+                          <i class="ni ni-single-02"></i>
+                        </span>
+                    </div>
+            </div>
+
+            <!-- VAT % -->
+            <div class="col-12 col-md-2 mb-3 percent-wrapper position-relative">
+              <label class="font-weight-bold">VAT Number</label>
+              <input maxlength="2"
+                     type="text"
+                     class="form-control border-style pr-4"
+                     placeholder="VAT"
+                     [(ngModel)]="vat"
+                     name="vat"
+                     (ngModelChange)="onVatChange()" />
+              <span class="percent-icon">%</span>
+            </div>
+
+          </div>
+
+          <!-- Sugestões de nome -->
+          <div *ngIf="sugestoes.length > 0" class="sugestoes mt-1">
+            <ul class="list-group">
+              <li *ngFor="let sugestao of sugestoes"
+                  class="list-group-item list-group-item-action"
+                  (click)="selecionarSugestao(sugestao)">
+                {{ sugestao.nome }}
+              </li>
+            </ul>
+          </div>
+
+
+          <div class="form-row align-items-end mt-3">
                 <div class="col">
                     <button class="btn btn-primary btn-round bg-darkblue" type="button" (click)="incluirMoto()">
                         <i class="fas fa-motorcycle"></i> Adicionar Moto
@@ -80,7 +92,7 @@
             <div id="collapseMenu" class="mt-3">
                 <div *ngFor="let moto of motos; let i = index" @fadeBox>
                     <div class="card mt-2" [attr.id]="'moto' + moto.id" style="background-color: #f4f5f7;">
-                        <div class="card-header d-flex justify-content-between align-items-center bg-gradient-darkblue" style="height: 60px;">
+                        <div class="card-header d-flex justify-content-between align-items-center" style="height: 60px; background-color: #2a7de1;">
                           <button class="btn btn-secondary" type="button" (click)="moto.isCollapsed = !moto.isCollapsed">
                             <i class="fas" [ngClass]="moto.isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
                           </button>

@@ -1,0 +1,159 @@
+<!-- Page content -->
+<div class="container-fluid mt--9">
+<!-- Table -->
+<div class="row">
+  <div class="col">
+    <div class="card shadow">
+      <div class="card-header border-0">
+        <h1 class="mb-0">CLIENTES</h1>
+      </div>
+
+      <!-- Linha para os botões de controle e o campo de pesquisa -->
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <!-- Botões de controle de registros -->
+          <div class="btn-group" role="group" aria-label="Controlar registros">
+            <button type="button" class="btn btn-darkblue" (click)="openModal()">CADASTRAR CLIENTE</button>
+          </div>
+
+          <!-- Campo de filtro de pesquisa (alinhado à direita) -->
+          <div class="input-group w-auto ml-auto" style="width: 400px !important;">
+            <input type="text" class="form-control" placeholder="Buscar por cliente..." [(ngModel)]="searchQuery" />
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i class="fas fa-search"></i> <!-- Ícone da lupa -->
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela de registros -->
+      <div class="table-responsive">
+        <table class="table align-items-center table-hover border shadow-sm rounded">
+          <thead class="btn-darkblue">
+          <tr>
+            <th><i class="fas fa-hashtag"></i></th>
+            <th><i class="fas fa-user mr-2"></i> Nome do Cliente <i class="fas fa-sort ml-1" (click)="sortTable('nome')"></i></th>
+            <th><i class="fas fa-wallet mr-2"></i> Saldo Devedor <i class="fas fa-sort ml-1" (click)="sortTable('valorTotal')"></i></th>
+            <th><i class="fas fa-envelope mr-2"></i> E-mail <i class="fas fa-sort ml-1" (click)="sortTable('email')"></i></th>
+            <th><i class="fas fa-phone-alt mr-2"></i> Telefone <i class="fas fa-sort ml-1" (click)="sortTable('telefone')"></i></th>
+            <th class="text-right"><i class="fas fa-cogs"></i></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr @fadeIn *ngFor="let order of getPagedClients(); let i = index"
+              (click)="openModalViewCliente(order.id, order.nome, order.email, order.telefone[0]?.numero)"
+              [ngClass]="i % 2 === 0 ? 'table-row-light' : 'table-blue'"
+              class="transition hover-shadow">
+
+            <!-- Índice + status -->
+            <th scope="row">
+          <span class="badge badge-lg"
+                [ngClass]="{
+                  'badge-danger': order.status == 'ATRASADO',
+                  'badge-success': order.status == 'PAGO',
+                  'badge-warning': order.status == 'AGENDADO'
+                }">
+            {{ i + 1 }}
+          </span>
+            </th>
+
+            <!-- Nome -->
+            <td class="font-weight-bold text-dark">
+              <i class="ni ni-circle-08 mr-2 text-primary"></i>
+              {{ order.nome | uppercase }} {{ order.sobrenome | uppercase }}
+            </td>
+
+            <!-- Saldo Devedor -->
+            <td>
+          <span class="badge badge-dot">
+            <i [ngClass]="getSaldoDevedor(order.id.toString()) > 0 ? 'bg-danger' : 'bg-success'"></i>
+            {{ getSaldoDevedor(order.id.toString()) | currency:'GBP':'symbol':'1.2-2' }}
+          </span>
+            </td>
+
+            <!-- E-mail -->
+            <td>
+              <i class="fas fa-envelope-open-text mr-2 text-darkblue"></i> {{ order.email }}
+            </td>
+
+            <!-- Telefone -->
+            <td>
+              <i class="fas fa-phone mr-2 text-success"></i>
+              {{ order.telefone[0]?.ddd }}{{ order.telefone[0]?.numero }}
+            </td>
+
+            <!-- Ações -->
+            <td class="text-right" (click)="handleButtonClick($event)">
+              <div ngbDropdown placement="bottom-right" class="position-static">
+                <a class="btn btn-sm btn-icon-only text-dark" ngbDropdownToggle>
+                  <i class="ni ni-settings-gear-65"></i>
+                </a>
+                <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow">
+                  <a class="dropdown-item" href="javascript:void(0)">Enviar cobrança</a>
+                  <a class="dropdown-item" href="javascript:void(0)">Visualizar cliente</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+
+      <div class="card-footer py-4">
+        <nav aria-label="...">
+          <ul class="pagination justify-content-end mb-0">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" href="javascript:void(0)" (click)="previousPage()">
+                <i class="fas fa-angle-left"></i>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+
+            <li class="page-item" *ngFor="let page of getPaginationPages()"
+            [class.active]="page === currentPage"
+            [class.disabled]="page === -1">
+              <a class="page-link" href="javascript:void(0)" (click)="page !== -1 ? goToPage(page) : null">
+                <span *ngIf="page !== -1">{{ page }}</span>
+                <span *ngIf="page === -1">...</span>
+              </a>
+            </li>
+
+            <li class="page-item" [class.disabled]="currentPage === totalPages()">
+              <a class="page-link" href="javascript:void(0)" (click)="nextPage()">
+                <i class="fas fa-angle-right"></i>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+<div id="modal-overlay" class="modal-overlay"></div>
+<modal-criar-cliente
+  *ngIf="isModalOpen"
+  (close)="closeModal()">
+</modal-criar-cliente>
+
+<modal-view-cliente
+  *ngIf="isModalViewClienteOpen"
+  [id]="modalData.id"
+  [nome]="modalData.nome"
+  [email]="modalData.email"
+  [dataNascimento]="modalData.dataNascimento"
+  [telefone]="modalData.telefone"
+  [ddd]="modalData.ddd"
+  [rua]="modalData.rua"
+  [numero]="modalData.numero"
+  [cidade]="modalData.cidade"
+  [postcode]="modalData.postcode"
+  [saldoDevedor]="modalData.saldoDevedor"
+  (close)="closeModal()">
+</modal-view-cliente>

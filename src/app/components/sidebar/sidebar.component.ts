@@ -11,7 +11,7 @@ declare interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
     { path: '/dashboard', title: 'Home',  icon: 'ni-tv-2 text-primary', class: '' },
     { path: '/customer', title: 'Clientes',  icon:'ni-single-02 text-yellow', class: '' },
-    { path: '/maps', title: 'MOT Booking',  icon:'ni-calendar-grid-58 text-blue', class: '' },
+    /*{ path: '/maps', title: 'MOT Booking',  icon:'ni-calendar-grid-58 text-blue', class: '' },*/
 /*
     { path: '/services/list', title: 'Listar Serviços', icon: 'ni-collection text-orange', class: 'submenu' },
     { path: '/services/create', title: 'Criar Serviço', icon: 'ni-fat-add text-orange', class: 'submenu' },
@@ -42,10 +42,16 @@ export class SidebarComponent implements OnInit {
 
   public menuItems: any[];
   public isCollapsed = true;
+  public isCollapsedMOT = true;
 
   public submenuItems: any[] = [
     { path: '/services/listar', title: 'Ordens de Serviço', icon: 'ni-collection text-orange' },
     { path: '/services/criar', title: 'Criar Serviço', icon: 'ni-fat-add text-orange' }
+  ];
+
+  public submenuMot: any[] = [
+    { path: '/mot/booking', title: 'Booking', icon: 'ni-collection text-blue' },
+    { path: '/mot/list', title: 'Listar', icon: 'ni-fat-add text-blue' }
   ];
 
   constructor(private router: Router) { }
@@ -59,6 +65,10 @@ export class SidebarComponent implements OnInit {
   // Função para alternar o estado da navbar
   toggleNavbar() {
     this.isCollapsed = !this.isCollapsed;
+  }
+
+  toggleSubmenuMot() {
+    this.isCollapsedMOT = !this.isCollapsedMOT;
   }
 
 }
