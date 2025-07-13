@@ -17,7 +17,6 @@ top: 50%;
 transform: translateY(-50%);
 cursor: pointer;
 font-size: 0.8rem;
-color: #888;
 }
 
   /* Estilo para a linha da tabela quando o mouse passar por cima */
@@ -169,6 +168,13 @@ table tbody tr:hover {
     justify-content: center; /* No caso de elementos flex */
   }
 }
+th h4 {
+  color: white !important; /* Substitua por qualquer cor desejada */
+}
 
-
+.booking-table th {
+  background-color: #2a7de1 !important;
+  color: white !important;
+  border: none !important;
+}
 

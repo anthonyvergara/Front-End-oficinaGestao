@@ -15,6 +15,10 @@
 .card-header {
     transition: background-color 0.3s; /* Transição suave para a mudança de cor */
 }
+.card-shadow {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
 
 .header-default {
     background-color: #f8f9fa; /* Cor padrão (claro) */
@@ -96,7 +100,13 @@
 }
 
 .pulse-effect {
-  animation: pulseColorSize 1.5s infinite;
+  animation: pulse 1.2s infinite;
+  border-radius: 0 .375rem .375rem 0;
+}
+
+.input-nome-cliente {
+  border-top-left-radius: .375rem;
+  border-bottom-left-radius: .375rem;
 }
 
 @keyframes pulseColorSize {
@@ -117,11 +127,20 @@
   }
 }
 
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(187, 72, 72, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(72, 187, 120, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(72, 187, 120, 0);
+  }
+}
+
 .percent-wrapper {
   position: relative;
-  display: inline-block;
-  width: 100%;
-  max-width: 120px;
 }
 
 .percent-wrapper input {
@@ -132,12 +151,11 @@
 
 .percent-icon {
   position: absolute;
-  right: 8px;
-  top: 50%;
+  right: 12px;
+  top: 70%;
   transform: translateY(-50%);
-  pointer-events: none;
-  color: #959494;
-  font-weight: bold;
+  color: #6c757d;
+  font-weight: 500;
 }
 
 

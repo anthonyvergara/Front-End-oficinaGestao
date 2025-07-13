@@ -1,0 +1,67 @@
+.booking-list-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.booking-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.booking-table th,
+.booking-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.booking-table th {
+  background-color: #2a7de1;
+  color: white;
+}
+
+button.pay {
+  background-color: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+button.cancel {
+  background-color: #e0e0e0;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9em;
+  display: inline-block;
+}
+
+.status.paid {
+  background-color: #e6f9ec;
+  color: #2e8b57;
+}
+
+.status.pending {
+  background-color: #fff7e6;
+  color: #d98e00;
+}
+
+.status.cancelled {
+  background-color: #fdecea;
+  color: #d93025;
+}
