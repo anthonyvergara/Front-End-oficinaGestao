@@ -3,32 +3,6 @@
     background-color: #ffc107;
 }
 
-th {
-    position: relative;
-  }
-  
-th i {
-position: absolute;
-right: 10px;
-top: 50%;
-transform: translateY(-50%);
-cursor: pointer;
-font-size: 0.8rem;
-color: #888;
-}
-
-  /* Estilo para a linha da tabela quando o mouse passar por cima */
-table tbody tr:hover {
-    background-color: #f7f7f7; /* Cor de fundo quando o mouse passa */
-    cursor: pointer; /* Cursor em forma de ponteiro */
-  }
-
-  table tbody tr:hover td.table-blue, 
-  table tbody tr:hover th.table-blue {
-    background-color: #3fb3e4;
-    cursor: pointer;
-}
-
 /* Estilo para o fundo desfocado */
 .modal-overlay {
   position: fixed;
@@ -47,7 +21,50 @@ table tbody tr:hover {
   display: block;
 }
 
-.table-blue{
-    background-color: #1da0d7;
-    color: white;
+.thead-gradient {
+  background: linear-gradient(87deg, #0284c7 0, #0232c7 100%);
+}
+
+.table th, .table td {
+  vertical-align: middle !important;
+  padding: 1rem;
+  font-size: 15px;
+}
+
+.badge-lg {
+  padding: 0.6em 1em;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+.table-blue {
+  background-color: #ffffff;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(227, 228, 228, 0.39);
+  cursor: pointer;
+}
+
+.transition {
+  transition: all 0.3s ease-in-out;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.badge-dot i {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.table-row-light {
+  background-color: #e4e4e4 !important; /* quase branco com leve tom azulado */
+}
+.table-row-light:hover {
+  background-color: #f0f0f0 !important;
 }
