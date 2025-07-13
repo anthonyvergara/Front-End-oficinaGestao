@@ -8,8 +8,8 @@ import { SharedService } from 'src/app/service/shared/shared.service';
 
 @Component({
   selector: 'app-customer',
-  templateUrl: './icons.component.html',
-  styleUrls: ['./icons.component.scss'],
+  templateUrl: './customer.component.html',
+  styleUrls: ['./customer.component.scss'],
   animations: [
     trigger('fadeIn', [
       transition(':enter', [
