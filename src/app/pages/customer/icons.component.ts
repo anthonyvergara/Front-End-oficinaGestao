@@ -38,7 +38,7 @@ export class IconsComponent implements OnInit {
   constructor(private clientesService: ClientesService, private ordemServicoService : OrdemservicoService, private sharedService: SharedService) { }
 
   currentPage = 1;  // Página atual
-  itemsPerPage = 5; // Número de itens por página (no seu caso, 1 cliente por página)
+  itemsPerPage = 8; // Número de itens por página (no seu caso, 1 cliente por página)
 
 
   ngOnInit() {
