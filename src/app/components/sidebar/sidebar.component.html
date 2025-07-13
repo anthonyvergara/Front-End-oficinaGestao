@@ -126,7 +126,7 @@
         </li>
 
         <!-- Menu dropdown como segundo item -->
-        <li class="nav-item">
+       <!-- <li class="nav-item">
           <a class="nav-link" (click)="toggleSubmenuMot()" style="cursor: pointer !important">
             <i class="ni ni-calendar-grid-58 text-blue"></i>
             MOT
@@ -134,14 +134,14 @@
           <div class="submenu" *ngIf="!isCollapsedMOT" @fadeIn>
             <ul>
               <li *ngFor="let submenuItem of submenuMot" class="nav-item">
-                <a routerLinkActive="active" [routerLink]="[submenuItem.path]" class="nav-link"><!--(click)="toggleNavbar()"-->
+                <a routerLinkActive="active" [routerLink]="[submenuItem.path]" class="nav-link">&lt;!&ndash;(click)="toggleNavbar()"&ndash;&gt;
                   <i class="ni {{submenuItem.icon}}"></i>
                   {{submenuItem.title}}
                 </a>
               </li>
             </ul>
           </div>
-        </li>
+        </li>-->
       </ul>
 
 
