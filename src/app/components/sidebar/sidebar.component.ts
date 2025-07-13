@@ -67,4 +67,8 @@ export class SidebarComponent implements OnInit {
     this.isCollapsed = !this.isCollapsed;
   }
 
+  toggleSubmenuMot() {
+    this.isCollapsedMOT = !this.isCollapsedMOT;
+  }
+
 }

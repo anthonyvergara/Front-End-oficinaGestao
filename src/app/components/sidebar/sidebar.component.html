@@ -92,7 +92,7 @@
         <!-- Renderize os itens do menu principal -->
 
         <!-- Primeiro item do menu -->
-        <li *ngFor="let menuItem of menuItems.slice(0, 1)" class="{{menuItem.class}} nav-item" (click)="toggleNavbar()">
+        <li *ngFor="let menuItem of menuItems.slice(0, 1)" class="{{menuItem.class}} nav-item" > <!-- (click)="toggleNavbar()"-->
           <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
             <i class="ni {{menuItem.icon}}"></i>
             {{menuItem.title}}
@@ -101,14 +101,14 @@
 
         <!-- Menu dropdown como segundo item -->
         <li class="nav-item">
-          <a class="nav-link" (click)="isCollapsed = !isCollapsed" style="cursor: pointer !important">
+          <a class="nav-link" style="cursor: pointer !important"> <!-- (click)="isCollapsed = !isCollapsed" -->
             <i class="ni ni-pin-3 text-orange"></i>
             Serviços
           </a>
           <div class="submenu" @fadeIn>
             <ul>
               <li *ngFor="let submenuItem of submenuItems" class="nav-item">
-                <a routerLinkActive="active" [routerLink]="[submenuItem.path]" class="nav-link" (click)="toggleNavbar()">
+                <a routerLinkActive="active" [routerLink]="[submenuItem.path]" class="nav-link"> <!-- (click)="toggleNavbar()-->
                   <i class="ni {{submenuItem.icon}}"></i>
                   {{submenuItem.title}}
                 </a>
@@ -118,7 +118,7 @@
         </li>
 
         <!-- Os demais itens do menu, exceto o primeiro que já foi renderizado -->
-        <li *ngFor="let menuItem of menuItems.slice(1)" class="{{menuItem.class}} nav-item" (click)="toggleNavbar()">
+        <li *ngFor="let menuItem of menuItems.slice(1)" class="{{menuItem.class}} nav-item"><!-- (click)="toggleNavbar() -->
           <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
             <i class="ni {{menuItem.icon}}"></i>
             {{menuItem.title}}
@@ -127,7 +127,7 @@
 
         <!-- Menu dropdown como segundo item -->
         <li class="nav-item">
-          <a class="nav-link" (click)="isCollapsedMOT = !isCollapsed" style="cursor: pointer !important">
+          <a class="nav-link" (click)="toggleSubmenuMot()" style="cursor: pointer !important">
             <i class="ni ni-calendar-grid-58 text-blue"></i>
             MOT
           </a>
