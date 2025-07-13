@@ -7,7 +7,7 @@ import { OrdemServico } from 'src/app/models/ordemServico.model';
 import { SharedService } from 'src/app/service/shared/shared.service';
 
 @Component({
-  selector: 'app-icons',
+  selector: 'app-customer',
   templateUrl: './icons.component.html',
   styleUrls: ['./icons.component.scss'],
   animations: [

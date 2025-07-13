@@ -15,9 +15,9 @@
       </div>
     </div>
 
-    <div *ngIf="dadosCarregados" class="modal-content" (click)="$event.stopPropagation()">
+    <div *ngIf="dadosCarregados" class="modal-content custom-mobile-height" (click)="$event.stopPropagation()">
       <div class="modal-header d-flex flex-column flex-sm-row">
-        <h1 class="modal-title">Detalhes da Ordem de Serviço</h1>
+        <h1 class="modal-title">Ordem de Serviço</h1>
         <div class="ml-auto d-flex mt-2 mt-sm-0">
           <button *ngIf="saldoDevedor() > 0" type="button" class="btn btn-outline-success" placement="bottom" ngbTooltip="Pagar" (click)="openModalPagar()">
             <i class="ni ni-check-bold" style="font-size:25px"></i>
@@ -37,38 +37,64 @@
         </button>
       </div>
 
-      <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+      <div class="modal-body mt--2" style="max-height: 70vh; overflow-y: auto;">
+
+
         <div class="row">
-          <div class="col">
+          <div class="col-md-9 col-12">
             <div class="container mt-2 card shadow">
               <div class="progress">
-                <div class="progress-bar" [ngClass]="saldoDevedor() <= 0 ? 'bg-success' : orders.statusOrdemServico.tipoStatus == 'AGENDADO' ? 'bg-agendado' : 'bg-danger' " role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                <div class="progress-bar" [ngClass]="saldoDevedor() <= 0 ? 'bg-darkblue' : orders.statusOrdemServico.tipoStatus == 'AGENDADO' ? 'bg-darkblue' : 'bg-darkblue' " role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
               </div>
               <form>
-                <div class="form-row align-items-end mt-2">
+                <div class="form-row align-items-end mt-2 p-3 rounded shadow-sm bg-white">
+                  <!-- Invoice -->
                   <div class="col-12 col-md-2 mb-2 input-group">
                     <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="fas fa-file-alt"></i>
-                      </span>
+      <span class="input-group-text bg-light border-0">
+        <i class="fas fa-file-invoice text-darkblue"></i>
+      </span>
                     </div>
-                    <input disabled type="text" class="form-control text-center" placeholder="N.Invoice" [(ngModel)]="orders.invoiceNumber" name="invoice">
+                    <input disabled type="text" class="form-control text-center border-style" placeholder="N.Invoice" [(ngModel)]="orders.invoiceNumber" name="invoice">
                   </div>
-                  <div class="col-12 col-md-6 mb-2">
-                    <label>Nome do cliente</label>
+
+                  <!-- Nome do cliente com ícone -->
+                  <div class="col-12 col-md-6 mb-2 position-relative">
+                    <label class="font-weight-bold d-flex align-items-center">
+                      <i class="ni ni-circle-08 mr-2 text-darkblue"></i> Nome do cliente
+                    </label>
                     <input disabled type="text" class="form-control border-style" placeholder="Nome Cliente" [(ngModel)]="nome" name="nome">
                   </div>
-                  <div class="col-12 col-md-2 mb-2 percent-wrapper">
-                    <label>Vat Number</label>
-                    <input disabled
-                           type="text" class="form-control border-style"
-                           placeholder="VAT" [(ngModel)]="vat" name="vat"/>
-                    <span class="percent-icon">%</span>
+
+                  <!-- VAT com símbolo % no input -->
+                  <div class="col-12 col-md-2 mb-2 position-relative">
+                    <label class="font-weight-bold">VAT Number</label>
+                    <div class="input-group">
+                      <input disabled type="text" class="form-control border-style text-right pr-4" placeholder="VAT" [(ngModel)]="vat" name="vat">
+                      <div class="input-group-append">
+                        <span class="input-group-text bg-light border-0 font-weight-bold">%</span>
+                      </div>
+                    </div>
                   </div>
+
+                  <!-- Status como badge -->
                   <div class="col-12 col-md-2 mb-2">
-                    <input disabled type="text" class="form-control text-center" placeholder="Status" [(ngModel)]="orders.statusOrdemServico.tipoStatus" name="status" [ngClass]="saldoDevedor() <= 0 ? 'bg-border-pago bg-success' : orders.statusOrdemServico.tipoStatus == 'AGENDADO' ? 'bg-border-agendado bg-agendado' : 'bg-border-atrasado bg-danger' ">
+                    <label class="d-none d-md-block text-center w-100 font-weight-bold">Status</label>
+                    <label class="d-block d-md-none font-weight-bold">Status</label>
+                    <div class="form-control d-flex align-items-center justify-content-start justify-content-md-center p-0 border-0 bg-transparent" style="height: calc(2.25rem + 2px);">
+    <span class="badge text-white font-weight-bold px-3 py-2"
+          [ngClass]="{
+            'bg-success': saldoDevedor() <= 0,
+            'bg-agendado': orders.statusOrdemServico.tipoStatus == 'AGENDADO',
+            'bg-danger': orders.statusOrdemServico.tipoStatus == 'ATRASADO'
+          }">
+      {{ orders.statusOrdemServico.tipoStatus }}
+    </span>
+                    </div>
                   </div>
+
                 </div>
+
 
                 <div class="form-row align-items-end mt-3">
                   <div class="col">
@@ -80,19 +106,17 @@
 
                 <div id="collapseMenu" class="mt-3">
                   <div *ngFor="let grupo of groupedDetalheServico; let i = index" @fadeBox>
-                    <div class="card mt-2" [attr.id]="'detalhe' + i" style="background-color: #f4f5f7;">
-                      <div class="card-header d-flex justify-content-between align-items-center bg-darkblue" style="height: 60px;">
-                        <button class="btn btn-secondary" type="button" (click)="toggleCollapse(grupo.placa)">
+                    <div class="card mt-2 border-0" [attr.id]="'detalhe' + i" style="background-color: #f4f5f7; border-radius: 12px;">
+                      <div class="card-header d-flex flex-wrap justify-content-between align-items-center bg-darkblue" style="min-height: 60px; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                        <button class="btn btn-sm btn-secondary  mr-2" type="button" (click)="toggleCollapse(grupo.placa)">
                           <i class="fas" [ngClass]="detalheServicoCollapse[grupo.placa] ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
                         </button>
-                        <span *ngIf="!detalheServicoCollapse[grupo.placa]" class="ml-0">
-                          <h3 style="color: white;">PLACA: {{ grupo.placa | uppercase }}</h3>
-                        </span>
-                        <span *ngIf="!detalheServicoCollapse[grupo.placa]" class="ml-auto" style="margin-right: 30px;">
-                          <h3 style="color: white;">TOTAL: {{ valorTotalDetalheServicoPorPlaca[grupo.placa] | currency:'GBP':'symbol':'1.2-2' }}</h3>
-                        </span>
+                        <div *ngIf="!detalheServicoCollapse[grupo.placa]" class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center flex-grow-1 ml-2 mr-2">
+                          <h3 class="text-white mb-1 mb-sm-0 placa-text">PLACA: {{ grupo.placa | uppercase }}</h3>
+                          <h3 class="text-white font-weight-bold mb-0 total-text">TOTAL: {{ valorTotalDetalheServicoPorPlaca[grupo.placa] | currency:'GBP':'symbol':'1.2-2' }}</h3>
+                        </div>
                         <button *ngIf="groupedDetalheServico.length > 1 && orders.statusOrdemServico.tipoStatus != 'PAGO' && !compareDate(grupo.detalhes[0].data)"
-                                class="btn btn-outline btn-lg bg-secondary"
+                                class="btn btn-outline btn-sm bg-secondary"
                                 type="button"
                                 (click)="removerMoto(i)">
                           <i class="fas fa-trash" style="font-size: 18px;"></i>
@@ -103,7 +127,7 @@
                         <div class="form-row align-items-end">
                           <div class="col-12 col-md-2 mb-2">
                             <button [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'" class="btn text-nowrap btn-darkblue btn-round " type="button" (click)="incluirRegistro(i)">
-                                <i class="">Adicionar Serviço</i>
+                                <i class="" style="font-size: 13px">Adicionar Serviço</i>
                             </button>
                           </div>
                           <div class="col-12 col-md-2 mb-2">
@@ -187,7 +211,7 @@
                   <textarea class="form-control border-style" id="observacao" rows="3" (input)="updateFieldObservacaoOrdemServico($event)" [(ngModel)]="orders.observacao" [disabled]="orders.statusOrdemServico.tipoStatus === 'PAGO'"></textarea>
                 </div>
 
-                <div class="form-row align-items-end mb-2">
+                <!--<div class="form-row align-items-end mb-2">
                   <div class="col-12 col-md-3">
                     <label for="observacao">Forma de Pagamento</label>
                     <select class="form-control border-style block-cursor" id="pagamentoSelect" (change)="onPagamentoChange($event.target.value)" disabled>
@@ -195,10 +219,10 @@
                       <option value="Pagamento Parcelado" *ngIf="orders.quantidadeParcelas > 0">Pagamento Parcelado</option>
                     </select>
                   </div>
-                  <!--<div class="parcelas-container col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
+                  &lt;!&ndash;<div class="parcelas-container col col-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
                     <label for="observacao">Quantidade de Parcelas</label>
                     <input type="number" class="form-control border-style" placeholder="Quantidade de Parcelas" [(ngModel)]="quantidadeParcelas">
-                  </div>-->
+                  </div>&ndash;&gt;
                   <div class="col-12 col-md-3" *ngIf="orders.quantidadeParcelas > 0" @fadeBox>
                     <label for="observacao">Perido entre Pagamentos</label>
                     <select class="form-control border-style block-cursor" id="pagamentoPeriodoSelect" disabled>
@@ -215,7 +239,7 @@
                   </div>
 
 
-                </div>
+                </div>-->
 
 
 
@@ -225,14 +249,105 @@
 
             </div>
           </div>
+
+
+          <div class="col-md-3 col-12">
+            <div class="card p-3 shadow-lg mt-2" style="border-radius: 12px;">
+              <h5 class="mb-3 text-muted font-weight-bold">RESUMO FINANCEIRO</h5>
+
+              <!-- Total -->
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-check-circle text-success mr-2"></i>
+                  <span>Total</span>
+                </div>
+                <span class="text-success font-weight-bold">
+                  {{ getValorTotal() | currency:'GBP':'symbol':'1.2-2' }}
+                </span>
+              </div>
+
+              <!-- Pago -->
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-credit-card text-primary mr-2"></i>
+                  <span>Pago</span>
+                </div>
+                <span class="text-primary font-weight-bold">
+                  {{ valorTotalPago() | currency:'GBP':'symbol':'1.2-2' }}
+                </span>
+              </div>
+
+              <!-- Devido -->
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-times-circle text-danger mr-2"></i>
+                  <span>Devido</span>
+                </div>
+                <span [ngClass]="saldoDevedor() > 0 ? 'text-danger' : 'text-success'" class="font-weight-bold">
+                  {{ saldoDevedor() | currency:'GBP':'symbol':'1.2-2' }}
+                </span>
+              </div>
+            </div>
+
+
+            <div class="card p-3 shadow-lg mt-3" style="border-radius: 12px;">
+              <h5 class="mb-3 text-muted font-weight-bold">DETALHES DE PAGAMENTO</h5>
+
+              <!-- Forma de Pagamento -->
+              <div class="mb-3">
+                <div class="d-flex align-items-center mb-1">
+                  <i class="fas fa-money-bill-wave text-darkblue mr-2"></i>
+                  <span class="text-dark">Forma de Pagamento</span>
+                </div>
+                <div class="form-control bg-light text-dark" style="font-size: 0.9rem;" disabled>
+                  {{ orders.quantidadeParcelas == 0 ? 'Pagamento à Vista' : 'Pagamento Parcelado' }}
+                </div>
+              </div>
+
+              <!-- Período entre Pagamentos -->
+              <div class="mb-3" *ngIf="orders.quantidadeParcelas > 0">
+                <div class="d-flex align-items-center mb-1">
+                  <i class="fas fa-calendar-alt text-darkblue mr-2"></i>
+                  <span class="text-dark">Período entre Pagamentos</span>
+                </div>
+                <div class="form-control bg-light text-dark" style="font-size: 0.9rem;" disabled>
+                  Pagamento {{ orders.tipoPagamento | titlecase }}
+                </div>
+              </div>
+
+              <!-- Parcelas -->
+              <div *ngIf="orders.quantidadeParcelas > 0">
+                <div class="d-flex align-items-center mb-1">
+                  <i class="fas fa-list-ol text-darkblue mr-2"></i>
+                  <span class="text-dark">Parcelas</span>
+                </div>
+                <div class="form-control bg-light text-dark" style="font-size: 0.85rem; height: auto;" disabled>
+                  <div *ngFor="let parcela of orders.parcela">
+                    <div class="d-flex justify-content-between">
+                      <span>{{ parcela.dataVencimento }}</span>
+                      <span [ngClass]="parcela.statusParcela === 'Pago' ? 'text-success' : 'text-danger'">
+            {{ parcela.valorParcela | currency:'GBP':'symbol':'1.2-2' }}
+          </span>
+                    </div>
+                    <div class="text-muted small">{{ parcela.statusParcela }}</div>
+                    <hr class="my-1" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+
         </div>
       </div>
 
 
       <!-- Modal Footer -->
       <div class="modal-footer">
-        <div class="modal-footer-values form-row align-items-center mt-0 d-flex justify-content-start w-100">
-          <!-- Cartão Valor Total -->
+   <!--     <div class="modal-footer-values form-row align-items-center mt-0 d-flex justify-content-start w-100">
+          &lt;!&ndash; Cartão Valor Total &ndash;&gt;
           <div class="col-4 mb-3">
             <div style="width: 100%;">
               <div class="card card-stats bg-success mb-0 mb-lg-0">
@@ -244,7 +359,7 @@
                   {{ getValorTotal() | currency:'GBP':'symbol':'1.2-2' }}
                 </span>
                     </div>
-                    <!-- Ícone oculto em telas pequenas -->
+                    &lt;!&ndash; Ícone oculto em telas pequenas &ndash;&gt;
                     <div class="col-auto d-none d-sm-block">
                       <div class="icon icon-shape bg-secondary rounded-circle shadow">
                         <i class="fa fa-calculator"></i>
@@ -256,7 +371,7 @@
             </div>
           </div>
 
-          <!-- Cartão Valor Pago -->
+          &lt;!&ndash; Cartão Valor Pago &ndash;&gt;
           <div class="col-4 mb-3">
             <div style="width: 100%;">
               <div class="card card-stats bg-darkblue mb-0 mb-lg-0">
@@ -268,7 +383,7 @@
                   {{ valorTotalPago() | currency:'GBP':'symbol':'1.2-2' }}
                 </span>
                     </div>
-                    <!-- Ícone oculto em telas pequenas -->
+                    &lt;!&ndash; Ícone oculto em telas pequenas &ndash;&gt;
                     <div class="col-auto d-none d-sm-block">
                       <div class="icon icon-shape bg-secondary rounded-circle shadow">
                         <i class="fa fa-calculator"></i>
@@ -280,7 +395,7 @@
             </div>
           </div>
 
-          <!-- Cartão Saldo Devedor -->
+          &lt;!&ndash; Cartão Saldo Devedor &ndash;&gt;
           <div class="col-4 mb-3">
             <div *ngIf="saldoDevedor() > 0" class="card card-stats mb-0 mb-lg-0"
                  [ngClass]="saldoDevedor() <= 0 ? 'bg-success' : orders.statusOrdemServico.tipoStatus == 'AGENDADO' ? 'bg-agendado' : 'bg-danger'"
@@ -293,7 +408,7 @@
                 {{ saldoDevedor() | currency:'GBP':'symbol':'1.2-2' }}
               </span>
                   </div>
-                  <!-- Ícone oculto em telas pequenas -->
+                  &lt;!&ndash; Ícone oculto em telas pequenas &ndash;&gt;
                   <div class="col-auto d-none d-sm-block">
                     <div class="icon icon-shape bg-secondary rounded-circle shadow">
                       £
@@ -303,6 +418,11 @@
               </div>
             </div>
           </div>
+        </div>-->
+        <div class="d-block d-sm-none w-100 mt-3">
+          <button type="button" class="btn btn-secondary btn-sm btn-block" (click)="closeModal()">
+            <i class="fas fa-times"></i> Fechar
+          </button>
         </div>
 
         <!-- Alinha os botões no canto direito -->
@@ -328,8 +448,8 @@
   </div>
 </div>
 
-<div class="floating-values position-fixed top-20 end-0 p-3 d-flex flex-column" style="width: 250px; z-index: 1100;">
-  <!-- Cartão Valor Total -->
+<!--<div class="floating-values position-fixed top-20 end-0 p-3 d-flex flex-column" style="width: 250px; z-index: 1100;">
+  &lt;!&ndash; Cartão Valor Total &ndash;&gt;
   <div class="card card-stats bg-success mb-2">
     <div class="card-body">
       <h5 class="card-title text-uppercase text-white fw-bold mb-1">VALOR TOTAL</h5>
@@ -339,7 +459,7 @@
     </div>
   </div>
 
-  <!-- Cartão Valor Pago -->
+  &lt;!&ndash; Cartão Valor Pago &ndash;&gt;
   <div class="card card-stats bg-darkblue mb-2">
     <div class="card-body">
       <h5 class="card-title text-uppercase text-white fw-bold mb-1">VALOR PAGO</h5>
@@ -349,7 +469,7 @@
     </div>
   </div>
 
-  <!-- Cartão Valor Devido -->
+  &lt;!&ndash; Cartão Valor Devido &ndash;&gt;
   <div class="card card-stats mb-2" [ngClass]="saldoDevedor() > 0 ? 'bg-danger' : 'bg-success'">
     <div class="card-body">
       <h5 class="card-title text-uppercase text-white fw-bold mb-1">VALOR DEVIDO</h5>
@@ -358,7 +478,7 @@
       </span>
     </div>
   </div>
-</div>
+</div>-->
 
               <app-modal-cliente-profile *ngIf="isModalOpen"
               [invoiceId]="orders?.id"
