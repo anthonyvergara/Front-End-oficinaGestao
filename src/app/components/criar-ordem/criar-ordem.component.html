@@ -99,7 +99,7 @@
                 <div *ngFor="let moto of motos; let i = index" @fadeBox>
                     <div class="card mt-2" [attr.id]="'moto' + moto.id" style="background-color: #f4f5f7;">
                         <div class="card-header d-flex justify-content-between align-items-center" style="height: 60px; background-color: #2a7de1;">
-                          <button class="btn btn-secondary" type="button" (click)="moto.isCollapsed = !moto.isCollapsed">
+                          <button class="btn btn-secondary btn-sm" type="button" (click)="moto.isCollapsed = !moto.isCollapsed">
                             <i class="fas" [ngClass]="moto.isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
                           </button>
                           <span *ngIf="moto.isCollapsed" class="ml-0">
@@ -112,16 +112,16 @@
                              <!-- <span>Nova Moto {{ moto.id }</span>}-->
 
 
-                            <button class="btn btn-secondary" type="button" (click)="removerMoto(i)">
+                            <button class="btn btn-secondary btn-sm" type="button" (click)="removerMoto(i)">
                               <i class="fas fa-trash"></i>
                             </button>
 
                         </div>
                         <div class="card-body" [ngClass]="{'collapse': moto.isCollapsed}">
                             <div class="form-row align-items-end">
-                                <div class="col-12 col-md-2 mb-2">
-                                    <button class="btn btn-darkblue text-nowrap btn-round" type="button" (click)="incluirRegistro(i)" placement="top" ngbTooltip="Incluir Serviço">
-                                        <i class="">Adicionar Serviço</i>
+                                <div class="col-12 col-md-3 mb-2">
+                                    <button class="btn btn-darkblue text-nowrap btn-round w-100" type="button" (click)="incluirRegistro(i)" placement="top" ngbTooltip="Incluir Serviço" style="font-size: 14px; font-family: inherit">
+                                        <i class="" style="font-style: normal !important;">Adicionar Serviço</i>
                                     </button>
                                 </div>
                                 <div class="col-12 col-md-2 mb-2" [ngClass]="moto.placa.length == 0 ? '' : 'has-success' ">
@@ -132,7 +132,7 @@
                                 <div class="col col-1">
                                     <input type="number" class="form-control" [(ngModel)]="moto.qtd" placeholder="QTD" [name]="'qtd' + i">
                                 </div>-->
-                                <div class="col-12 col-md-3 mb-2">
+                                <div class="col-12 col-md-4 mb-2">
                                   <label>Motorista</label>
                                   <input type="text" appUppercase class="form-control" [(ngModel)]="moto.nomeMotorista" placeholder="Nome Motorista" (keypress)="checkRegistroEnter($event, i, null)" [name]="'nomeMotorista' + i">
                                 </div>
