@@ -49,7 +49,7 @@ export class CriarOrdemComponent implements OnInit {
   quantidadeParcelas: number | null = null;
   valorTotalGeral: number = 0;
   valorTotalGeralComVat: number = 0;
-  valorEntrada: number = null;
+  valorEntrada: number = 0;
   vatAnterior: number = 0;
 
   modalNomeCliente: string = '';

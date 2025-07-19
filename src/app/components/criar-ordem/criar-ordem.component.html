@@ -8,7 +8,7 @@
   <span class="alert-inner--text" style="font-size: 17px;"><strong> Ops!</strong> Não foi possivel criar a ordem de serviço!</span>
 </div>
 <div class="row">
-    <div class="col">
+    <div class="col-lg-9 col-md-8 col-12">
       <div class="container card shadow">
           <div class="card-header border-0">
               <h1 class="mb-0 ml--4">CRIAR ORDEM DE SERVIÇO</h1>
@@ -65,6 +65,12 @@
                      name="vat"
                      (ngModelChange)="onVatChange()" />
               <span class="percent-icon">%</span>
+            </div>
+
+            <div class="col-12 col-md-2 mb-3 percent-wrapper position-relative">
+              <label class="font-weight-bold">Data</label>
+              <input type="text" class="form-control text-center bg-white"
+                     [name]="'dataview'" [value]="dataAtualBR" readonly>
             </div>
 
           </div>
@@ -140,7 +146,7 @@
                                   <input type="text" appUppercase class="form-control" [(ngModel)]="moto.observacao" placeholder="Observação" (keypress)="checkRegistroEnter($event, i, null)" [name]="'observacao' + i">
                                 </div>
 
-                                <div class="col-12 col-md-2 mb-2 input-group">
+                                <div class="col-12 col-md-2 mb-2 input-group" hidden="">
                                   <label>Data Ordem Serviço</label>
                                     <div _ngcontent-c8="" class="input-group-prepend">
                                         <span _ngcontent-c8="" class="input-group-text">
@@ -214,100 +220,6 @@
                 <label for="observacao">Observação:</label>
                 <textarea class="form-control border-style" id="observacao" rows="3" [(ngModel)]="observacao" [ngModelOptions]="{standalone: true}"></textarea>
             </div>
-
-            <div class="form-row align-items-end">
-                <div class="col-12 col-md-3">
-                    <label for="observacao">Forma de Pagamento</label>
-                    <select class="form-control border-style" id="pagamentoSelect" (change)="onPagamentoChange($event.target.value)">
-                        <option value="Pagamento à Vista">Pagamento à Vista</option>
-                        <option value="Pagamento Parcelado">Pagamento Parcelado</option>
-                    </select>
-                </div>
-                <div class="col-12 col-md-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
-                  <label for="valorEntrada">Valor de Entrada</label>
-                  <input type="number" class="form-control border-style" value="0" placeholder="Valor Entrada" [(ngModel)]="valorEntrada" (input)="onValorEntradaChange()">
-                </div>
-                <div class="parcelas-container col-12 col-md-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
-                  <label for="quantidadeParcelas">Parcelas</label>
-                  <select
-                    class="form-control border-style"
-                    id="quantidadeParcelas"
-                    [(ngModel)]="quantidadeParcelas"
-                    *ngIf="pagamentoTipo === 'Pagamento Parcelado'"
-                    (change)="onQuantidadeParcelasChange()">
-                    <option *ngFor="let parcela of parcelas; let i = index" [value]="i + 1">
-                      {{i + 1}} Parcelas - {{(this.valorTotalGeral - this.valorEntrada) / (i + 1) | currency:'GBP':'symbol':'1.2-2'}}
-                    </option>
-                  </select>
-                </div>
-                <div class="col-12 col-md-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
-                    <label for="observacao">Perido entre Pagamentos</label>
-                    <select class="form-control border-style" id="pagamentoPeriodoSelect"
-                      [(ngModel)]="periodoPagamento" *ngIf="pagamentoTipo === 'Pagamento Parcelado'"
-                      (change)="onPeriodoPagamentoChange($event.target.value)">
-                      <option value="SEMANAL">Pagamento Semanal</option>
-                      <option value="MENSAL">Pagamento Mensal</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <div class="form-row mt-3 mb-4 d-flex align-items-end justify-content-between">
-              <!-- Card Valor Total -->
-              <div class="col-auto">
-                <div style="width: 14rem;">
-                  <div class="card card-stats bg-success mb-4 mb-lg-0">
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col">
-                          <h5 class="card-title text-uppercase mb-0" style="color: white; font-style: bold;">VALOR TOTAL</h5>
-                          <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">
-                            {{ valorTotalGeral | currency:'GBP':'symbol':'1.2-2' }}
-                          </span>
-                        </div>
-                        <div class="col-auto">
-                          <div class="icon icon-shape bg-secondary rounded-circle shadow">
-                            <i class="fa fa-calculator"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Card Valor Devido -->
-              <div class="col-12 col-md-auto" *ngIf="valorEntrada !== null && valorEntrada !== undefined && valorEntrada > 0 && valorTotalGeral > 0" @fadeIn>
-                <div style="width: 14rem;">
-                  <div class="card card-stats bg-info mb-4 mb-lg-0" placement="bottom" ngbTooltip="(Valor Total) subtraído pelo (Valor de Entrada)">
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col">
-                          <h5 class="card-title text-uppercase mb-0" style="color: white; font-style: bold;">VALOR DEVIDO</h5>
-                          <span class="h2 font-weight-bold mb-0" style="color: white; font-style: bold;">
-                            {{ atualizarValorFinal() | currency:'GBP':true }}
-                          </span>
-                        </div>
-                        <div class="col-auto">
-                          <div class="icon icon-shape bg-secondary rounded-circle shadow">
-                            £
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Botões Criar Ordem e Imprimir alinhados à direita -->
-              <div class="col-auto ml-auto d-flex align-items-center">
-                <button class="btn btn-darkblue" type="button" (click)="submitForm(form)">
-                  <i class="ni ni-check-bold"></i>&nbsp;&nbsp;CRIAR ORDEM
-                </button>
-                <button hidden class="btn btn-danger ml-2" type="button">
-                  <i class="fa fa-print" style="font-size:20px"></i>
-                </button>
-              </div>
-            </div>
         </form>
 
 
@@ -315,9 +227,9 @@
 
     </div>
     <!-- Botão flutuante para incluir moto -->
-    <button class="btn btn-primary float-right incluir-moto-btn" (click)="incluirMoto()">
+    <!--<button class="btn btn-primary float-right incluir-moto-btn" (click)="incluirMoto()">
       <i class="fas fa-motorcycle"></i>
-    </button>
+    </button>-->
 
     <div id="modal-overlay" class="modal-overlay"></div>
     <modal-criar-cliente
@@ -328,4 +240,124 @@
     </modal-criar-cliente>
 
     </div>
-  </div>
+  <!-- RESUMO FINANCEIRO -->
+  <div class="col-lg-3 col-md-4 col-12">
+    <div class="card p-3 shadow-lg" style="border-radius: 12px;">
+      <h5 class="mb-3 text-muted font-weight-bold">RESUMO FINANCEIRO</h5>
+
+      <!-- Total -->
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-check-circle text-success mr-2"></i>
+          <span>Total</span>
+        </div>
+        <span class="text-success font-weight-bold">
+                  {{ valorTotalGeral | currency:'GBP':'symbol':'1.2-2' }}
+                </span>
+      </div>
+
+      <!-- Pago -->
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-credit-card text-primary mr-2"></i>
+          <span>Entrada</span>
+        </div>
+        <span class="text-primary font-weight-bold">
+                  {{ valorEntrada | currency:'GBP':'symbol':'1.2-2' }}
+                </span>
+      </div>
+
+      <!-- Devido -->
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-times-circle text-danger mr-2"></i>
+          <span>Devido</span>
+        </div>
+        <span [ngClass]="atualizarValorFinal() > 0 ? 'text-danger' : 'text-success'" class="font-weight-bold">
+                  {{ atualizarValorFinal() | currency:'GBP':true }}
+                </span>
+      </div>
+    </div>
+
+
+    <!-- DETALHES DE PAGAMENTO -->
+    <div class="card p-3 shadow-lg mt-3" style="border-radius: 12px;">
+      <h5 class="mb-3 text-muted font-weight-bold">DETALHES DE PAGAMENTO</h5>
+
+      <!-- Forma de Pagamento -->
+      <div class="mb-3">
+        <div class="d-flex align-items-center mb-1">
+          <i class="fas fa-money-bill-wave text-darkblue mr-2"></i>
+          <span class="text-dark">Forma de Pagamento</span>
+        </div>
+        <div class="form-control bg-light p-2">
+          <select class="pagamento-inner-select"
+                  id="pagamentoSelect"
+                  (change)="onPagamentoChange($event.target.value)">
+            <option value="Pagamento à Vista">Pagamento à Vista</option>
+            <option value="Pagamento Parcelado">Pagamento Parcelado</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Valor de Entrada -->
+      <div class="mb-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
+        <div class="d-flex align-items-center mb-1">
+          <i class="fas fa-money-bill-wave text-darkblue mr-2"></i>
+          <span class="text-dark">Valor de Entrada</span>
+        </div>
+        <div class="form-control bg-light p-2">
+          <input type="number"
+                 class="pagamento-inner-input"
+                 placeholder="Valor Entrada"
+                 [(ngModel)]="valorEntrada"
+                 (input)="onValorEntradaChange()" />
+        </div>
+      </div>
+
+      <!-- Período entre Pagamentos -->
+      <div class="mb-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
+        <div class="d-flex align-items-center mb-1">
+          <i class="fas fa-calendar-alt text-darkblue mr-2"></i>
+          <span class="text-dark">Período entre Pagamentos</span>
+        </div>
+        <div class="form-control bg-light p-2">
+          <select class="pagamento-inner-select"
+                  id="pagamentoPeriodoSelect"
+                  [(ngModel)]="periodoPagamento"
+                  (change)="onPeriodoPagamentoChange($event.target.value)">
+            <option value="SEMANAL">Pagamento Semanal</option>
+            <option value="MENSAL">Pagamento Mensal</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Parcelas -->
+      <div *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
+        <div class="d-flex align-items-center mb-1">
+          <i class="fas fa-list-ol text-darkblue mr-2"></i>
+          <span class="text-dark">Parcelas</span>
+        </div>
+        <div class="form-control bg-light p-2">
+          <select class="pagamento-inner-select"
+                  id="quantidadeParcelas"
+                  [(ngModel)]="quantidadeParcelas"
+                  (change)="onQuantidadeParcelasChange()">
+            <option *ngFor="let parcela of parcelas; let i = index" [value]="i + 1">
+              {{i + 1}} Parcelas - {{(valorTotalGeral - valorEntrada) / (i + 1) | currency:'GBP':'symbol':'1.2-2'}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card p-3 shadow-lg mt-3" style="border-radius: 12px;">
+      <button class="btn btn-darkblue" type="button" (click)="submitForm(form)">
+        <i class="ni ni-check-bold"></i>&nbsp;&nbsp;CRIAR ORDEM
+      </button>
+      <button hidden class="btn btn-danger ml-2" type="button">
+        <i class="fa fa-print" style="font-size:20px"></i>
+      </button>
+    </div>
+
+</div>

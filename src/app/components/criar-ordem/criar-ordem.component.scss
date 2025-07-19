@@ -157,7 +157,46 @@
   color: #6c757d;
   font-weight: 500;
 }
+.resumo-financeiro {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 300px;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  z-index: 1000;
+}
 
+// Estiliza o wrapper .form-control.bg-light como flex container
+.form-control.bg-light {
+  display: flex;
+  align-items: center; // centraliza verticalmente
+  justify-content: center; // centraliza horizontalmente
+  padding: 0.75rem;
+  background-color: #f8f9fa; // cinza claro (opcional)
+  border: none;
+}
 
+// Campos internos: select e input
+.pagamento-inner-select,
+.pagamento-inner-input {
+  background-color: white;
+  border: none;
+  width: 100%;
+  max-width: 100%;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  box-shadow: none;
+  appearance: none;
+  color: #333;
+}
 
-
+// Remove sombra e borda no foco
+.pagamento-inner-select:focus,
+.pagamento-inner-input:focus {
+  outline: none;
+  box-shadow: none;
+}
