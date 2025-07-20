@@ -65,3 +65,18 @@ button.cancel {
   background-color: #fdecea;
   color: #d93025;
 }
+
+.modal-bellow-overlay.show {
+  display: block;
+}
+.modal-bellow-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+  backdrop-filter: blur(5px); /* Aplica o desfoque */
+  z-index: 1040; /* Garante que o overlay fique atrás do modal */
+  display: none; /* Inicialmente escondido */
+}

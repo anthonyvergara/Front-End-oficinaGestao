@@ -21,6 +21,7 @@ import { ModalPagarComponent } from 'src/app/components/modal/modal-pagar/modal-
 import { ModalNegociarComponent } from 'src/app/components/modal/modal-negociar/modal-negociar.component';
 import { ModalConfirmComponent } from 'src/app/components/modal/modal-confirm/modal-confirm.component';
 import { ModalHistoryPaymentComponent} from '../../components/modal/modal-history-payment/modal-history-payment.component';
+import {ModalViewBookingComponent} from '../../components/modal/modal-view-booking/modal-view-booking/modal-view-booking.component';
 
 import { BookingComponent} from '../../pages/mot/booking/booking/booking.component';
 import { ListBookingComponent} from '../../pages/mot/list/list-booking/list-booking.component';
@@ -67,6 +68,7 @@ import { UppercaseDirective } from 'src/app/directives/uppercase.directive';
     ModalHistoryPaymentComponent,
     BookingComponent,
     ListBookingComponent,
+    ModalViewBookingComponent,
   ],
   exports: [
     MapsComponent // Exportar para que possa ser usado em outros módulos
