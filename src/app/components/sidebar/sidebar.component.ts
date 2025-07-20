@@ -10,7 +10,7 @@ declare interface RouteInfo {
 }
 export const ROUTES: RouteInfo[] = [
     { path: '/dashboard', title: 'Home',  icon: 'ni-tv-2 text-primary', class: '' },
-    { path: '/customer', title: 'Clientes',  icon:'ni-single-02 text-yellow', class: '' },
+    { path: '/customer', title: 'Customers',  icon:'ni-single-02 text-yellow', class: '' },
     /*{ path: '/maps', title: 'MOT Booking',  icon:'ni-calendar-grid-58 text-blue', class: '' },*/
 /*
     { path: '/services/list', title: 'Listar Serviços', icon: 'ni-collection text-orange', class: 'submenu' },
@@ -45,13 +45,13 @@ export class SidebarComponent implements OnInit {
   public isCollapsedMOT = true;
 
   public submenuItems: any[] = [
-    { path: '/services/listar', title: 'Ordens de Serviço', icon: 'ni-collection text-orange' },
-    { path: '/services/criar', title: 'Criar Serviço', icon: 'ni-fat-add text-orange' }
+    { path: '/services/listar', title: 'Orders List', icon: 'ni-collection text-orange' },
+    { path: '/services/criar', title: 'New Order', icon: 'ni-fat-add text-orange' }
   ];
 
   public submenuMot: any[] = [
-    { path: '/mot/booking', title: 'Booking', icon: 'ni-collection text-blue' },
-    { path: '/mot/list', title: 'Listar', icon: 'ni-fat-add text-blue' }
+    { path: '/mot/booking', title: 'New Booking', icon: 'ni-collection text-blue' },
+    { path: '/mot/list', title: 'Booking List', icon: 'ni-fat-add text-blue' }
   ];
 
   constructor(private router: Router) { }
