@@ -28,9 +28,20 @@ import {animate, style, transition, trigger} from '@angular/animations';
 })
 export class ListBookingComponent implements OnInit {
 
+  isModalViewBookingOpen: boolean = false;
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  openModalNegociar(){
+    this.isModalViewBookingOpen = true;
+    document.getElementById('modal-bellow-overlay')?.classList.add('show');
+  }
+
+  closeModal() {
+    document.getElementById('modal-bellow-overlay')?.classList.remove('show');
+    this.isModalViewBookingOpen = false; // Emite o evento para o componente pai
+  }
 }
