@@ -19,11 +19,13 @@ import { animate, style, transition, trigger } from '@angular/animations';
 })
 export class BookingComponent implements OnInit {
 
+  isModalViewListCustomersOpen : boolean = false;
+
   booking = {
     date: '2025-06-27',
     startTime: '14:30',
     endTime: '18:30',
-    firstName: 'Anthony',
+    firstName: 'Anthony Vergara',
     lastName: 'Vergara',
     phone: '07858312007',
     email: 'trevor@example.com',
@@ -37,4 +39,14 @@ export class BookingComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void { }
+
+  openModalListCustomers(){
+    this.isModalViewListCustomersOpen = true;
+    document.getElementById('modal-bellow-overlay')?.classList.add('show');
+  }
+
+  closeModal() {
+    document.getElementById('modal-bellow-overlay')?.classList.remove('show');
+    this.isModalViewListCustomersOpen = false; // Emite o evento para o componente pai
+  }
 }

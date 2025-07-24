@@ -11,7 +11,7 @@
     <div class="col-lg-9 col-md-8 col-12">
       <div class="container card shadow">
           <div class="card-header border-0">
-              <h1 class="mb-0 ml--4">CRIAR ORDEM DE SERVIÇO</h1>
+              <h1 class="mb-0 ml--4">GENERATE SERVICE ORDER</h1>
           </div>
         <form #form="ngForm" (ngSubmit)="onSubmit(form)">
           <div class="form-row align-items-end card-shadow p-3 rounded-lg bg-white">
@@ -32,27 +32,31 @@
             <!-- Nome Cliente com sugestão -->
             <div class="col-12 col-md-6 mb-3 position-relative">
               <label class="font-weight-bold d-flex align-items-center">
-                <i class="ni ni-circle-08 mr-2 text-darkblue"></i> Nome do cliente
+                <i class="ni ni-circle-08 mr-2 text-darkblue"></i> Customer Name
               </label>
-              <input type="text"
-                     appUppercase
-                     class="form-control border-style input-nome-cliente"
-                     [ngClass]="nomeCliente.length > 0 && findSugestao == true ? 'is-valid' : 'is-invalid'"
-                     placeholder="Nome do Cliente"
-                     [(ngModel)]="nomeCliente"
-                     name="nomeCliente"
-                     (ngModelChange)="onNomeClienteChange()" />
 
-              <!-- Ícone de adicionar cliente -->
-                    <div *ngIf="nomeCliente.length > 1 && sugestoes.length == 0 && findSugestao == false"
-                   class="input-group-append">
-                        <span class="input-group-text bg-danger text-white pulse-effect"
-                              style="cursor: pointer;"
-                              (click)="createClient()">
-                          <i class="ni ni-single-02"></i>
-                        </span>
-                    </div>
+              <div class="input-group">
+                <input type="text"
+                       appUppercase
+                       class="form-control border-style input-nome-cliente"
+                       [ngClass]="nomeCliente.length > 0 && findSugestao == true ? 'is-valid' : 'is-invalid'"
+                       placeholder="Customer Name"
+                       [(ngModel)]="nomeCliente"
+                       name="nomeCliente"
+                       (ngModelChange)="onNomeClienteChange()" />
+
+                <!-- Ícone de adicionar cliente -->
+                <div *ngIf="nomeCliente.length > 1 && sugestoes.length == 0 && findSugestao == false"
+                     class="input-group-append">
+      <span class="input-group-text bg-danger text-white pulse-effect"
+            style="cursor: pointer;"
+            (click)="createClient()">
+        <i class="ni ni-single-02"></i>
+      </span>
+                </div>
+              </div>
             </div>
+
 
             <!-- VAT % -->
             <div class="col-12 col-md-2 mb-3 percent-wrapper position-relative">
@@ -68,7 +72,7 @@
             </div>
 
             <div class="col-12 col-md-2 mb-3 percent-wrapper position-relative">
-              <label class="font-weight-bold">Data</label>
+              <label class="font-weight-bold">Date</label>
               <input type="text" class="form-control text-center bg-white"
                      [name]="'dataview'" [value]="dataAtualBR" readonly>
             </div>
@@ -90,7 +94,7 @@
           <div class="form-row align-items-end mt-3">
                 <div class="col">
                     <button class="btn btn-primary btn-round bg-darkblue" type="button" (click)="incluirMoto()">
-                        <i class="fas fa-motorcycle"></i> Adicionar Moto
+                        <i class="fas fa-motorcycle"></i> Add Motorcycle
                     </button>
                 </div>
             </div>
@@ -103,10 +107,10 @@
                             <i class="fas" [ngClass]="moto.isCollapsed ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
                           </button>
                           <span *ngIf="moto.isCollapsed" class="ml-0">
-                              <h3 style="color: white;">PLACA: {{ moto.placa | uppercase }}</h3> <!-- Formato monetário -->
+                              <h3 style="color: white;">PLATE: {{ moto.placa | uppercase }}</h3> <!-- Formato monetário -->
                           </span>
                           <span *ngIf="moto.isCollapsed" class="ml-auto" style="margin-right: 30px;">
-                            <h3 style="color: white;">TOTAL: {{ calcularSoma(moto) | currency:'GBP':'symbol':'1.2-2' }}</h3> <!-- Formato monetário -->
+                            <h3 style="color: white;">AMOUNT: {{ calcularSoma(moto) | currency:'GBP':'symbol':'1.2-2' }}</h3> <!-- Formato monetário -->
                           </span>
                           <!-- [ngClass]="i % 2 === 0 ? 'bg-default' : 'bg-info'" -->
                              <!-- <span>Nova Moto {{ moto.id }</span>}-->
@@ -120,21 +124,21 @@
                         <div class="card-body" [ngClass]="{'collapse': moto.isCollapsed}">
                             <div class="form-row align-items-end">
                                 <div class="col-12 col-md-3 mb-2">
-                                    <button class="btn btn-darkblue text-nowrap btn-round w-100" type="button" (click)="incluirRegistro(i)" placement="top" ngbTooltip="Incluir Serviço" style="font-size: 14px; font-family: inherit">
-                                        <i class="" style="font-style: normal !important;">Adicionar Serviço</i>
+                                    <button class="btn btn-darkblue text-nowrap btn-round w-100" type="button" (click)="incluirRegistro(i)" placement="top" ngbTooltip="" style="font-size: 14px; font-family: inherit">
+                                        <i class="" style="font-style: normal !important;">Add Service</i>
                                     </button>
                                 </div>
                                 <div class="col-12 col-md-2 mb-2" [ngClass]="moto.placa.length == 0 ? '' : 'has-success' ">
-                                  <label>Placa</label>
-                                  <input type="text" appUppercase class="form-control" [(ngModel)]="moto.placa" [ngClass]="moto.placa.length == 0 ? 'is-invalid' : 'is-valid' " placeholder="Placa" (keypress)="checkRegistroEnter($event, i, null)" [name]="'placa' + i">
+                                  <label>Plate</label>
+                                  <input type="text" appUppercase class="form-control" [(ngModel)]="moto.placa" [ngClass]="moto.placa.length == 0 ? 'is-invalid' : 'is-valid' " placeholder="Plate" (keypress)="checkRegistroEnter($event, i, null)" [name]="'placa' + i">
                                 </div>
                                 <!--
                                 <div class="col col-1">
                                     <input type="number" class="form-control" [(ngModel)]="moto.qtd" placeholder="QTD" [name]="'qtd' + i">
                                 </div>-->
                                 <div class="col-12 col-md-4 mb-2">
-                                  <label>Motorista</label>
-                                  <input type="text" appUppercase class="form-control" [(ngModel)]="moto.nomeMotorista" placeholder="Nome Motorista" (keypress)="checkRegistroEnter($event, i, null)" [name]="'nomeMotorista' + i">
+                                  <label>Driver Name</label>
+                                  <input type="text" appUppercase class="form-control" [(ngModel)]="moto.nomeMotorista" placeholder="Driver Name" (keypress)="checkRegistroEnter($event, i, null)" [name]="'nomeMotorista' + i">
                                 </div>
                                 <!--
                                 <div class="col col-2">
@@ -142,12 +146,12 @@
                                 </div>-->
 
                                 <div class="col-12 col-md-3 mb-2">
-                                  <label>Observação</label>
-                                  <input type="text" appUppercase class="form-control" [(ngModel)]="moto.observacao" placeholder="Observação" (keypress)="checkRegistroEnter($event, i, null)" [name]="'observacao' + i">
+                                  <label>General Notes</label>
+                                  <input type="text" appUppercase class="form-control" [(ngModel)]="moto.observacao" placeholder="General Notes" (keypress)="checkRegistroEnter($event, i, null)" [name]="'observacao' + i">
                                 </div>
 
                                 <div class="col-12 col-md-2 mb-2 input-group" hidden="">
-                                  <label>Data Ordem Serviço</label>
+                                  <label>Service Order Date</label>
                                     <div _ngcontent-c8="" class="input-group-prepend">
                                         <span _ngcontent-c8="" class="input-group-text">
                                           <i class="ni ni-calendar-grid-58"></i>
@@ -173,10 +177,10 @@
                             <div class="mt-2" *ngIf="!moto.isCollapsed">
                                 <div *ngFor="let registro of moto.registros; let j = index" class="form-row align-items-end mt-2" @fadeBox>
                                     <div class="col-12 col-md-1 mb-2">
-                                        <input type="number" class="form-control" [(ngModel)]="registro.qtd" placeholder="QTD" [name]="'qtd' + i + '-' + j">
+                                        <input type="number" class="form-control" [(ngModel)]="registro.qtd" placeholder="QTY" [name]="'qtd' + i + '-' + j">
                                     </div>
                                     <div class="col-12 col-md-6 mb-2">
-                                        <input type="text" appUppercase #descricaoInput class="form-control" [ngClass]="registro.descricao.length == 0 ? 'is-invalid' : 'is-valid' " [(ngModel)]="registro.descricao" placeholder="Descrição" [name]="'descricao' + i + '-' + j">
+                                        <input type="text" appUppercase #descricaoInput class="form-control" [ngClass]="registro.descricao.length == 0 ? 'is-invalid' : 'is-valid' " [(ngModel)]="registro.descricao" placeholder="Service Description" [name]="'descricao' + i + '-' + j">
                                     </div>
                                     <div class="col-12 col-md-2 mb-2"> <!-- [ngClass]=" <= 0 ? 'has-danger' : 'has-success' " -->
                                         <input required type="text"
@@ -185,13 +189,13 @@
                                                (input)="onPrecoInput($event, i, j)"
                                                (blur)="onPrecoBlur(i, j)"
                                                (ngModelChange)="onPrecoChange()"
-                                               placeholder="Preço"
+                                               placeholder="Price"
                                                (keypress)="checkRegistroEnter($event, i, j)"
                                                [name]="'preco' + i + '-' + j">
                                     </div>
                                     <div class="col-12 col-md-2 mb-2">
                                         <input type="text" class="form-control"
-                                               [(ngModel)]="registro.milhagem" placeholder="Milhagem"
+                                               [(ngModel)]="registro.milhagem" placeholder="Mileage"
                                                (ngModelChange)="onMilhasInput($event, i, j)"
                                                (blur)="onMilhasBlur(i, j)"
                                                (keypress)="checkRegistroEnter($event, i, j)"
@@ -208,7 +212,7 @@
                                     </div>
                                 </div>
                                 <span *ngIf="!moto.isCollapsed" class="ml-4 d-block">
-                                    <h3 id="">TOTAL: {{ calcularSoma(moto) | currency:'GBP':'symbol':'1.2-2' }}</h3> <!-- Formato monetário -->
+                                    <h3 id="">Amount: {{ calcularSoma(moto) | currency:'GBP':'symbol':'1.2-2' }}</h3> <!-- Formato monetário -->
                                 </span>
                             </div>
                         </div>
@@ -217,7 +221,7 @@
             </div>
 
             <div class="form-group mt-4">
-                <label for="observacao">Observação:</label>
+                <label for="observacao">Service Description:</label>
                 <textarea class="form-control border-style" id="observacao" rows="3" [(ngModel)]="observacao" [ngModelOptions]="{standalone: true}"></textarea>
             </div>
         </form>
@@ -243,13 +247,13 @@
   <!-- RESUMO FINANCEIRO -->
   <div class="col-lg-3 col-md-4 col-12">
     <div class="card p-3 shadow-lg" style="border-radius: 12px;">
-      <h5 class="mb-3 text-muted font-weight-bold">RESUMO FINANCEIRO</h5>
+      <h5 class="mb-3 text-muted font-weight-bold">FINANCIAL SUMMARY</h5>
 
       <!-- Total -->
       <div class="d-flex justify-content-between align-items-center mb-2">
         <div class="d-flex align-items-center">
           <i class="fas fa-check-circle text-success mr-2"></i>
-          <span>Total</span>
+          <span>Total Amount</span>
         </div>
         <span class="text-success font-weight-bold">
                   {{ valorTotalGeral | currency:'GBP':'symbol':'1.2-2' }}
@@ -260,7 +264,7 @@
       <div class="d-flex justify-content-between align-items-center mb-2">
         <div class="d-flex align-items-center">
           <i class="fas fa-credit-card text-primary mr-2"></i>
-          <span>Entrada</span>
+          <span>Paid</span>
         </div>
         <span class="text-primary font-weight-bold">
                   {{ valorEntrada | currency:'GBP':'symbol':'1.2-2' }}
@@ -271,7 +275,7 @@
       <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
           <i class="fas fa-times-circle text-danger mr-2"></i>
-          <span>Devido</span>
+          <span>Amount Due</span>
         </div>
         <span [ngClass]="atualizarValorFinal() > 0 ? 'text-danger' : 'text-success'" class="font-weight-bold">
                   {{ atualizarValorFinal() | currency:'GBP':true }}
@@ -282,20 +286,20 @@
 
     <!-- DETALHES DE PAGAMENTO -->
     <div class="card p-3 shadow-lg mt-3" style="border-radius: 12px;">
-      <h5 class="mb-3 text-muted font-weight-bold">DETALHES DE PAGAMENTO</h5>
+      <h5 class="mb-3 text-muted font-weight-bold">PAYMENT DETAILS</h5>
 
       <!-- Forma de Pagamento -->
       <div class="mb-3">
         <div class="d-flex align-items-center mb-1">
           <i class="fas fa-money-bill-wave text-darkblue mr-2"></i>
-          <span class="text-dark">Forma de Pagamento</span>
+          <span class="text-dark">Payment Method</span>
         </div>
         <div class="form-control bg-light p-2">
           <select class="pagamento-inner-select"
                   id="pagamentoSelect"
                   (change)="onPagamentoChange($event.target.value)">
-            <option value="Pagamento à Vista">Pagamento à Vista</option>
-            <option value="Pagamento Parcelado">Pagamento Parcelado</option>
+            <option value="Pagamento à Vista">Full Payment</option>
+            <option value="Pagamento Parcelado">Instalment Payment</option>
           </select>
         </div>
       </div>
@@ -304,7 +308,7 @@
       <div class="mb-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
         <div class="d-flex align-items-center mb-1">
           <i class="fas fa-money-bill-wave text-darkblue mr-2"></i>
-          <span class="text-dark">Valor de Entrada</span>
+          <span class="text-dark">Initial Payment</span>
         </div>
         <div class="form-control bg-light p-2">
           <input type="number"
@@ -319,15 +323,15 @@
       <div class="mb-3" *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
         <div class="d-flex align-items-center mb-1">
           <i class="fas fa-calendar-alt text-darkblue mr-2"></i>
-          <span class="text-dark">Período entre Pagamentos</span>
+          <span class="text-dark">Interval Between Payments</span>
         </div>
         <div class="form-control bg-light p-2">
           <select class="pagamento-inner-select"
                   id="pagamentoPeriodoSelect"
                   [(ngModel)]="periodoPagamento"
                   (change)="onPeriodoPagamentoChange($event.target.value)">
-            <option value="SEMANAL">Pagamento Semanal</option>
-            <option value="MENSAL">Pagamento Mensal</option>
+            <option value="SEMANAL">Weekly Payment</option>
+            <option value="MENSAL">Monthly Payment</option>
           </select>
         </div>
       </div>
@@ -336,7 +340,7 @@
       <div *ngIf="pagamentoTipo === 'Pagamento Parcelado'" @fadeBox>
         <div class="d-flex align-items-center mb-1">
           <i class="fas fa-list-ol text-darkblue mr-2"></i>
-          <span class="text-dark">Parcelas</span>
+          <span class="text-dark">Instalments</span>
         </div>
         <div class="form-control bg-light p-2">
           <select class="pagamento-inner-select"
@@ -344,7 +348,7 @@
                   [(ngModel)]="quantidadeParcelas"
                   (change)="onQuantidadeParcelasChange()">
             <option *ngFor="let parcela of parcelas; let i = index" [value]="i + 1">
-              {{i + 1}} Parcelas - {{(valorTotalGeral - valorEntrada) / (i + 1) | currency:'GBP':'symbol':'1.2-2'}}
+              {{i + 1}} Instalments - {{(valorTotalGeral - valorEntrada) / (i + 1) | currency:'GBP':'symbol':'1.2-2'}}
             </option>
           </select>
         </div>
@@ -353,7 +357,7 @@
 
     <div class="card p-3 shadow-lg mt-3" style="border-radius: 12px;">
       <button class="btn btn-darkblue" type="button" (click)="submitForm(form)">
-        <i class="ni ni-check-bold"></i>&nbsp;&nbsp;CRIAR ORDEM
+        <i class="ni ni-check-bold"></i>&nbsp;&nbsp;CREATE ORDER
       </button>
       <button hidden class="btn btn-danger ml-2" type="button">
         <i class="fa fa-print" style="font-size:20px"></i>

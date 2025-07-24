@@ -1,3 +1,25 @@
 .submenu ul {
     list-style-type: none !important;
 }
+.dropdown-arrow-icon {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  background-image: url("data:image/svg+xml,%3Csvg fill='%232A7DE1' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.nav-link.active {
+  background-color: #e9ecef; /* cinza claro */
+  border-radius: 4px;
+  color: #000 !important; /* mantém o texto legível */
+}
+.nav-link {
+  transition: background-color 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: #f1f3f5;
+}

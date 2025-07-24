@@ -45,8 +45,8 @@ export class SidebarComponent implements OnInit {
   public isCollapsedMOT = true;
 
   public submenuItems: any[] = [
-    { path: '/services/listar', title: 'Orders List', icon: 'ni-collection text-orange' },
-    { path: '/services/criar', title: 'New Order', icon: 'ni-fat-add text-orange' }
+    { path: '/services/listar', title: 'Orders List', icon: 'ni-collection text-blue' },
+    { path: '/services/criar', title: 'New Order', icon: 'ni-fat-add text-blue' }
   ];
 
   public submenuMot: any[] = [
