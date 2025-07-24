@@ -9,66 +9,66 @@
 
             <div class="d-flex justify-content-between">
               <div class="mr-2" style="flex: 1;">
-                <label>Data</label>
-                <input type="date" value="2025-06-27">
+                <label>Date</label>
+                <input type="date" [(ngModel)]="booking.date">
               </div>
               <div class="mr-2" style="flex: 1;">
-                <label>Inicio</label>
-                <input type="time" value="14:30" class="">
+                <label>Start Time</label>
+                <input type="time" [(ngModel)]="booking.startTime">
               </div>
               <div class="mr-2" style="flex: 1;">
-                <label>Fim</label>
-                <input type="time" value="18:30" class="">
+                <label>End Time</label>
+                <input type="time" [(ngModel)]="booking.endTime">
               </div>
             </div>
 
             <div class="d-flex justify-content-between">
-              <div class=" mr-2" style="flex: 1;">
-                <label>Nome</label>
-                <input type="text" value="Anthony">
+              <div class="mr-2" style="flex: 1;">
+                <label>Name</label>
+                <input type="text" [(ngModel)]="booking.firstName">
               </div>
-              <div class=" mr-2" style="flex: 1;">
-                <label>Sobrenome</label>
-                <input type="text" value="Vergara">
+              <div class="mr-2" style="flex: 1;">
+                <label>Lastname</label>
+                <input type="text" [(ngModel)]="booking.lastName">
               </div>
             </div>
 
             <div class="d-flex justify-content-between">
-              <div class=" mr-2" style="flex: 1;">
-                <label>Telefone</label>
-                <input type="text" value="07858312007">
+              <div class="mr-2" style="flex: 1;">
+                <label>Phone Number</label>
+                <input type="text" [(ngModel)]="booking.phone">
               </div>
-              <div class=" mr-2" style="flex: 1;">
+              <div class="mr-2" style="flex: 1;">
                 <label>Email</label>
-                <input type="email" value="trevor@example.com">
+                <input type="email" [(ngModel)]="booking.email">
               </div>
             </div>
 
             <div class="d-flex justify-content-between">
-              <div class=" mr-2" style="flex: 1;">
-                <label>Placa</label>
-                <input type="text" value="LRR21USP" class="">
+              <div class="mr-2" style="flex: 1;">
+                <label>Registration Number</label>
+                <input type="text" [(ngModel)]="booking.plate">
               </div>
-              <div class=" mr-2" style="flex: 1;">
-                <label>Marca</label>
-                <input type="text" value="Honda" class="">
+              <div class="mr-2" style="flex: 1;">
+                <label>Make</label>
+                <input type="text" [(ngModel)]="booking.make">
               </div>
               <div class="" style="flex: 1;">
-                <label>Modelo</label>
-                <input type="text" value="S100" class="">
+                <label>Model</label>
+                <input type="text" [(ngModel)]="booking.model">
               </div>
             </div>
 
             <label>Bank Account</label>
-            <select name="serviceType" class="form-control">
-              <option value="" disabled selected>Selecione um banco</option>
-              <option value="MOT">BARCLAYS</option>
-              <option value="Revisão">REVOLUT</option>
-              <option value="Troca de óleo">WISE</option>
+            <select [(ngModel)]="booking.bank" class="form-control">
+              <option value="" disabled selected>Select a Bank Account</option>
+              <option value="BARCLAYS">BARCLAYS</option>
+              <option value="REVOLUT">REVOLUT</option>
+              <option value="WISE">WISE</option>
             </select>
 
-            <label>Valor</label>
-            <input type="text" value="£350.00">
+            <label>Amount</label>
+            <input type="text" [(ngModel)]="booking.amount">
 
             <button class="book-btn">BOOK</button>
           </div>
@@ -77,27 +77,27 @@
             <h2>Preview PDF</h2>
             <div class="preview-box">
               <h1 class="text-center">MOT BOOKING</h1>
-              <p class="text-center"><strong>Dear Customer, Anthony Vergara - 07858312007.</strong></p>
+              <p class="text-center">
+                <strong>Dear Customer, {{ booking.firstName }} {{ booking.lastName }} - {{ booking.phone }}.</strong>
+              </p>
               <p>Thank you for contact <strong>MOTO HACKNEY MOT STATION</strong>, address 38 Crawley Road - Wood Green, London, N22 6AG.</p>
               <p>Please note the date and time for your vehicle <strong>MOT TEST!</strong></p>
               <p>
-                <strong>Make:</strong> BMW
-                <br><strong>Model:</strong> S100
-                <br><strong>Registration Number:</strong> NRR21 USP
+                <strong>Make:</strong> {{ booking.make }}<br>
+                <strong>Model:</strong> {{ booking.model }}<br>
+                <strong>Registration Number:</strong> {{ booking.plate }}
               </p>
 
               <p>
-                <strong>MOT TEST</strong>
-                <br><strong>Date:</strong> 23/07/2025
-                <br><strong>Time:</strong> 9:40pm TO 11:40pm
+                <strong>MOT TEST</strong><br>
+                <strong>Date:</strong> {{ booking.date }}<br>
+                <strong>Time:</strong> {{ booking.startTime }} TO {{ booking.endTime }}
               </p>
-              <p>Your booking reference is <strong>MTHBMWRIZMU5421062025</strong></p>
-              <p>You must contact <strong>MOTO HACKNEY MOT STATION ON 02088884733</strong> two hours before the teste
+              <p>Your booking reference is <strong>MTH27029877RIZMU140996</strong></p>
+              <p>You must contact <strong>MOTO HACKNEY MOT STATION ON 02088884733</strong> two hours before the test
                 for cancellations, otherwise fee of <strong>20%</strong> will be applied.</p>
-              <p><strong>Any delay will be your own responsibility!</strong>
-                <br><strong>All pre booking must to pay in advance!</strong></p>
-              <p><strong>Barclays</strong><br><strong>Account number: 07858213  Sort-code: 23-14-70</strong></p>
-              <p>Amount<br><span class="green">£350.00</span></p>
+              <p><strong>Any delay will be your own responsibility!</strong><br><strong>All pre booking must to pay in advance!</strong></p>
+              <p><strong>{{ booking.bank }}</strong><br><strong>Amount:</strong><br><span class="green">{{ booking.amount }}</span></p>
               <p>Thank you for business with us!</p>
               <p><strong>Moto Hackney Limited.</strong></p>
             </div>
