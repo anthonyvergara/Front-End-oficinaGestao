@@ -1,0 +1,11 @@
+.list-group-item {
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #e6f0fd !important;
+  }
+}
+
+.bg-row-grey {
+  background-color: #eeeeee !important;
+}

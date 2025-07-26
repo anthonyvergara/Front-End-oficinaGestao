@@ -5,7 +5,7 @@
     <div class="col">
       <div class="card shadow">
         <div class="card-header border-0">
-          <h1 class="mb-0">ORDENS DE SERVIÇO</h1>
+          <h1 class="mb-0">SERVICE ORDERS</h1>
         </div>
 
         <!-- Linha para os botões de controle e o campo de pesquisa -->
@@ -15,8 +15,8 @@
             <div class="custom-collapse-container">
               <div class="custom-collapse">
                 <div class="custom-header btn btn-primary" (click)="toggleCollapse('item1'); selectedMenu = 'ULTIMOS'">
-                  <span class="d-none d-md-inline">ÚLTIMOS SERVIÇOS</span>
-                  <span class="d-inline d-md-none">ÚLTIMOS</span>
+                  <span class="d-none d-md-inline">RECENT SERVICES</span>
+                  <span class="d-inline d-md-none">RECENTS</span>
                 </div>
 
                 <div class="custom-header-underline underline-primary"
@@ -36,19 +36,19 @@
                           <i class="fas fa-sort" (click)="sortTable('status')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Nome do Cliente</h4>
+                          <h4>Customer Name</h4>
                           <i class="fas fa-sort" (click)="sortTable('cliente.nome')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Valor Total</h4>
+                          <h4>Total Amount</h4>
                           <i class="fas fa-sort" (click)="sortTable('valorTotal')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Data de Criação</h4>
+                          <h4>Date Created</h4>
                           <i class="fas fa-sort" (click)="sortTable('dataInicio')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Conclusão</h4>
+                          <h4>Completed</h4>
                           <i class="fas fa-sort" (click)="sortTable('completion')"></i>
                         </th>
                         <!--<th scope="col"></th>-->
@@ -151,7 +151,7 @@
               <div class="custom-collapse">
                 <div class="custom-header btn badge-agendado"
                      (click)="toggleCollapse('item2'); selectedMenu = 'AGENDADOS'">
-                  AGENDADOS
+                  SCHEDULED
                 </div>
 
                 <div class="custom-header-underline underline-alert"
@@ -171,19 +171,19 @@
                           <i class="fas fa-sort" (click)="sortTable('status')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Nome do Cliente</h4>
+                          <h4>Customer Name</h4>
                           <i class="fas fa-sort" (click)="sortTable('cliente.nome')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Valor Total</h4>
+                          <h4>Total Amount</h4>
                           <i class="fas fa-sort" (click)="sortTable('valorTotal')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Data de Criação</h4>
+                          <h4>Date Created</h4>
                           <i class="fas fa-sort" (click)="sortTable('dataInicio')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Conclusão</h4>
+                          <h4>Completed</h4>
                           <i class="fas fa-sort" (click)="sortTable('completion')"></i>
                         </th>
                       </tr>
@@ -285,7 +285,7 @@
               <div class="custom-collapse">
                 <div class="custom-header btn btn-danger"
                      (click)="toggleCollapse('item3'); selectedMenu = 'ATRASADOS'">
-                  ATRASADOS
+                  OVERDUE
                 </div>
 
                 <div class="custom-header-underline underline-danger"
@@ -305,19 +305,19 @@
                           <i class="fas fa-sort" (click)="sortTable('status')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Nome do Cliente</h4>
+                          <h4>Customer Name</h4>
                           <i class="fas fa-sort" (click)="sortTable('cliente.nome')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Valor Total</h4>
+                          <h4>Total Amount</h4>
                           <i class="fas fa-sort" (click)="sortTable('valorTotal')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Data de Criação</h4>
+                          <h4>Date Created</h4>
                           <i class="fas fa-sort" (click)="sortTable('dataInicio')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Conclusão</h4>
+                          <h4>Completed</h4>
                           <i class="fas fa-sort" (click)="sortTable('completion')"></i>
                         </th>
                       </tr>
@@ -418,8 +418,8 @@
 
               <div class="custom-collapse">
                 <div class="custom-header btn btn-darkblue" (click)="toggleCollapse('item4'); selectedMenu = 'TODOS'">
-                  <span class="d-none d-md-inline">TODOS SERVIÇOS</span>
-                  <span class="d-inline d-md-none">TODOS</span>
+                  <span class="d-none d-md-inline">ALL SERVICES</span>
+                  <span class="d-inline d-md-none">ALL</span>
                 </div>
 
                 <div class="custom-header-underline underline-darkblue"
@@ -439,19 +439,19 @@
                           <i class="fas fa-sort" (click)="sortTable('status')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Nome do Cliente</h4>
+                          <h4>Customer Name</h4>
                           <i class="fas fa-sort" (click)="sortTable('cliente.nome')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Valor Total</h4>
+                          <h4>Total Amount</h4>
                           <i class="fas fa-sort" (click)="sortTable('valorTotal')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Data de Criação</h4>
+                          <h4>Date Created</h4>
                           <i class="fas fa-sort" (click)="sortTable('dataInicio')"></i>
                         </th>
                         <th scope="col">
-                          <h4>Conclusão</h4>
+                          <h4>Completed</h4>
                           <i class="fas fa-sort" (click)="sortTable('completion')"></i>
                         </th>
                       </tr>
@@ -556,7 +556,7 @@
 
             <!-- Campo de filtro de pesquisa (alinhado à direita) -->
             <div class="input-group d-none d-md-inline-flex w-auto ml-auto">
-              <input type="text" class="form-control" placeholder="Buscar por cliente..." [(ngModel)]="searchQuery" />
+              <input type="text" class="form-control" placeholder="Search by Customer..." [(ngModel)]="searchQuery" />
               <div class="input-group-append">
                 <span class="input-group-text">
                   <i class="fas fa-search"></i> <!-- Ícone da lupa -->
